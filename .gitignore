@@ -2,4 +2,4 @@
 bin
 
 # VS Code
-.vscode/settings.json
+.vscode/*

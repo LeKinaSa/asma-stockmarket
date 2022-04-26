@@ -3,3 +3,6 @@ bin
 
 # VS Code
 .vscode/*
+
+# Jade
+*.txt

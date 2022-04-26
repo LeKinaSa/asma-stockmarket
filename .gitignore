@@ -2,7 +2,13 @@
 bin
 
 # VS Code
-.vscode/*
+.vscode
 
-# Jade
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# JADE txt files
 *.txt

@@ -1,16 +1,15 @@
-all: clean compile agent
+all: clean compile start
 
 compile:
-	javac -cp "lib/jade.jar" src/* -d bin/
+	./gradlew build
+	mkdir bin
+	cp -r app/build/classes/java/main/* bin
 
 clean:
-	rm bin/*
+	rm -r app/build bin
 
-gui:
-	java -cp "lib/jade.jar:bin" jade.Boot -gui
+start2:
+	java -cp "app/lib/jade.jar:bin" jade.Boot -agents "bank:stockmarket.Bank;stock:stockmarket.StockMarket;oracle:stockmarket.Oracle;a1:stockmarket.NormalAgent;a2:stockmarket.NormalAgent" -gui
 
-container:
-	java -cp "lib/jade.jar:bin" jade.Boot -container
-
-agent:
-	java -cp "lib/jade.jar:bin" jade.Boot -agents "bank:Bank;stock:StockMarket;oracle:Oracle;a1:NormalAgent;a2:NormalAgent" -gui
+start:
+	java -cp "app/lib/jade.jar:bin" jade.Boot -agents "bank:stockmarket.Bank"

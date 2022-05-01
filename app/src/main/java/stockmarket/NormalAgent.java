@@ -13,14 +13,15 @@ public class NormalAgent extends Agent {
 	public void setup() {
 		Utils.log(this, "Ready");
 
-		addBehaviour(new RequestInitiatorBehavior(this, null, getMessageToBank(), 1));
+		String[] receivers = { "bank", "stock" };
+		ACLMessage message = getMessage(receivers, "start");
+		addBehaviour(new RequestInitiatorBehavior(this, null, message, 2));
 	}
 
-	public ACLMessage getMessageToBank() {
-		String[] receivers = { "bank" };
+	public ACLMessage getMessage(String[] receivers, String content) {
 		ACLMessage message = Utils.createMessage(
 			FIPANames.InteractionProtocol.FIPA_REQUEST,
-			ACLMessage.REQUEST, "start-bank-account", receivers,
+			ACLMessage.REQUEST, content, receivers,
 			new Date(System.currentTimeMillis() + 10000) // Reply in 10s
 		);
 		return message;

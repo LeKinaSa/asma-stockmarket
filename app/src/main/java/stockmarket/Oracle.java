@@ -1,9 +1,10 @@
 package stockmarket;
 
 import jade.core.Agent;
+import stockmarket.utils.Utils;
 
 public class Oracle extends Agent {
 	public void setup() {
-		System.out.println("Oracle");
+		Utils.log(this, "Ready");
 	}
 }

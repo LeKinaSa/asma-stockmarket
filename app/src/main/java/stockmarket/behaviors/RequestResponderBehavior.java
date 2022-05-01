@@ -27,8 +27,8 @@ public class RequestResponderBehavior extends AchieveREResponder {
             throw new RefuseException("check-failed");
         }
         Utils.log(myAgent, "Agree");
-        ACLMessage reply = Utils.createReply(request, ACLMessage.INFORM, null);
-        return reply;
+        // ACLMessage reply = Utils.createReply(request, ACLMessage.INFORM, null);
+        return null;
     }
     
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {

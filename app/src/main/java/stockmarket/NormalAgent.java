@@ -20,7 +20,7 @@ public class NormalAgent extends Agent {
 		String[] receivers = { "bank" };
 		ACLMessage message = Utils.createMessage(
 			FIPANames.InteractionProtocol.FIPA_REQUEST,
-			ACLMessage.REQUEST, "dummy-action", receivers,
+			ACLMessage.REQUEST, "start-bank-account", receivers,
 			new Date(System.currentTimeMillis() + 10000) // Reply in 10s
 		);
 		return message;

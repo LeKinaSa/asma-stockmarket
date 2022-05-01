@@ -41,8 +41,15 @@ public class RequestInitiatorBehavior extends AchieveREInitiator {
         if (notifications.size() < nResponders) {
             // Some responder didn't reply within the specified timeout
             int missingResponses = nResponders - notifications.size();
-            System.out.println("Timeout expired; Missing " + missingResponses + " responses");
+            Utils.log(myAgent, "Timeout expired, missing " + missingResponses + " responses");
         }
+
         Utils.log(myAgent, "All results received");
+        for (Object notification : notifications) {
+            if (notification instanceof ACLMessage) {
+                ACLMessage answer = (ACLMessage) notification;
+                Utils.log(answer.getSender(), answer.getContent());
+            }
+        }
     }
 }

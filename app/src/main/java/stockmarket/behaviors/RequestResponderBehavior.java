@@ -21,25 +21,25 @@ public class RequestResponderBehavior extends AchieveREResponder {
     }
 
     protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
-        Utils.log(myAgent, "REQUEST received from " + request.getSender().getName() + ". Action is " + request.getContent());
+        String sender = request.getSender().getLocalName();
+        Utils.log(myAgent, "REQUEST received from " + sender + ". Action is " + request.getContent());
         if (!responder.checkAction(request)) {
-            Utils.log(myAgent, "Refused");
+            Utils.log(myAgent, "Refused (" + sender + ")");
             throw new RefuseException("check-failed");
         }
-        Utils.log(myAgent, "Agree");
-        // ACLMessage reply = Utils.createReply(request, ACLMessage.INFORM, null);
+        Utils.log(myAgent, "Agree (" + sender + ")");
         return null;
     }
     
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
+        String sender = request.getSender().getLocalName();
         String actionResult = responder.performAction(request);
         if (actionResult == null) {
-            Utils.log(myAgent, "Action Failed");
+            Utils.log(myAgent, "Action Failed (" + sender + ")");
             throw new FailureException("unexpected-error");
         }
-        Utils.log(myAgent, "Action successfully performed");
+        Utils.log(myAgent, "Action successfully performed (" + sender + ")");
         ACLMessage reply = Utils.createReply(request, ACLMessage.INFORM, actionResult);
         return reply;
     }
-    
 }

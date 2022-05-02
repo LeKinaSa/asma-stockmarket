@@ -10,6 +10,8 @@ import jade.lang.acl.MessageTemplate;
 
 import stockmarket.agents.RequestResponder;
 import stockmarket.behaviors.RequestResponderBehavior;
+import stockmarket.utils.Action;
+import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class StockMarket extends Agent {
@@ -18,16 +20,30 @@ public class StockMarket extends Agent {
 	private class StockMarketQuery implements RequestResponder {
         @Override
         public boolean checkAction(ACLMessage request) {
-            return true;
+            Action action = Action.toAction(request.getContent());
+            if (action == null) {
+                return false;
+            }
+            ActionType type = action.getType();
+            return type.equals(ActionType.START) || type.equals(ActionType.CHECK_STOCK) || type.equals(ActionType.BUY_STOCK);
         }
 
         @Override
         public String performAction(ACLMessage request) {
+            Action action = Action.toAction(request.getContent());
             String agent = request.getSender().getLocalName();
-            if (!stockMarket.containsKey(agent)) {
-                stockMarket.put(agent, "{}");
-                return "Started Stock Market Entry";
+
+            if (action.getType().equals(ActionType.START)) {
+                if (!stockMarket.containsKey(agent)) {
+                    stockMarket.put(agent, "{}");
+                    return "Started Stock Market Entry";
+                }
             }
+
+            if (action.getType().equals(ActionType.BUY_STOCK)) {
+                return "Not Yet Implemented"; // TODO
+            }
+
             return stockMarket.get(agent).toString();
         }
     }

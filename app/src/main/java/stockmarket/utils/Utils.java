@@ -13,7 +13,7 @@ public class Utils {
 		if (protocol != null) { message.setProtocol(protocol); }
 		if (content != null) { message.setContent(content); }
         if (date != null) { message.setReplyByDate(date); }
-        
+
         if (receivers != null) {
             for (String receiver : receivers) {
                 message.addReceiver(new AID(receiver, AID.ISLOCALNAME));

@@ -21,30 +21,33 @@ public class StockMarket extends Agent {
         @Override
         public boolean checkAction(ACLMessage request) {
             Action action = Action.toAction(request.getContent());
-            if (action == null) {
-                return false;
-            }
-            ActionType type = action.getType();
-            return type.equals(ActionType.START) || type.equals(ActionType.CHECK_STOCK) || type.equals(ActionType.BUY_STOCK);
+            return action != null;
         }
 
         @Override
         public String performAction(ACLMessage request) {
             Action action = Action.toAction(request.getContent());
             String agent = request.getSender().getLocalName();
+            if (action == null) {
+                return "Invalid Action";
+            }
 
-            if (action.getType().equals(ActionType.START)) {
-                if (!stockMarket.containsKey(agent)) {
-                    stockMarket.put(agent, "{}");
-                    return "Started Stock Market Entry";
+            ActionType actionType = action.getType();
+            switch (actionType) {
+                case START: {
+                    if (!stockMarket.containsKey(agent)) {
+                        stockMarket.put(agent, action.getInformation());
+                        return "Started Stock Market Entry";
+                    }
+                    return stockMarket.get(agent).toString();
+                }
+                case CHECK_STOCK: {
+                    return stockMarket.get(agent).toString();
+                }
+                default: {
+                    return "Action Not Supported";
                 }
             }
-
-            if (action.getType().equals(ActionType.BUY_STOCK)) {
-                return "Not Yet Implemented"; // TODO
-            }
-
-            return stockMarket.get(agent).toString();
         }
     }
 

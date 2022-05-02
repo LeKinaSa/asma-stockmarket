@@ -16,7 +16,7 @@ public class NormalAgent extends Agent {
 		Utils.log(this, "Ready");
 
 		String[] receivers = { "bank", "stock" };
-		Action action = new Action(ActionType.START);
+		Action action = new Action(ActionType.START, "{}");
 		ACLMessage message = getMessage(receivers, action);
 		addBehaviour(new RequestInitiatorBehavior(this, null, message, 2));
 	}

@@ -3,28 +3,28 @@ package stockmarket.utils;
 public class Action {
     private static final String SEPARATOR = "/";
     private final ActionType action;
-    private final int day;
+    private final String additionalInformation;
 
-    public Action(ActionType action, int day) {
+    public Action(ActionType action, String additionalInformation) {
         this.action = action;
-        this.day = day;
+        this.additionalInformation = additionalInformation;
     }
 
     public Action(ActionType action) {
         this.action = action;
-        this.day = 0;
+        this.additionalInformation = "";
     }
 
     public ActionType getType() {
-        return this.action;
+        return action;
     }
 
-    public int getDay() {
-        return this.day;
+    public String getInformation() {
+        return additionalInformation;
     }
 
     public String getMessage() {
-        return action + SEPARATOR + day;
+        return action + SEPARATOR + additionalInformation;
     }
 
     public static Action toAction(String messageContent) {
@@ -41,17 +41,6 @@ public class Action {
             return null;
         }
 
-        int day = 0;
-        try {
-            day = Integer.parseInt(parts[1]);
-        }
-        catch (NumberFormatException e) {
-            return null;
-        }
-
-        if (action == null) {
-            return null;
-        }
-        return new Action(action, day);
+        return new Action(action, parts[1]);
     }
 }

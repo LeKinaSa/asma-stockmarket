@@ -21,26 +21,38 @@ public class Bank extends Agent {
         @Override
         public boolean checkAction(ACLMessage request) {
             Action action = Action.toAction(request.getContent());
-            if (action == null) {
-                return false;
-            }
-            ActionType type = action.getType();
-            return type.equals(ActionType.START) || type.equals(ActionType.CHECK_BALANCE);
+            return action != null;
         }
 
         @Override
         public String performAction(ACLMessage request) {
             Action action = Action.toAction(request.getContent());
             String agent = request.getSender().getLocalName();
-
-            if (action.getType().equals(ActionType.START)) {
-                if (!bankAccount.containsKey(agent)) {
-                    bankAccount.put(agent, 0D);
-                    return "Started Bank Account";
-                }
+            if (action == null) {
+                return "Invalid Action";
             }
 
-            return bankAccount.get(agent).toString();
+            ActionType actionType = action.getType();
+            switch (actionType) {
+                case START: {
+                    if (!bankAccount.containsKey(agent)) {
+                        double value = 0D;
+                        try {
+                            value = Double.parseDouble(action.getInformation());
+                        }
+                        catch (NumberFormatException ignored) {}
+                        bankAccount.put(agent, value);
+                        return "Started Bank Account";
+                    }
+                    return bankAccount.get(agent).toString();
+                }
+                case CHECK_BALANCE: {
+                    return bankAccount.get(agent).toString();
+                }
+                default: {
+                    return "Action Not Supported";
+                }
+            }
         }
     }
 

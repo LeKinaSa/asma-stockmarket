@@ -11,7 +11,6 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import stockmarket.agents.RequestResponder;
 import stockmarket.utils.Utils;
 
-
 public class RequestResponderBehavior extends AchieveREResponder {
     private RequestResponder responder;
 
@@ -30,7 +29,7 @@ public class RequestResponderBehavior extends AchieveREResponder {
         Utils.log(myAgent, "Agree (" + sender + ")");
         return null;
     }
-    
+
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         String sender = request.getSender().getLocalName();
         String actionResult = responder.performAction(request);

@@ -12,15 +12,11 @@ public class DayOverListener implements Listener {
     private int receivedMessages = 0;
     private int day = 0;
 
-    public boolean canPassToNextDay(int numberOfAgents) {
-        return numberOfAgents == receivedMessages;
+    @Override
+    public MessageTemplate getTemplate() {
+        return template;
     }
-
-    public int nextDay() {
-        receivedMessages = 0;
-        return ++day;
-    }
-
+    
     @Override
     public void actionOnReceive(ACLMessage message) {
         int messageDay;
@@ -36,8 +32,12 @@ public class DayOverListener implements Listener {
         }
     }
 
-    @Override
-    public MessageTemplate getTemplate() {
-        return template;
+    public boolean canPassToNextDay(int numberOfAgents) {
+        return numberOfAgents == receivedMessages;
+    }
+
+    public int nextDay() {
+        receivedMessages = 0;
+        return ++day;
     }
 }

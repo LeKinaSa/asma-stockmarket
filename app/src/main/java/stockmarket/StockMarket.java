@@ -2,12 +2,10 @@ package stockmarket;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-
 import stockmarket.agents.NewDayListener;
 import stockmarket.agents.RequestResponder;
 import stockmarket.behaviors.ListeningBehavior;

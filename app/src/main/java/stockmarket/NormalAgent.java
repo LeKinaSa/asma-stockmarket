@@ -5,7 +5,6 @@ import java.util.Date;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.domain.FIPANames;
-
 import stockmarket.agents.NewDayListener;
 import stockmarket.behaviors.ListeningBehavior;
 import stockmarket.behaviors.RequestInitiatorBehavior;

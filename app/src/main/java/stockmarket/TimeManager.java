@@ -1,5 +1,7 @@
 package stockmarket;
 
+import java.util.Arrays;
+import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.agents.DayOverListener;
@@ -9,7 +11,7 @@ import stockmarket.utils.Utils;
 public class TimeManager extends Agent {
     private DayOverListener dayOverListener = new DayOverListener();
     private int nAgents = 2;
-    private String[] receivers = { "stock", "a1", "a2" }; // TODO: fix this magic
+    private List<String> receivers = Arrays.asList("stockmarket", "oracle", "a1", "a2"); // TODO: fix this magic
 
     public void setup() {
         Utils.log(this, "Ready");

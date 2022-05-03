@@ -1,6 +1,7 @@
 package stockmarket.utils;
 
 import java.util.Date;
+import java.util.List;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -10,7 +11,7 @@ public class Utils {
     public static ACLMessage createMessage(
             String protocol, int performative,
             ActionType ontology, String content,
-            String[] receivers, Date date) {
+            List<String> receivers, Date date) {
 
         ACLMessage message = new ACLMessage(performative);
         if (protocol != null) { message.setProtocol(protocol); }
@@ -27,7 +28,7 @@ public class Utils {
         return message;
     }
 
-    public static ACLMessage createNewDayMessage(String[] receivers, Integer day) {
+    public static ACLMessage createNewDayMessage(List<String> receivers, Integer day) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.NEW_DAY, day.toString(),
@@ -35,7 +36,7 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createOracleTipMessage(String[] receivers, String tip) {
+    public static ACLMessage createOracleTipMessage(List<String> receivers, String tip) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.ORACLE_TIP, tip,
@@ -43,7 +44,7 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createDayOverMessage(String[] receivers, Integer day) {
+    public static ACLMessage createDayOverMessage(List<String> receivers, Integer day) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.DAY_OVER, day.toString(),

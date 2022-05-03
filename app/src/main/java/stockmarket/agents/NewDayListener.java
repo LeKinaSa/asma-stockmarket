@@ -11,11 +11,6 @@ public class NewDayListener implements Listener {
     );
 
     @Override
-    public void actionOnReceive(ACLMessage message) {
-        // TODO
-    }
-
-    @Override
     public MessageTemplate getTemplate() {
         return template;
     }

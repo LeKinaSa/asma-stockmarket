@@ -1,7 +1,8 @@
 package stockmarket;
 
+import java.util.Arrays;
 import java.util.Date;
-
+import java.util.List;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.domain.FIPANames;
@@ -18,14 +19,14 @@ public class NormalAgent extends Agent {
 	public void setup() {
 		Utils.log(this, "Ready");
 
-		String[] receivers = { "bank", "stock" };
+		List<String> receivers = Arrays.asList("bank", "stockmarket"); // TODO: fix this magic
 		Action action = new Action(ActionType.START, "{}");
 		ACLMessage message = getMessage(receivers, action);
 		addBehaviour(new RequestInitiatorBehavior(this, null, message, 2));
 		addBehaviour(new ListeningBehavior(this, newDayListener));
 	}
 
-	public ACLMessage getMessage(String[] receivers, Action action) {
+	public ACLMessage getMessage(List<String> receivers, Action action) {
 		ACLMessage message = Utils.createMessage(
 			FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
 			action.getType(), action.getInformation(),

@@ -9,4 +9,4 @@ clean:
 	rm -r app/build bin
 
 start:
-	java -cp "app/lib/jade.jar:bin" jade.Boot -agents "bank:stockmarket.Bank;stockmarket:stockmarket.StockMarket;oracle:stockmarket.Oracle;a1:stockmarket.NormalAgent;a2:stockmarket.NormalAgent" -gui
+	java -cp "app/lib/jade.jar:bin" jade.Boot -agents "time:stockmarket.TimeManager;bank:stockmarket.Bank;stockmarket:stockmarket.StockMarket;oracle:stockmarket.Oracle;a1:stockmarket.NormalAgent;a2:stockmarket.NormalAgent" -gui

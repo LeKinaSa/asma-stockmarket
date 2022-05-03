@@ -1,17 +1,22 @@
 package stockmarket.utils;
 
 import java.util.Date;
-
+import java.util.List;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class Utils {
-    public static ACLMessage createMessage(String protocol, int performative, String content, String[] receivers, Date date) {
+    public static ACLMessage createMessage(
+            String protocol, int performative,
+            ActionType ontology, String content,
+            List<String> receivers, Date date) {
+
         ACLMessage message = new ACLMessage(performative);
-		if (protocol != null) { message.setProtocol(protocol); }
-		if (content != null) { message.setContent(content); }
+        if (protocol != null) { message.setProtocol(protocol); }
+        if (ontology != null) { message.setOntology(ontology.toString()); }
+        if (content != null) { message.setContent(content); }
         if (date != null) { message.setReplyByDate(date); }
 
         if (receivers != null) {
@@ -21,6 +26,30 @@ public class Utils {
         }
 
         return message;
+    }
+
+    public static ACLMessage createNewDayMessage(List<String> receivers, Integer day) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.NEW_DAY, day.toString(),
+            receivers, null
+        );
+    }
+
+    public static ACLMessage createOracleTipMessage(List<String> receivers, String tip) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.ORACLE_TIP, tip,
+            receivers, null
+        );
+    }
+
+    public static ACLMessage createDayOverMessage(List<String> receivers, Integer day) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.DAY_OVER, day.toString(),
+            receivers, null
+        );
     }
 
     public static ACLMessage createReply(ACLMessage msg, int performative, String content) {

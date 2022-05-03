@@ -7,7 +7,6 @@ import jade.proto.AchieveREResponder;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
-
 import stockmarket.agents.RequestResponder;
 import stockmarket.utils.Utils;
 
@@ -21,7 +20,7 @@ public class RequestResponderBehavior extends AchieveREResponder {
 
     protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
         String sender = request.getSender().getLocalName();
-        Utils.log(myAgent, "REQUEST received from " + sender + ". Action is " + request.getContent());
+        Utils.log(myAgent, "REQUEST received from " + sender + ". Action is " + request.getOntology() + " " + request.getContent());
         if (!responder.checkAction(request)) {
             Utils.log(myAgent, "Refused (" + sender + ")");
             throw new RefuseException("check-failed");

@@ -2,12 +2,10 @@ package stockmarket;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.domain.FIPANames;
-
 import stockmarket.agents.RequestResponder;
 import stockmarket.behaviors.RequestResponderBehavior;
 import stockmarket.utils.Action;
@@ -20,13 +18,13 @@ public class Bank extends Agent {
     private class BankBalanceQuery implements RequestResponder {
         @Override
         public boolean checkAction(ACLMessage request) {
-            Action action = Action.toAction(request.getContent());
+            Action action = Action.toAction(request.getOntology(), request.getContent());
             return action != null;
         }
 
         @Override
         public String performAction(ACLMessage request) {
-            Action action = Action.toAction(request.getContent());
+            Action action = Action.toAction(request.getOntology(), request.getContent());
             String agent = request.getSender().getLocalName();
             if (action == null) {
                 return "Invalid Action";

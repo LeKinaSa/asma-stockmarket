@@ -10,10 +10,10 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import stockmarket.agents.RequestResponder;
 import stockmarket.utils.Utils;
 
-public class RequestResponderBehavior extends AchieveREResponder {
+public class RequestResponderBehaviour extends AchieveREResponder {
     private RequestResponder responder;
 
-    public RequestResponderBehavior(Agent agent, RequestResponder responder, MessageTemplate template) {
+    public RequestResponderBehaviour(Agent agent, RequestResponder responder, MessageTemplate template) {
         super(agent, template);
         this.responder = responder;
     }

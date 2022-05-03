@@ -8,8 +8,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NewDayListener;
 import stockmarket.agents.RequestResponder;
-import stockmarket.behaviors.ListeningBehavior;
-import stockmarket.behaviors.RequestResponderBehavior;
+import stockmarket.behaviors.ListeningBehaviour;
+import stockmarket.behaviors.RequestResponderBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
@@ -59,7 +59,7 @@ public class StockMarket extends Agent {
             FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST
         );
 
-        addBehaviour(new RequestResponderBehavior(this, new StockMarketQuery(), template));
-        addBehaviour(new ListeningBehavior(this, newDayListener));
+        addBehaviour(new RequestResponderBehaviour(this, new StockMarketQuery(), template));
+        addBehaviour(new ListeningBehaviour(this, newDayListener));
 	}
 }

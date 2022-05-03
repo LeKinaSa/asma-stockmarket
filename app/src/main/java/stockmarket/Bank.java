@@ -7,7 +7,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.domain.FIPANames;
 import stockmarket.agents.RequestResponder;
-import stockmarket.behaviors.RequestResponderBehavior;
+import stockmarket.behaviors.RequestResponderBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
@@ -61,6 +61,6 @@ public class Bank extends Agent {
             FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST
         );
 
-        addBehaviour(new RequestResponderBehavior(this, new BankBalanceQuery(), template));
+        addBehaviour(new RequestResponderBehaviour(this, new BankBalanceQuery(), template));
     }
 }

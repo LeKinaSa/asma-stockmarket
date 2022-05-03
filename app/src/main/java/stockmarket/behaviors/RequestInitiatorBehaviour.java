@@ -7,11 +7,11 @@ import jade.proto.AchieveREInitiator;
 import stockmarket.agents.RequestInitiator;
 import stockmarket.utils.Utils;
 
-public class RequestInitiatorBehavior extends AchieveREInitiator {
+public class RequestInitiatorBehaviour extends AchieveREInitiator {
     private RequestInitiator initiator;
     private int nResponders;
 
-    public RequestInitiatorBehavior(Agent agent, RequestInitiator initiator, ACLMessage message, int nResponders) {
+    public RequestInitiatorBehaviour(Agent agent, RequestInitiator initiator, ACLMessage message, int nResponders) {
         super(agent, message);
         this.initiator = initiator;
         this.nResponders = nResponders;

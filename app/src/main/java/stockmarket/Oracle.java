@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
 import stockmarket.agents.OracleNewDayListener;
-import stockmarket.behaviors.ListeningBehavior;
+import stockmarket.behaviors.ListeningBehaviour;
 import stockmarket.utils.Utils;
 
 public class Oracle extends Agent {
@@ -15,6 +15,6 @@ public class Oracle extends Agent {
 		Utils.log(this, "Ready");
 
 		oracleNewDayListener.updateAgents(receivers);
-		addBehaviour(new ListeningBehavior(this, oracleNewDayListener));
+		addBehaviour(new ListeningBehaviour(this, oracleNewDayListener));
 	}
 }

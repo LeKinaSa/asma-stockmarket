@@ -6,10 +6,10 @@ import jade.lang.acl.ACLMessage;
 import stockmarket.agents.Listener;
 import stockmarket.utils.Utils;
 
-public class ListeningBehavior extends CyclicBehaviour {
+public class ListeningBehaviour extends CyclicBehaviour {
     private Listener listener;
 
-    public ListeningBehavior(Agent agent, Listener listener) {
+    public ListeningBehaviour(Agent agent, Listener listener) {
         super(agent);
         this.listener = listener;
     }

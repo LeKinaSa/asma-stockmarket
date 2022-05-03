@@ -28,8 +28,7 @@ public class Utils {
         return message;
     }
 
-    public static ACLMessage createNewDayMessage(Integer day) {
-        String[] receivers = null; // TODO: insert receivers
+    public static ACLMessage createNewDayMessage(String[] receivers, Integer day) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.NEW_DAY, day.toString(),
@@ -45,8 +44,7 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createDayOverMessage(Integer day) {
-        String[] receivers = null; // TODO: insert receivers
+    public static ACLMessage createDayOverMessage(String[] receivers, Integer day) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.DAY_OVER, day.toString(),

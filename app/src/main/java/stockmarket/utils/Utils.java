@@ -8,9 +8,14 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class Utils {
-    public static ACLMessage createMessage(String protocol, int performative, String content, String[] receivers, Date date) {
+    public static ACLMessage createMessage(
+            String protocol, int performative,
+            String ontology, String content,
+            String[] receivers, Date date) {
+
         ACLMessage message = new ACLMessage(performative);
 		if (protocol != null) { message.setProtocol(protocol); }
+        if (ontology != null) { message.setOntology(ontology); }
 		if (content != null) { message.setContent(content); }
         if (date != null) { message.setReplyByDate(date); }
 

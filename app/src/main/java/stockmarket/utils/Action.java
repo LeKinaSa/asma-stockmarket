@@ -1,7 +1,6 @@
 package stockmarket.utils;
 
 public class Action {
-    private static final String SEPARATOR = "/";
     private final ActionType action;
     private final String additionalInformation;
 
@@ -23,24 +22,15 @@ public class Action {
         return additionalInformation;
     }
 
-    public String getMessage() {
-        return action + SEPARATOR + additionalInformation;
-    }
-
-    public static Action toAction(String messageContent) {
-        if (!messageContent.contains(SEPARATOR)) {
-            return null;
-        }
-        String[] parts = messageContent.split(SEPARATOR);
-
-        ActionType action = null;
+    public static Action toAction(String ontology, String content) {
+        ActionType action;
         try {
-            action = ActionType.valueOf(parts[0]);
+            action = ActionType.valueOf(ontology);
         }
         catch (IllegalArgumentException e) {
             return null;
         }
 
-        return new Action(action, parts[1]);
+        return new Action(action, content);
     }
 }

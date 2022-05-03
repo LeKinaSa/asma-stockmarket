@@ -20,13 +20,13 @@ public class Bank extends Agent {
     private class BankBalanceQuery implements RequestResponder {
         @Override
         public boolean checkAction(ACLMessage request) {
-            Action action = Action.toAction(request.getContent());
+            Action action = Action.toAction(request.getOntology(), request.getContent());
             return action != null;
         }
 
         @Override
         public String performAction(ACLMessage request) {
-            Action action = Action.toAction(request.getContent());
+            Action action = Action.toAction(request.getOntology(), request.getContent());
             String agent = request.getSender().getLocalName();
             if (action == null) {
                 return "Invalid Action";

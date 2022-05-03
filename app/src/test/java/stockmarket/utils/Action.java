@@ -12,15 +12,16 @@ class AppTest {
         Action action;
 
         action = new Action(ActionType.DAY_OVER, "5");
-        assertEquals(action.getMessage(), "DAY_OVER/5");
+        assertEquals(action.getType().toString(), ActionType.DAY_OVER.toString());
 
-        action = Action.toAction("NEW_DAY/2");
-        assertEquals(action.getMessage(), "NEW_DAY/2");
+        action = Action.toAction("NEW_DAY", "2");
+        assertEquals(action.getType(), ActionType.NEW_DAY);
+        assertEquals(action.getInformation(), "2");
 
-        action = Action.toAction("messageContent");
+        action = Action.toAction("messageContent", "1");
         assertNull(action);
 
-        action = Action.toAction("A/3");
+        action = Action.toAction("A", "3");
         assertNull(action);
     }
 

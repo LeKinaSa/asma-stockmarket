@@ -15,6 +15,7 @@
 - stock market exchange (keeps track of who owns which stocks)
 - oracle (gives tips at random time to random agents)
 - normal agent (wants to maximize winnings)
+- time manager (manages the days, skips to the next day)
 
 ## Interactions and Protocols
 
@@ -34,6 +35,10 @@
   - inform message
 - agents can ask other agents for loans at an interest
   - contractnet protocol
+- normal agents can inform the time manager that are finished for the day
+  - inform message
+- the time manager can inform the normal agents and the stock market that a new day started
+  - inform message
 
 ## Goals and Strategies
 

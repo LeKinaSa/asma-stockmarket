@@ -9,9 +9,22 @@ public class NewDayListener implements Listener {
 		MessageTemplate.MatchPerformative(ACLMessage.INFORM),
         MessageTemplate.MatchOntology(ActionType.NEW_DAY.toString())
     );
+    private int day;
+
+    public int getDay() {
+        return day;
+    }
 
     @Override
     public MessageTemplate getTemplate() {
         return template;
+    }
+
+    @Override
+    public void actionOnReceive(ACLMessage message) {
+        try {
+            day = Integer.parseInt(message.getContent());
+        }
+        catch (NumberFormatException ignored) {}
     }
 }

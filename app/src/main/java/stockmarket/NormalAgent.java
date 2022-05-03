@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.domain.FIPANames;
 import stockmarket.agents.NewDayListener;
@@ -17,6 +18,8 @@ import stockmarket.utils.Utils;
 public class NormalAgent extends Agent {
 	private NewDayListener newDayListener = new NewDayListener();
 	private OracleTipListener oracleTipListener = new OracleTipListener();
+	boolean readyToChangeDay = true;
+	private List<String> dayOverReceivers = Arrays.asList("time"); // TODO: fix this magic
 
 	public void setup() {
 		Utils.log(this, "Ready");
@@ -27,6 +30,15 @@ public class NormalAgent extends Agent {
 		addBehaviour(new RequestInitiatorBehavior(this, null, message, 2));
 		addBehaviour(new ListeningBehavior(this, newDayListener));
 		addBehaviour(new ListeningBehavior(this, oracleTipListener));
+		addBehaviour(new CyclicBehaviour() {
+			@Override
+			public void action() {
+				if (readyToChangeDay) {
+					send(Utils.createDayOverMessage(dayOverReceivers, newDayListener.getDay()));
+					readyToChangeDay = false;
+				}
+			}
+		});
 	}
 
 	public ACLMessage getMessage(List<String> receivers, Action action) {

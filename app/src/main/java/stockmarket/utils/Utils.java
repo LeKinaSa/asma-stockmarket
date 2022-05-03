@@ -28,6 +28,15 @@ public class Utils {
         return message;
     }
 
+    public static ACLMessage createNewDayMessage(int day) {
+        String[] receivers = null;
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.NEW_DAY.toString(), "day",
+            receivers, null
+        );
+    }
+
     public static ACLMessage createReply(ACLMessage msg, int performative, String content) {
         ACLMessage reply = msg.createReply();
         reply.setPerformative(performative);

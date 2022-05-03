@@ -19,7 +19,7 @@ public class ListeningBehavior extends CyclicBehaviour {
         ACLMessage message = myAgent.receive(listener.getTemplate());
         if (message != null) {
             String sender = message.getSender().getLocalName();
-            Utils.log(myAgent, "Received from " + sender + ". Action is " + message.getContent());
+            Utils.log(myAgent, "Received from " + sender + ". Action is " + message.getOntology() + " " + message.getContent());
             ACLMessage reply = listener.getReply(message);
             if (reply != null) {
                 myAgent.send(reply);

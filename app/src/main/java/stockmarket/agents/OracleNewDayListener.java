@@ -15,6 +15,10 @@ public class OracleNewDayListener implements Listener {
     );
     private List<String> agents = Arrays.asList("a1", "a2"); // TODO: fix this magic
 
+    public void updateAgents(List<String> agents) {
+        this.agents = agents;
+    }
+
     @Override
     public MessageTemplate getTemplate() {
         return template;
@@ -25,10 +29,8 @@ public class OracleNewDayListener implements Listener {
         Collections.shuffle(agents);
         List<String> receivers = agents.subList(0, agents.size() / 2);
 
-        message = Utils.createOracleTipMessage(receivers, "oracle-tip-placeholder"); // TODO: oracle Tip
-        System.out.println("\t\tOracle Sending tip to");
-        System.out.println(receivers);
-        System.out.println();
-        return message;
+        // TODO: prepare oracle tip to send
+
+        return Utils.createOracleTipMessage(receivers, "oracle-tip-placeholder");
     }
 }

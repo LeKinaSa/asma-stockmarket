@@ -7,6 +7,7 @@ import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.domain.FIPANames;
 import stockmarket.agents.NewDayListener;
+import stockmarket.agents.OracleTipListener;
 import stockmarket.behaviors.ListeningBehavior;
 import stockmarket.behaviors.RequestInitiatorBehavior;
 import stockmarket.utils.Action;
@@ -15,6 +16,7 @@ import stockmarket.utils.Utils;
 
 public class NormalAgent extends Agent {
 	private NewDayListener newDayListener = new NewDayListener();
+	private OracleTipListener oracleTipListener = new OracleTipListener();
 
 	public void setup() {
 		Utils.log(this, "Ready");
@@ -24,6 +26,7 @@ public class NormalAgent extends Agent {
 		ACLMessage message = getMessage(receivers, action);
 		addBehaviour(new RequestInitiatorBehavior(this, null, message, 2));
 		addBehaviour(new ListeningBehavior(this, newDayListener));
+		addBehaviour(new ListeningBehavior(this, oracleTipListener));
 	}
 
 	public ACLMessage getMessage(List<String> receivers, Action action) {

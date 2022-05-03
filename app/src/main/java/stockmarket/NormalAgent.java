@@ -29,7 +29,7 @@ public class NormalAgent extends Agent {
 	public ACLMessage getMessage(String[] receivers, Action action) {
 		ACLMessage message = Utils.createMessage(
 			FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
-			action.getType().toString(), action.getInformation(),
+			action.getType(), action.getInformation(),
 			receivers, new Date(System.currentTimeMillis() + 10000) // Reply in 10s
 		);
 		return message;

@@ -4,10 +4,10 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
 
-public class NewDayListener implements Listener {
+public class DayOverListener implements Listener {
     private MessageTemplate template = MessageTemplate.and(
 		MessageTemplate.MatchPerformative(ACLMessage.INFORM),
-        MessageTemplate.MatchOntology(ActionType.NEW_DAY.toString())
+        MessageTemplate.MatchOntology(ActionType.DAY_OVER.toString())
     );
 
     @Override

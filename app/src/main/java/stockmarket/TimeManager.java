@@ -5,7 +5,7 @@ import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.agents.DayOverListener;
-import stockmarket.behaviors.ListeningBehaviour;
+import stockmarket.behaviours.ListeningBehaviour;
 import stockmarket.utils.Utils;
 
 public class TimeManager extends Agent {

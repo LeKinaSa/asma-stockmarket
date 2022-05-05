@@ -1,4 +1,4 @@
-package stockmarket.behaviors;
+package stockmarket.behaviours;
 
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;

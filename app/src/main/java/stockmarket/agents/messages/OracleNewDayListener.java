@@ -8,7 +8,7 @@ import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
-public class OracleNewDayListener implements Listener {
+public class OracleNewDayListener implements MessageListener {
     private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     private List<String> agents = Arrays.asList("a1", "a2"); // TODO: fix this magic
 

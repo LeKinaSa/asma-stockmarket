@@ -3,7 +3,7 @@ package stockmarket.utils;
 import org.junit.jupiter.api.Test;
 
 import jade.lang.acl.ACLMessage;
-import stockmarket.agents.messages.Listener;
+import stockmarket.agents.messages.MessageListener;
 import stockmarket.agents.messages.NewDayListener;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +27,7 @@ class AppTest {
     }
 
     @Test void newDayMessageTest() {
-        Listener listener = new NewDayListener();
+        MessageListener listener = new NewDayListener();
         ACLMessage message = Utils.createNewDayMessage(null, 1);
         System.out.println(message.getOntology());
         assertTrue(listener.getTemplate().match(message));

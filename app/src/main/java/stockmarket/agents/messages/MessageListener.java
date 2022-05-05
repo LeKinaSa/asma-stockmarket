@@ -1,10 +1,9 @@
 package stockmarket.agents.messages;
 
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
+import stockmarket.agents.Listener;
 
-public interface Listener {
-    MessageTemplate getTemplate();
+public interface MessageListener extends Listener {
     default void actionOnReceive(ACLMessage message) {}
     default ACLMessage getReply(ACLMessage message) {
         return null;

@@ -5,7 +5,7 @@ import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
-public class NewDayListener implements Listener {
+public class NewDayListener implements MessageListener {
     private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     private int day;
 

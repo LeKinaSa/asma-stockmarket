@@ -3,13 +3,13 @@ package stockmarket.behaviours;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import stockmarket.agents.messages.Listener;
+import stockmarket.agents.messages.MessageListener;
 import stockmarket.utils.Utils;
 
 public class ListeningBehaviour extends CyclicBehaviour {
-    private Listener listener;
+    private MessageListener listener;
 
-    public ListeningBehaviour(Agent agent, Listener listener) {
+    public ListeningBehaviour(Agent agent, MessageListener listener) {
         super(agent);
         this.listener = listener;
     }

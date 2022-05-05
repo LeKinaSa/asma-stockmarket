@@ -5,7 +5,7 @@ import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
-public class DayOverListener implements Listener {
+public class DayOverListener implements MessageListener {
     private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.DAY_OVER);
     private int receivedMessages = 0;
     private int day = 0;

@@ -1,6 +1,8 @@
 package stockmarket.agents.protocols;
 
-public class ContractResponder {
+import stockmarket.agents.Listener;
+
+public class ContractResponder implements Listener {
 	public int evaluateAction() {
 		// TODO
 		return 3;

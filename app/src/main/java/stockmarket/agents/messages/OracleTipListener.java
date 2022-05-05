@@ -5,7 +5,7 @@ import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
-public class OracleTipListener implements Listener {
+public class OracleTipListener implements MessageListener {
     private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ORACLE_TIP);
 
     @Override

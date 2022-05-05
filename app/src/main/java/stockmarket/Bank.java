@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import jade.domain.FIPANames;
 import stockmarket.agents.RequestResponder;
 import stockmarket.behaviors.RequestResponderBehaviour;
 import stockmarket.utils.Action;
@@ -15,7 +13,7 @@ import stockmarket.utils.Utils;
 public class Bank extends Agent {
     private Map<String, Double> bankAccount = new HashMap<>();
 
-    private class BankBalanceQuery implements RequestResponder {
+    private class BankBalanceQuery extends RequestResponder {
         @Override
         public boolean checkAction(ACLMessage request) {
             Action action = Action.toAction(request.getOntology(), request.getContent());
@@ -57,10 +55,7 @@ public class Bank extends Agent {
     public void setup() {
 		Utils.log(this, "Ready");
 
-        MessageTemplate template = Utils.getMessageTemplate(
-            FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST
-        );
-
-        addBehaviour(new RequestResponderBehaviour(this, new BankBalanceQuery(), template));
+        BankBalanceQuery responder = new BankBalanceQuery();
+        addBehaviour(new RequestResponderBehaviour(this, responder, responder.getTemplate()));
     }
 }

@@ -3,12 +3,10 @@ package stockmarket.agents;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
+import stockmarket.utils.Utils;
 
 public class OracleTipListener implements Listener {
-    private MessageTemplate template = MessageTemplate.and(
-		MessageTemplate.MatchPerformative(ACLMessage.INFORM),
-        MessageTemplate.MatchOntology(ActionType.NEW_DAY.toString())
-    );
+    private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ORACLE_TIP);
 
     @Override
     public MessageTemplate getTemplate() {

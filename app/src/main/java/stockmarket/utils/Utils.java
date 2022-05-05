@@ -59,11 +59,14 @@ public class Utils {
         return reply;
     }
 
-    public static MessageTemplate getMessageTemplate(String protocol, int performative) {
-        MessageTemplate template = MessageTemplate.and(
-            MessageTemplate.MatchProtocol(protocol),
-            MessageTemplate.MatchPerformative(performative)
-	    );
+    public static MessageTemplate getMessageTemplate(String protocol, int performative, ActionType ontology) {
+        MessageTemplate template = MessageTemplate.MatchPerformative(performative);
+        if (protocol != null) {
+            template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(protocol));
+        }
+        if (ontology != null) {
+            template = MessageTemplate.and(template, MessageTemplate.MatchOntology(ontology.toString()));
+        }
         return template;
     }
 

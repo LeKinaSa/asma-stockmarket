@@ -9,10 +9,7 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class OracleNewDayListener implements Listener {
-    private MessageTemplate template = MessageTemplate.and(
-		MessageTemplate.MatchPerformative(ACLMessage.INFORM),
-        MessageTemplate.MatchOntology(ActionType.NEW_DAY.toString())
-    );
+    private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     private List<String> agents = Arrays.asList("a1", "a2"); // TODO: fix this magic
 
     public void updateAgents(List<String> agents) {

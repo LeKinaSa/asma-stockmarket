@@ -3,12 +3,10 @@ package stockmarket.agents;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
+import stockmarket.utils.Utils;
 
 public class DayOverListener implements Listener {
-    private MessageTemplate template = MessageTemplate.and(
-		MessageTemplate.MatchPerformative(ACLMessage.INFORM),
-        MessageTemplate.MatchOntology(ActionType.DAY_OVER.toString())
-    );
+    private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.DAY_OVER);
     private int receivedMessages = 0;
     private int day = 0;
 

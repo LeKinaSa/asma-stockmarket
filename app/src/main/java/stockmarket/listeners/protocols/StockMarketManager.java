@@ -2,8 +2,8 @@ package stockmarket.listeners.protocols;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+// import com.google.gson.Gson;
+// import com.google.gson.JsonSyntaxException;
 import jade.lang.acl.ACLMessage;
 import stockmarket.listeners.messages.NewDayListener;
 import stockmarket.utils.Action;
@@ -12,7 +12,7 @@ import stockmarket.utils.StockMarketEntry;
 import stockmarket.utils.Utils;
 
 public class StockMarketManager extends RequestResponder {
-    private Gson gson = new Gson();
+    // private Gson gson = new Gson();
 	private Map<String, StockMarketEntry> stockMarket = new HashMap<>();
     private final NewDayListener newDayListener;
 
@@ -31,17 +31,18 @@ public class StockMarketManager extends RequestResponder {
         Action action = Action.toAction(request.getOntology(), request.getContent());
         String agent = request.getSender().getLocalName();
         if (action == null) {
-            return Utils.invalid("");
+            return Utils.invalidAction("");
         }
 
         ActionType actionType = action.getType();
         switch (actionType) {
             case START: {
                 StockMarketEntry entry = new StockMarketEntry();
-                try {
-                    entry = gson.fromJson(action.getInformation(), StockMarketEntry.class);
-                }
-                catch (JsonSyntaxException e) {}
+                // TODO: clean this mess
+                // try {
+                //     entry = gson.fromJson(action.getInformation(), StockMarketEntry.class);
+                // }
+                // catch (JsonSyntaxException e) {}
 
                 // TODO: lock stock
                 if (!stockMarket.containsKey(agent)) {

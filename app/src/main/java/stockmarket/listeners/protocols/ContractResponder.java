@@ -1,6 +1,6 @@
-package stockmarket.agents.protocols;
+package stockmarket.listeners.protocols;
 
-import stockmarket.agents.Listener;
+import stockmarket.listeners.Listener;
 
 public class ContractResponder implements Listener {
 	public int evaluateAction() {

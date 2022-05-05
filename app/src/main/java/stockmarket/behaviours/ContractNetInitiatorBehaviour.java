@@ -6,7 +6,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
-import stockmarket.agents.protocols.ContractInitiator;
+import stockmarket.listeners.protocols.ContractInitiator;
 import stockmarket.utils.Utils;
 
 public class ContractNetInitiatorBehaviour extends ContractNetInitiator {

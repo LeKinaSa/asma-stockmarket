@@ -1,4 +1,4 @@
-package stockmarket.agents.protocols;
+package stockmarket.listeners.protocols;
 
 public class ContractInitiator {
     

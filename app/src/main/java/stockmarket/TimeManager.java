@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import stockmarket.agents.messages.DayOverListener;
 import stockmarket.behaviours.ListeningBehaviour;
+import stockmarket.listeners.messages.DayOverListener;
 import stockmarket.utils.Utils;
 
 public class TimeManager extends Agent {

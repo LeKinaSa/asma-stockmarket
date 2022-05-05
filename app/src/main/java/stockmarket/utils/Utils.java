@@ -87,7 +87,7 @@ public class Utils {
         else {
             message = "";
         }
-        return "Invalid Action" + message;
+        return "Invalid Action" + message + ".";
     }
 
     public static void log(Agent agent, String message) {

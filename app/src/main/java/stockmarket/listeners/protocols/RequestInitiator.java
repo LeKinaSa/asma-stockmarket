@@ -8,7 +8,7 @@ import stockmarket.utils.Action;
 import stockmarket.utils.Utils;
 
 public class RequestInitiator {
-    public ACLMessage getMessage(List<String> receivers, Action action) {
+	public ACLMessage getMessage(List<String> receivers, Action action) {
 		ACLMessage message = Utils.createMessage(
 			FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
 			action.getType(), action.getInformation(),

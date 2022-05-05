@@ -73,7 +73,7 @@ public class BankManager extends RequestResponder {
                 }
                 bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
                 bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
-                
+
                 double balance = bankAccount.get(agent);
                 // TODO: unlock bank
 

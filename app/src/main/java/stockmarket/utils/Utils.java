@@ -25,10 +25,18 @@ public class Utils {
             List<String> receivers, Date date) {
 
         ACLMessage message = new ACLMessage(performative);
-        if (protocol != null) { message.setProtocol(protocol); }
-        if (ontology != null) { message.setOntology(ontology.toString()); }
-        if (content != null) { message.setContent(content); }
-        if (date != null) { message.setReplyByDate(date); }
+        if (protocol != null) {
+            message.setProtocol(protocol);
+        }
+        if (ontology != null) {
+            message.setOntology(ontology.toString());
+        }
+        if (content != null) {
+            message.setContent(content);
+        }
+        if (date != null) {
+            message.setReplyByDate(date);
+        }
 
         if (receivers != null) {
             for (String receiver : receivers) {
@@ -66,7 +74,9 @@ public class Utils {
     public static ACLMessage createReply(ACLMessage msg, int performative, String content) {
         ACLMessage reply = msg.createReply();
         reply.setPerformative(performative);
-        if (content != null) { reply.setContent(content); }
+        if (content != null) {
+            reply.setContent(content);
+        }
         return reply;
     }
 
@@ -83,6 +93,7 @@ public class Utils {
     public static void log(Agent agent, String message) {
         System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
+
     public static void log(AID agent, String message) {
         System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }

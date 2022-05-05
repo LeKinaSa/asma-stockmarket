@@ -8,12 +8,12 @@ import stockmarket.utils.Utils;
 
 public class ContractResponder implements Listener {
 	private static MessageTemplate template = Utils.getMessageTemplate(
-        FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP, null
-    );
+		FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP, null
+	);
 
-    public MessageTemplate getTemplate() {
-        return template;
-    }
+	public MessageTemplate getTemplate() {
+		return template;
+	}
 
 	public int evaluateAction() {
 		// TODO

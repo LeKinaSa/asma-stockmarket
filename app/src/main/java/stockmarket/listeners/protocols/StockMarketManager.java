@@ -13,7 +13,7 @@ import stockmarket.utils.Utils;
 
 public class StockMarketManager extends RequestResponder {
     private Gson gson = new Gson();
-	private Map<String, StockMarketEntry> stockMarket = new HashMap<>();
+    private Map<String, StockMarketEntry> stockMarket = new HashMap<>();
     private final NewDayListener newDayListener;
 
     public StockMarketManager(NewDayListener newDayListener) {

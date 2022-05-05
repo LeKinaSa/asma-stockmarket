@@ -22,7 +22,7 @@ public class ContractNetResponderBehaviour extends ContractNetResponder {
     protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
         String sender = cfp.getSender().getLocalName();
         Utils.log(myAgent, "CFP received from " + sender + ". Action is " + cfp.getContent());
-        
+
         int proposal = responder.evaluateAction();
 
         if (proposal > 2) { // TODO: check this magic 2
@@ -39,7 +39,7 @@ public class ContractNetResponderBehaviour extends ContractNetResponder {
     protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
         Utils.log(myAgent, "Proposal accepted");
         String sender = cfp.getSender().getLocalName();
-        
+
         boolean actionResult = responder.performAction();
         if (!actionResult) {
             Utils.log(myAgent, "Action execution failed");

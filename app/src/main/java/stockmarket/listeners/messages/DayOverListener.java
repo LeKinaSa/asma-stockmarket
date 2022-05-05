@@ -16,14 +16,14 @@ public class DayOverListener implements MessageListener {
 
     public int nextDay() {
         receivedMessages = 0;
-        return ++day;
+        return ++ day;
     }
 
     @Override
     public MessageTemplate getTemplate() {
         return template;
     }
-    
+
     @Override
     public void actionOnReceive(ACLMessage message) {
         int messageDay;

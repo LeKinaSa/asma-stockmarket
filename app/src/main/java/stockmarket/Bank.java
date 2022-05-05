@@ -7,7 +7,7 @@ import stockmarket.utils.Utils;
 
 public class Bank extends Agent {
     public void setup() {
-		Utils.log(this, "Ready");
+        Utils.log(this, "Ready");
 
         BankManager responder = new BankManager();
         addBehaviour(new RequestResponderBehaviour(this, responder, responder.getTemplate()));

@@ -13,6 +13,8 @@ public abstract class RequestResponder {
     public MessageTemplate getTemplate() {
         return template;
     }
+
     public abstract boolean checkAction(ACLMessage request); // TODO: throw NotUnderstoodException ???
+
     public abstract String performAction(ACLMessage request);
 }

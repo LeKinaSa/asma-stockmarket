@@ -28,12 +28,7 @@ public class TimeManager extends Agent {
         });
 
         // Make sure all the other agents have initialized
-        try {
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException e) {
-            return;
-        }
+        Utils.sleep(1);
         send(Utils.createNewDayMessage(receivers, 0));
     }
 }

@@ -97,4 +97,11 @@ public class Utils {
     public static void log(AID agent, String message) {
         System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
+
+    public static void sleep(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        }
+        catch (InterruptedException ignored) {}
+    }
 }

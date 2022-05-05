@@ -19,22 +19,29 @@ public class NormalAgent extends Agent {
 	private OracleTipListener oracleTipListener = new OracleTipListener();
 	private RequestInitiator initiator = new RequestInitiator();
 	private boolean readyToChangeDay = true;
-	private List<String> dayOverReceivers = Arrays.asList("time"); // TODO: fix this magic
+	private List<String> bankAgents  = Arrays.asList("bank"); // TODO: fix this magic
+	private List<String> stockAgents = Arrays.asList("stockmarket"); // TODO: fix this magic
+	private List<String> timeAgents  = Arrays.asList("time"); // TODO: fix this magic
 
 	public void setup() {
 		Utils.log(this, "Ready");
 
-		List<String> receivers = Arrays.asList("bank", "stockmarket"); // TODO: fix this magic
-		Action action = new Action(ActionType.START, "{}");
-		ACLMessage message = initiator.getMessage(receivers, action);
-		addBehaviour(new RequestInitiatorBehaviour(this, initiator, message, receivers.size()));
+		// Initialize Agent, Bank Account and Owned Stocks
+		Action startBankAccount = new Action(ActionType.START,  "0");
+		Action startOwnStocks   = new Action(ActionType.START, "{}");
+		ACLMessage startBankAccountMessage = initiator.getMessage( bankAgents, startBankAccount);
+		ACLMessage startOwnStocksMessage   = initiator.getMessage(stockAgents, startOwnStocks  );
+		addBehaviour(new RequestInitiatorBehaviour(this, initiator, startBankAccountMessage,  bankAgents.size()));
+		addBehaviour(new RequestInitiatorBehaviour(this, initiator,   startOwnStocksMessage, stockAgents.size()));
+
+		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour(this, newDayListener));
 		addBehaviour(new MessageListenerBehaviour(this, oracleTipListener));
 		addBehaviour(new CyclicBehaviour() {
 			@Override
 			public void action() {
 				if (readyToChangeDay) {
-					send(Utils.createDayOverMessage(dayOverReceivers, newDayListener.getDay()));
+					send(Utils.createDayOverMessage(timeAgents, newDayListener.getDay()));
 					readyToChangeDay = false;
 				}
 			}

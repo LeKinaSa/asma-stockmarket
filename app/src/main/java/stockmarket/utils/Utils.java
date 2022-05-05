@@ -8,6 +8,17 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class Utils {
+    public static MessageTemplate getMessageTemplate(String protocol, int performative, ActionType ontology) {
+        MessageTemplate template = MessageTemplate.MatchPerformative(performative);
+        if (protocol != null) {
+            template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(protocol));
+        }
+        if (ontology != null) {
+            template = MessageTemplate.and(template, MessageTemplate.MatchOntology(ontology.toString()));
+        }
+        return template;
+    }
+
     public static ACLMessage createMessage(
             String protocol, int performative,
             ActionType ontology, String content,
@@ -57,17 +68,6 @@ public class Utils {
         reply.setPerformative(performative);
         if (content != null) { reply.setContent(content); }
         return reply;
-    }
-
-    public static MessageTemplate getMessageTemplate(String protocol, int performative, ActionType ontology) {
-        MessageTemplate template = MessageTemplate.MatchPerformative(performative);
-        if (protocol != null) {
-            template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(protocol));
-        }
-        if (ontology != null) {
-            template = MessageTemplate.and(template, MessageTemplate.MatchOntology(ontology.toString()));
-        }
-        return template;
     }
 
     public static void log(Agent agent, String message) {

@@ -18,6 +18,7 @@ public class RequestResponderBehaviour extends AchieveREResponder {
         this.responder = responder;
     }
 
+    @Override
     protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
         String sender = request.getSender().getLocalName();
         Utils.log(myAgent, "REQUEST received from " + sender + ". Action is " + request.getOntology() + " " + request.getContent());
@@ -29,6 +30,7 @@ public class RequestResponderBehaviour extends AchieveREResponder {
         return null;
     }
 
+    @Override
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         String sender = request.getSender().getLocalName();
         String actionResult = responder.performAction(request);

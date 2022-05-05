@@ -17,15 +17,18 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
         this.nResponders = nResponders;
     }
 
+    @Override
     protected void handleInform(ACLMessage inform) {
         Utils.log(inform.getSender(), "Successfully performed the requested action");
     }
 
+    @Override
     protected void handleRefuse(ACLMessage refuse) {
         Utils.log(refuse.getSender(), "Refused to perform the requested action");
-        --nResponders;
+        -- nResponders;
     }
 
+    @Override
     protected void handleFailure(ACLMessage failure) {
         if (failure.getSender().equals(myAgent.getAMS())) {
             Utils.log(failure.getSender(), "Responder does not exist");
@@ -33,8 +36,10 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
         else {
             Utils.log(failure.getSender(), "Failed to perform the requested action");
         }
+        -- nResponders;
     }
 
+    @Override
     protected void handleAllResultNotifications(Vector notifications) {
         if (notifications.size() < nResponders) {
             // Some responder didn't reply within the specified timeout

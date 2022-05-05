@@ -2,8 +2,8 @@ package stockmarket.listeners.protocols;
 
 import java.util.HashMap;
 import java.util.Map;
-// import com.google.gson.Gson;
-// import com.google.gson.JsonSyntaxException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import jade.lang.acl.ACLMessage;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
@@ -11,7 +11,7 @@ import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class BankManager extends RequestResponder {
-    // private Gson gson = new Gson();
+    private Gson gson = new Gson();
     private Map<String, Double> bankAccount = new HashMap<>();
 
     @Override
@@ -55,30 +55,29 @@ public class BankManager extends RequestResponder {
             }
             case TRANSFER_MONEY: {
                 MoneyTransfer transfer = null;
-                return Utils.invalidAction("Not Yet Implemented"); // TODO: clean this mess
-                // try {
-                //     transfer = gson.fromJson(action.getInformation(), MoneyTransfer.class);
-                // }
-                // catch (JsonSyntaxException e) {
-                //     return Utils.invalidAction("Invalid Transfer");
-                // }
+                try {
+                    transfer = gson.fromJson(action.getInformation(), MoneyTransfer.class);
+                }
+                catch (JsonSyntaxException e) {
+                    return Utils.invalidAction("Invalid Transfer");
+                }
 
-                // // TODO: lock bank
-                // if (!bankAccount.containsKey(transfer.to)) {
-                //     // TODO: unlock bank
-                //     return Utils.invalidAction("Unknown Transfer Destination Agent");
-                // }
-                // if (bankAccount.get(agent) < transfer.amount) {
-                //     // TODO: unlock bank
-                //     return Utils.invalidAction("Not Enough Money for Transfer");
-                // }
-                // bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
-                // bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
+                // TODO: lock bank
+                if (!bankAccount.containsKey(transfer.to)) {
+                    // TODO: unlock bank
+                    return Utils.invalidAction("Unknown Transfer Destination Agent");
+                }
+                if (bankAccount.get(agent) < transfer.amount) {
+                    // TODO: unlock bank
+                    return Utils.invalidAction("Not Enough Money for Transfer");
+                }
+                bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
+                bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
                 
-                // double balance = bankAccount.get(agent);
-                // // TODO: unlock bank
+                double balance = bankAccount.get(agent);
+                // TODO: unlock bank
 
-                // return transfer.amount + " transfered. Balance is now at " + balance + ".";
+                return transfer.amount + " transfered. Balance is now at " + balance + ".";
             }
             default: {
                 return Utils.invalidAction("Action Not Supported");

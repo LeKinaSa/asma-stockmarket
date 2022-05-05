@@ -1,16 +1,15 @@
 package stockmarket;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.domain.FIPANames;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.listeners.messages.NewDayListener;
 import stockmarket.listeners.messages.OracleTipListener;
+import stockmarket.listeners.protocols.RequestInitiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
@@ -18,7 +17,8 @@ import stockmarket.utils.Utils;
 public class NormalAgent extends Agent {
 	private NewDayListener newDayListener = new NewDayListener();
 	private OracleTipListener oracleTipListener = new OracleTipListener();
-	boolean readyToChangeDay = true;
+	private RequestInitiator initiator = new RequestInitiator();
+	private boolean readyToChangeDay = true;
 	private List<String> dayOverReceivers = Arrays.asList("time"); // TODO: fix this magic
 
 	public void setup() {
@@ -26,8 +26,8 @@ public class NormalAgent extends Agent {
 
 		List<String> receivers = Arrays.asList("bank", "stockmarket"); // TODO: fix this magic
 		Action action = new Action(ActionType.START, "{}");
-		ACLMessage message = getMessage(receivers, action);
-		addBehaviour(new RequestInitiatorBehaviour(this, null, message, 2));
+		ACLMessage message = initiator.getMessage(receivers, action);
+		addBehaviour(new RequestInitiatorBehaviour(this, initiator, message, receivers.size()));
 		addBehaviour(new MessageListenerBehaviour(this, newDayListener));
 		addBehaviour(new MessageListenerBehaviour(this, oracleTipListener));
 		addBehaviour(new CyclicBehaviour() {
@@ -39,14 +39,5 @@ public class NormalAgent extends Agent {
 				}
 			}
 		});
-	}
-
-	public ACLMessage getMessage(List<String> receivers, Action action) {
-		ACLMessage message = Utils.createMessage(
-			FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
-			action.getType(), action.getInformation(),
-			receivers, new Date(System.currentTimeMillis() + 10000) // Reply in 10s
-		);
-		return message;
 	}
 }

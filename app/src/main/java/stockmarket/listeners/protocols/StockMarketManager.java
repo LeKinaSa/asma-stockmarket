@@ -3,11 +3,17 @@ package stockmarket.listeners.protocols;
 import java.util.HashMap;
 import java.util.Map;
 import jade.lang.acl.ACLMessage;
+import stockmarket.listeners.messages.NewDayListener;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 
 public class StockMarketManager extends RequestResponder {
 	private Map<String, String> stockMarket = new HashMap<>();
+    private final NewDayListener newDayListener;
+
+    public StockMarketManager(NewDayListener newDayListener) {
+        this.newDayListener = newDayListener;
+    }
 
     @Override
     public boolean checkAction(ACLMessage request) {
@@ -36,7 +42,7 @@ public class StockMarketManager extends RequestResponder {
                 return stockMarket.get(agent).toString();
             }
             default: {
-                return "Action Not Supported";
+                return "Action Not Supported " + newDayListener.getDay();
             }
         }
     }

@@ -1,5 +1,19 @@
 package stockmarket.listeners.protocols;
 
-public interface RequestInitiator {
-    
+import java.util.Date;
+import java.util.List;
+import jade.domain.FIPANames;
+import jade.lang.acl.ACLMessage;
+import stockmarket.utils.Action;
+import stockmarket.utils.Utils;
+
+public class RequestInitiator {
+    public ACLMessage getMessage(List<String> receivers, Action action) {
+		ACLMessage message = Utils.createMessage(
+			FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
+			action.getType(), action.getInformation(),
+			receivers, new Date(System.currentTimeMillis() + 10000) // Reply in 10s
+		);
+		return message;
+	}
 }

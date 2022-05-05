@@ -13,7 +13,7 @@ public class StockMarket extends Agent {
 	public void setup() {
 		Utils.log(this, "Ready");
 
-        StockMarketManager responder = new StockMarketManager();
+        StockMarketManager responder = new StockMarketManager(newDayListener);
         addBehaviour(new RequestResponderBehaviour(this, responder, responder.getTemplate()));
         addBehaviour(new MessageListenerBehaviour(this, newDayListener));
 	}

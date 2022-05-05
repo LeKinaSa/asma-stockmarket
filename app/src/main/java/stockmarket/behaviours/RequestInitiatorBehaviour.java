@@ -8,7 +8,7 @@ import stockmarket.listeners.protocols.RequestInitiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
-    private RequestInitiator initiator;
+    private RequestInitiator initiator; // TODO: use this
     private int nResponders;
 
     public RequestInitiatorBehaviour(Agent agent, RequestInitiator initiator, ACLMessage message, int nResponders) {

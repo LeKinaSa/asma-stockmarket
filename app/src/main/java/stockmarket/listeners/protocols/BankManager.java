@@ -2,15 +2,13 @@ package stockmarket.listeners.protocols;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
-import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
+import stockmarket.utils.Utils;
 
 public class BankManager extends RequestResponder {
     private Gson gson = new Gson();
@@ -27,7 +25,7 @@ public class BankManager extends RequestResponder {
         Action action = Action.toAction(request.getOntology(), request.getContent());
         String agent = request.getSender().getLocalName();
         if (action == null) {
-            return "Invalid Action";
+            return Utils.invalidAction("");
         }
 
         ActionType actionType = action.getType();
@@ -50,7 +48,7 @@ public class BankManager extends RequestResponder {
             }
             case CHECK_BALANCE: {
                 // TODO: lock bank
-                Double balance = bankAccount.get(agent);
+                double balance = bankAccount.get(agent);
                 // TODO: unlock bank
 
                 return "Balance is at " + balance + ".";
@@ -61,19 +59,19 @@ public class BankManager extends RequestResponder {
                     transfer = gson.fromJson(action.getInformation(), MoneyTransfer.class);
                 }
                 catch (JsonSyntaxException e) {
-                    return "Invalid Action: Invalid Transfer";
+                    return Utils.invalidAction("Invalid Transfer");
                 }
 
                 // TODO: lock bank
                 if (!bankAccount.containsKey(transfer.to)) {
                     // TODO: unlock bank
-                    return "Invalid Action: Unknown Transfer Destination Agent";
+                    return Utils.invalidAction("Unknown Transfer Destination Agent");
                 }
                 if (bankAccount.get(agent) < transfer.amount) {
                     // TODO: unlock bank
-                    return "Invalid Action: Not Enough Money for Transfer";
+                    return Utils.invalidAction("Not Enough Money for Transfer");
                 }
-                bankAccount.put(agent, bankAccount.get(agent) - transfer.amount);
+                bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
                 bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
                 
                 double balance = bankAccount.get(agent);
@@ -82,7 +80,7 @@ public class BankManager extends RequestResponder {
                 return transfer.amount + " transfered. Balance is now at " + balance + ".";
             }
             default: {
-                return "Invalid Action: Action Not Supported";
+                return Utils.invalidAction("Action Not Supported");
             }
         }
     }

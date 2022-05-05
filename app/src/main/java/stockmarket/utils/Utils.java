@@ -70,6 +70,16 @@ public class Utils {
         return reply;
     }
 
+    public static String invalidAction(String message) {
+        if (message != null && message != "") {
+            message = ": " + message;
+        }
+        else {
+            message = "";
+        }
+        return "Invalid Action" + message;
+    }
+
     public static void log(Agent agent, String message) {
         System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }

@@ -3,7 +3,7 @@ package stockmarket;
 import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
-import stockmarket.behaviours.ListeningBehaviour;
+import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.listeners.messages.OracleNewDayListener;
 import stockmarket.utils.Utils;
 
@@ -15,6 +15,6 @@ public class Oracle extends Agent {
 		Utils.log(this, "Ready");
 
 		oracleNewDayListener.updateAgents(receivers);
-		addBehaviour(new ListeningBehaviour(this, oracleNewDayListener));
+		addBehaviour(new MessageListenerBehaviour(this, oracleNewDayListener));
 	}
 }

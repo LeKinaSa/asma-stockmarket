@@ -1,60 +1,20 @@
 package stockmarket;
 
-import java.util.HashMap;
-import java.util.Map;
 import jade.core.Agent;
-import jade.lang.acl.ACLMessage;
-import stockmarket.behaviours.ListeningBehaviour;
+import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestResponderBehaviour;
 import stockmarket.listeners.messages.NewDayListener;
-import stockmarket.listeners.protocols.RequestResponder;
-import stockmarket.utils.Action;
-import stockmarket.utils.ActionType;
+import stockmarket.listeners.protocols.StockMarketManager;
 import stockmarket.utils.Utils;
 
 public class StockMarket extends Agent {
-	private Map<String, String> stockMarket = new HashMap<>();
     private NewDayListener newDayListener = new NewDayListener();
-
-	private class StockMarketQuery extends RequestResponder {
-        @Override
-        public boolean checkAction(ACLMessage request) {
-            Action action = Action.toAction(request.getOntology(), request.getContent());
-            return action != null;
-        }
-
-        @Override
-        public String performAction(ACLMessage request) {
-            Action action = Action.toAction(request.getOntology(), request.getContent());
-            String agent = request.getSender().getLocalName();
-            if (action == null) {
-                return "Invalid Action";
-            }
-
-            ActionType actionType = action.getType();
-            switch (actionType) {
-                case START: {
-                    if (!stockMarket.containsKey(agent)) {
-                        stockMarket.put(agent, action.getInformation());
-                        return "Started Stock Market Entry";
-                    }
-                    return stockMarket.get(agent).toString();
-                }
-                case CHECK_STOCK: {
-                    return stockMarket.get(agent).toString();
-                }
-                default: {
-                    return "Action Not Supported";
-                }
-            }
-        }
-    }
 
 	public void setup() {
 		Utils.log(this, "Ready");
 
-        StockMarketQuery responder = new StockMarketQuery();
+        StockMarketManager responder = new StockMarketManager();
         addBehaviour(new RequestResponderBehaviour(this, responder, responder.getTemplate()));
-        addBehaviour(new ListeningBehaviour(this, newDayListener));
+        addBehaviour(new MessageListenerBehaviour(this, newDayListener));
 	}
 }

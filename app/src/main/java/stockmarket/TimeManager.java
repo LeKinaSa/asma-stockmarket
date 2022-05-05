@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import stockmarket.behaviours.ListeningBehaviour;
+import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.listeners.messages.DayOverListener;
 import stockmarket.utils.Utils;
 
@@ -16,7 +16,7 @@ public class TimeManager extends Agent {
     public void setup() {
         Utils.log(this, "Ready");
 
-        addBehaviour(new ListeningBehaviour(this, dayOverListener));
+        addBehaviour(new MessageListenerBehaviour(this, dayOverListener));
         addBehaviour(new CyclicBehaviour() { // New Day Sender
             @Override
             public void action() {

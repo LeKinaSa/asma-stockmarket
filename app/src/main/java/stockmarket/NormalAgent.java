@@ -7,7 +7,7 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.domain.FIPANames;
-import stockmarket.behaviours.ListeningBehaviour;
+import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.listeners.messages.NewDayListener;
 import stockmarket.listeners.messages.OracleTipListener;
@@ -28,8 +28,8 @@ public class NormalAgent extends Agent {
 		Action action = new Action(ActionType.START, "{}");
 		ACLMessage message = getMessage(receivers, action);
 		addBehaviour(new RequestInitiatorBehaviour(this, null, message, 2));
-		addBehaviour(new ListeningBehaviour(this, newDayListener));
-		addBehaviour(new ListeningBehaviour(this, oracleTipListener));
+		addBehaviour(new MessageListenerBehaviour(this, newDayListener));
+		addBehaviour(new MessageListenerBehaviour(this, oracleTipListener));
 		addBehaviour(new CyclicBehaviour() {
 			@Override
 			public void action() {

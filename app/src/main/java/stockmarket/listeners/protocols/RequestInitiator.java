@@ -8,12 +8,24 @@ import stockmarket.utils.Action;
 import stockmarket.utils.Utils;
 
 public class RequestInitiator {
-	public ACLMessage getMessage(List<String> receivers, Action action) {
+	private final List<String> receivers;
+	private final Action action;
+
+	public RequestInitiator(List<String> receivers, Action action) {
+		this.receivers = receivers;
+		this.action = action;
+	}
+
+	public ACLMessage getMessage() {
 		ACLMessage message = Utils.createMessage(
 			FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
 			action.getType(), action.getInformation(),
 			receivers, new Date(System.currentTimeMillis() + 10000) // Reply in 10s
 		);
 		return message;
+	}
+
+	public int getNResponders() {
+		return receivers.size();
 	}
 }

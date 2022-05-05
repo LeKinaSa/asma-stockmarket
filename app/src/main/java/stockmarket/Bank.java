@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import stockmarket.agents.RequestResponder;
+import stockmarket.agents.protocols.RequestResponder;
 import stockmarket.behaviours.RequestResponderBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;

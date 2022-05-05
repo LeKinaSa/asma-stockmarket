@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import stockmarket.agents.DayOverListener;
+import stockmarket.agents.messages.DayOverListener;
 import stockmarket.behaviours.ListeningBehaviour;
 import stockmarket.utils.Utils;
 

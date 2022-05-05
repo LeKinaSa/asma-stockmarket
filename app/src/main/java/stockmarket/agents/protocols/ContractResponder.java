@@ -1,7 +1,7 @@
-package stockmarket.agents;
+package stockmarket.agents.protocols;
 
 public class ContractResponder {
-    public int evaluateAction() {
+	public int evaluateAction() {
 		// TODO
 		return 3;
 	}

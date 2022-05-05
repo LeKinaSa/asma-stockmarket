@@ -4,7 +4,7 @@ import java.util.Vector;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
-import stockmarket.agents.RequestInitiator;
+import stockmarket.agents.protocols.RequestInitiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {

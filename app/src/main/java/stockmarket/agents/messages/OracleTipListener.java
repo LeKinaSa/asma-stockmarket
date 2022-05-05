@@ -1,4 +1,4 @@
-package stockmarket.agents;
+package stockmarket.agents.messages;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

@@ -2,7 +2,7 @@ package stockmarket;
 
 import org.junit.jupiter.api.Test;
 
-import stockmarket.agents.DayOverListener;
+import stockmarket.agents.messages.DayOverListener;
 
 import static org.junit.jupiter.api.Assertions.*;
 

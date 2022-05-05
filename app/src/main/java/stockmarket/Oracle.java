@@ -3,7 +3,7 @@ package stockmarket;
 import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
-import stockmarket.agents.OracleNewDayListener;
+import stockmarket.agents.messages.OracleNewDayListener;
 import stockmarket.behaviours.ListeningBehaviour;
 import stockmarket.utils.Utils;
 

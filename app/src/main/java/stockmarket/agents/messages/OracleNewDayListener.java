@@ -1,4 +1,4 @@
-package stockmarket.agents;
+package stockmarket.agents.messages;
 
 import java.util.Arrays;
 import java.util.Collections;

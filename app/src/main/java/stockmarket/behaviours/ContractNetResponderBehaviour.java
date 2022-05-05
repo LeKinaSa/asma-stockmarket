@@ -11,7 +11,7 @@ import stockmarket.listeners.protocols.ContractResponder;
 import stockmarket.utils.Utils;
 
 public class ContractNetResponderBehaviour extends ContractNetResponder {
-    private ContractResponder responder;
+    private final ContractResponder responder;
 
     public ContractNetResponderBehaviour(Agent agent, ContractResponder responder, MessageTemplate template) {
         super(agent, template);

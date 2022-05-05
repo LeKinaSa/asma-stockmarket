@@ -14,8 +14,7 @@ public class TimeManager extends Agent {
     private List<String> receivers = Arrays.asList("stockmarket", "oracle", "a1", "a2"); // TODO: fix this magic
 
     public void setup() {
-        Utils.log(this, "Ready");
-
+        // Repetitive Behaviours
         addBehaviour(new MessageListenerBehaviour(this, dayOverListener));
         addBehaviour(new CyclicBehaviour() { // New Day Sender
             @Override
@@ -29,6 +28,10 @@ public class TimeManager extends Agent {
 
         // Make sure all the other agents have initialized
         Utils.sleep(1);
+
+        // Start Simulation
         send(Utils.createNewDayMessage(receivers, 0));
+
+        Utils.log(this, "Ready");
     }
 }

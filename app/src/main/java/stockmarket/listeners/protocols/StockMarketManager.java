@@ -18,9 +18,9 @@ public class StockMarketManager extends RequestResponder {
     private class StockMarketAgentEntry extends StockMarketEntry<Integer> {}
     private class StockMarketPriceEntry extends StockMarketEntry<Double> {}
 
-    private Gson gson = new Gson();
-    private Map<String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
-    private Map<Integer, Map<String, StockMarketPriceEntry>> stockPrices = new HashMap<>();
+    private static final Gson gson = new Gson();
+    private final Map<String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
+    private final Map<Integer, Map<String, StockMarketPriceEntry>> stockPrices = new HashMap<>();
     
     private final StockMarket stockMarketAgent;
     private final NewDayListener newDayListener;
@@ -110,11 +110,11 @@ public class StockMarketManager extends RequestResponder {
                 }
 
                 String bankMessage = waitResponse(total);
-                if (response == null) {
+                if (bankMessage == null) {
                     return Utils.invalidAction("Invalid Answer from the Bank");
                 }
-                if (response.getContent().startsWith("Invalid Action")) {
-                    return Utils.invalidAction("Bank Denied with Error \"" + response + "\"");
+                if (bankMessage.startsWith("Invalid Action")) {
+                    return Utils.invalidAction("Bank Denied with Error \"" + bankMessage + "\"");
                 }
 
                 int newAmount, oldAmount;
@@ -146,12 +146,8 @@ public class StockMarketManager extends RequestResponder {
     public String waitResponse(double total) {
         List<String> receivers = stockMarketAgent.getBankAgents();
         Action action = new Action(ActionType.MANAGE_MONEY, String.valueOf(total));
-        RequestInitiator initiator = new RequestInitiator();
-        stockMarketAgent.addBehaviour(
-            new RequestInitiatorBehaviour(
-                stockMarketAgent, initiator, initiator.getMessage(receivers, action), receivers.size()
-            )
-        );
+        RequestInitiator initiator = new RequestInitiator(receivers, action);
+        stockMarketAgent.addBehaviour(new RequestInitiatorBehaviour(stockMarketAgent, initiator));
         return null; // TODO: obtain answer somehow
     }
 }

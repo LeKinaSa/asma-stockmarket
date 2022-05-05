@@ -12,9 +12,10 @@ public class Oracle extends Agent {
 	private List<String> receivers = Arrays.asList("a1", "a2"); // TODO: fix this magic
 
 	public void setup() {
-		Utils.log(this, "Ready");
-
+		// Repetitive Behaviours
 		oracleNewDayListener.updateAgents(receivers);
 		addBehaviour(new MessageListenerBehaviour(this, oracleNewDayListener));
+
+		Utils.log(this, "Ready");
 	}
 }

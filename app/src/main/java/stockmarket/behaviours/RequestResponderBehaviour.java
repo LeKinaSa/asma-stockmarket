@@ -11,7 +11,7 @@ import stockmarket.listeners.protocols.RequestResponder;
 import stockmarket.utils.Utils;
 
 public class RequestResponderBehaviour extends AchieveREResponder {
-    private RequestResponder responder;
+    private final RequestResponder responder;
 
     public RequestResponderBehaviour(Agent agent, RequestResponder responder, MessageTemplate template) {
         super(agent, template);

@@ -6,7 +6,7 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class OracleTipListener implements MessageListener {
-    private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ORACLE_TIP);
+    private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ORACLE_TIP);
 
     @Override
     public MessageTemplate getTemplate() {

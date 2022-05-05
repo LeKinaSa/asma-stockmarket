@@ -7,7 +7,7 @@ import stockmarket.listeners.messages.MessageListener;
 import stockmarket.utils.Utils;
 
 public class MessageListenerBehaviour extends CyclicBehaviour {
-    private MessageListener listener;
+    private final MessageListener listener;
 
     public MessageListenerBehaviour(Agent agent, MessageListener listener) {
         super(agent);

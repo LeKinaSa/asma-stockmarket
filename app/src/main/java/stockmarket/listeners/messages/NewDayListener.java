@@ -6,7 +6,7 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class NewDayListener implements MessageListener {
-    private MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
+    private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     private int day;
 
     public int getDay() {

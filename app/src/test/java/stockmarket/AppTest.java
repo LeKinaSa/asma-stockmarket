@@ -2,7 +2,7 @@ package stockmarket;
 
 import org.junit.jupiter.api.Test;
 import stockmarket.listeners.messages.DayOverListener;
-import stockmarket.utils.Stock;
+import stockmarket.utils.MoneyTransfer;
 import static org.junit.jupiter.api.Assertions.*;
 import com.google.gson.Gson;
 
@@ -10,13 +10,13 @@ class AppTest {
     @Test void dependenciesTest() {
         Gson gson = new Gson();
 
-        Stock stock = new Stock();
-        String stockStr = gson.toJson(stock);
+        MoneyTransfer transfer = new MoneyTransfer();
+        String transferStr = gson.toJson(transfer);
         
-        Stock stockCopy = gson.fromJson(gson.toJson(stock), Stock.class);
-        String stockCopyStr = gson.toJson(stockCopy);
+        MoneyTransfer transferCopy = gson.fromJson(gson.toJson(transfer), MoneyTransfer.class);
+        String transferCopyStr = gson.toJson(transferCopy);
         
-        assertEquals(stockStr, stockCopyStr);
+        assertEquals(transferStr, transferCopyStr);
     }
 
     @Test void increaseDayTest() {

@@ -13,9 +13,9 @@ import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class BankManager extends RequestResponder {
-    private Gson gson = new Gson();
-    private Map<String, Double> bankAccount = new HashMap<>();
-    private List<String> stockAgents = Arrays.asList("stockmarket");
+    private final static Gson gson = new Gson();
+    private final Map<String, Double> bankAccount = new HashMap<>();
+    private final List<String> stockAgents = Arrays.asList("stockmarket");
 
     @Override
     public boolean checkAction(ACLMessage request) {

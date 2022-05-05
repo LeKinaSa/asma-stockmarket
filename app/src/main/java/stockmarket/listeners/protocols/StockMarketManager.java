@@ -19,10 +19,10 @@ public class StockMarketManager extends RequestResponder {
     private class StockMarketPriceEntry extends StockMarketEntry<Double> {}
 
     private static final Gson gson = new Gson();
-    private final Map<String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
-    private final Map<Integer, Map<String, StockMarketPriceEntry>> stockPrices = new HashMap<>();
+    private final Map< String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
+    private final Map<Integer, StockMarketPriceEntry> stockPrices        = new HashMap<>();
     
-    private final StockMarket stockMarketAgent;
+    private final StockMarket    stockMarketAgent;
     private final NewDayListener newDayListener;
 
     public StockMarketManager(StockMarket stockMarketAgent, NewDayListener newDayListener) {
@@ -70,8 +70,7 @@ public class StockMarketManager extends RequestResponder {
                 return "Owned Stocks: " + entry + ".";
             }
             case CHECK_STOCK_PRICES: {
-                StockMarketAgentEntry entry = new StockMarketAgentEntry(); // TODO: use stock prices per day
-                return "Current Stock Prices (day " + newDayListener.getDay() + "): " + entry + ".";
+                return "Current Stock Prices (day " + newDayListener.getDay() + "): " + getDailyStocks() + ".";
             }
             case BUY_STOCK: {
                 StockMarketAgentEntry exchangeEntry;
@@ -85,28 +84,28 @@ public class StockMarketManager extends RequestResponder {
                 // Check Request Validity
                 StockMarketAgentEntry stockEntry = stockMarketEntries.get(agent);
                 Integer amount;
-                for (String stock : exchangeEntry.stocks.keySet()) {
-                    amount = exchangeEntry.stocks.get(stock);
+                for (String stock : exchangeEntry.keys()) {
+                    amount = exchangeEntry.get(stock);
                     if (amount == null) {
                         // Amount can't be null
                         return Utils.invalidAction("Invalid Amount");
                     }
 
-                    if (!stockEntry.stocks.containsKey(stock) && amount < 0) {
+                    if (!stockEntry.contains(stock) && amount < 0) {
                         // Amount must be positive when agent doesn't own any stocks of that type
                         return Utils.invalidAction("No Stock to Sell");
                     }
 
-                    if (!getDailyStocks().keySet().contains(stock)) {
+                    if (!getDailyStocks().contains(stock)) {
                         // Stock doesn't exist
                         return Utils.invalidAction("Invalid stock");
                     }
                 }
 
                 double total = 0D;
-                for (String stock : exchangeEntry.stocks.keySet()) {
-                    amount = exchangeEntry.stocks.get(stock);
-                    total += amount * getDailyPrice(agent, stock);
+                for (String stock : exchangeEntry.keys()) {
+                    amount = exchangeEntry.get(stock);
+                    total += amount * getDailyPrice(stock);
                 }
 
                 String bankMessage = waitResponse(total);
@@ -119,11 +118,11 @@ public class StockMarketManager extends RequestResponder {
 
                 int newAmount, oldAmount;
                 // TODO: lock stock
-                for (String stock : exchangeEntry.stocks.keySet()) {
-                    amount = exchangeEntry.stocks.get(stock);
-                    oldAmount = (!stockEntry.stocks.containsKey(stock)) ? 0 : stockEntry.stocks.get(stock); 
+                for (String stock : exchangeEntry.keys()) {
+                    amount = exchangeEntry.get(stock);
+                    oldAmount = (!stockEntry.contains(stock)) ? 0 : stockEntry.get(stock); 
                     newAmount = oldAmount + amount;
-                    stockEntry.stocks.put(stock, newAmount);
+                    stockEntry.put(stock, newAmount);
                 }
                 // TODO: unlock stock
 
@@ -135,12 +134,12 @@ public class StockMarketManager extends RequestResponder {
         }
     }
 
-    public Map<String, StockMarketPriceEntry> getDailyStocks() {
+    public StockMarketPriceEntry getDailyStocks() {
         return stockPrices.get(newDayListener.getDay());
     }
 
-    public double getDailyPrice(String agent, String stock) {
-        return getDailyStocks().get(agent).stocks.get(stock);
+    public double getDailyPrice(String stock) {
+        return getDailyStocks().get(stock);
     }
 
     public String waitResponse(double total) {

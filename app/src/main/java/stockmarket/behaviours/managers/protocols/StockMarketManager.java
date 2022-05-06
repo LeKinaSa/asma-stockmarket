@@ -55,12 +55,18 @@ public class StockMarketManager extends RequestResponder {
 
         ActionType actionType = action.getType();
         switch (actionType) {
-            case START: { // TODO: it is possible to have negative stock
+            case START: {
                 StockMarketAgentEntry entry = new StockMarketAgentEntry();
                 try {
                     entry = gson.fromJson(action.getInformation(), StockMarketAgentEntry.class);
                 }
                 catch (JsonSyntaxException e) {}
+
+                for (String stock : entry.keys()) {
+                    if (entry.get(stock) < 0) {
+                        entry.put(stock, 0);
+                    }
+                }
 
                 // TODO: lock stock
                 if (!stockMarketEntries.containsKey(agent)) {

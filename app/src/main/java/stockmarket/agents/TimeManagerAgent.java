@@ -1,5 +1,6 @@
 package stockmarket.agents;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
@@ -9,9 +10,10 @@ import stockmarket.behaviours.managers.messages.DayOverListener;
 import stockmarket.utils.Utils;
 
 public class TimeManagerAgent extends Agent {
-    private DayOverListener dayOverListener = new DayOverListener();
-    private int nAgents = 2;
-    private List<String> receivers = Arrays.asList("stockmarket", "oracle", "a1", "a2"); // TODO: fix this magic
+    private final List<String> stockAgents  = Arrays.asList("stockmarket"); // TODO: fix this magic
+    private final List<String> oracleAgents = Arrays.asList("oracle");      // TODO: fix this magic
+    private final List<String> normalAgents = Arrays.asList("a1", "a2");    // TODO: fix this magic
+    private final DayOverListener dayOverListener = new DayOverListener();
 
     public void setup() {
         // Repetitive Behaviours
@@ -19,9 +21,9 @@ public class TimeManagerAgent extends Agent {
         addBehaviour(new CyclicBehaviour() { // New Day Sender
             @Override
             public void action() {
-                if (dayOverListener.canPassToNextDay(nAgents)) {
+                if (dayOverListener.canPassToNextDay(getNAgents())) {
                     int nextDay = dayOverListener.nextDay();
-                    send(Utils.createNewDayMessage(receivers, nextDay));
+                    send(Utils.createNewDayMessage(getReceivers(), nextDay));
                 }
             }
         });
@@ -30,8 +32,20 @@ public class TimeManagerAgent extends Agent {
         Utils.sleep(1);
 
         // Start Simulation
-        send(Utils.createNewDayMessage(receivers, 0));
+        send(Utils.createNewDayMessage(getReceivers(), 0));
 
         Utils.log(this, "Ready");
+    }
+
+    private int getNAgents() {
+        return normalAgents.size();
+    }
+
+    private List<String> getReceivers() {
+        List<String> receivers = new ArrayList<>();
+        receivers.addAll(normalAgents);
+        receivers.addAll(stockAgents);
+        receivers.addAll(oracleAgents);
+        return receivers;
     }
 }

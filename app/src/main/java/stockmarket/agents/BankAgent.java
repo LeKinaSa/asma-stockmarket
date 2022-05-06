@@ -8,7 +8,7 @@ import stockmarket.behaviours.managers.protocols.BankManager;
 import stockmarket.utils.Utils;
 
 public class BankAgent extends Agent {
-    private List<String> stockAgents = Arrays.asList("stockmarket"); // TODO: fix this magic
+    private final List<String> stockAgents = Arrays.asList("stockmarket"); // TODO: fix this magic
 
     public void setup() {
         BankManager responder = new BankManager(this);

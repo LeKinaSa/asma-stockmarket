@@ -1,12 +1,11 @@
 package stockmarket.behaviours.managers.protocols;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import jade.lang.acl.ACLMessage;
+import stockmarket.agents.BankAgent;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
@@ -15,7 +14,11 @@ import stockmarket.utils.Utils;
 public class BankManager extends RequestResponder {
     private final static Gson gson = new Gson();
     private final Map<String, Double> bankAccount = new HashMap<>();
-    private final List<String> stockAgents = Arrays.asList("stockmarket");
+    private final BankAgent bank;
+
+    public BankManager(BankAgent bank) {
+        this.bank = bank;
+    }
 
     @Override
     public boolean checkAction(ACLMessage request) {
@@ -91,7 +94,7 @@ public class BankManager extends RequestResponder {
                     return Utils.invalidAction("Invalid Transfer");
                 }
 
-                if (!stockAgents.contains(agent)) {
+                if (!bank.knowsStockAgent(agent)) {
                     return Utils.invalidAction("Only the Stock Market can Perform this Action");
                 }
 

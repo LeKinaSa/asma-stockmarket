@@ -1,10 +1,17 @@
 package stockmarket.listeners.protocols;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import stockmarket.StockMarket;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
@@ -15,12 +22,13 @@ import stockmarket.utils.StockMarketEntry;
 import stockmarket.utils.Utils;
 
 public class StockMarketManager extends RequestResponder {
-    private class StockMarketAgentEntry extends StockMarketEntry<Integer> {}
-    private class StockMarketPriceEntry extends StockMarketEntry<Double> {}
+    public class StockMarketAgentEntry extends StockMarketEntry<Integer> {}
+    public class StockMarketPriceEntry extends StockMarketEntry<Double> {}
 
     private static final Gson gson = new Gson();
+    private static final File file = new File("data/formatted_stock_prices.json");
     private final Map< String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
-    private final Map<Integer, StockMarketPriceEntry> stockPrices        = new HashMap<>();
+    private final Map<Integer, StockMarketPriceEntry> stockPrices;
     
     private final StockMarket    stockMarketAgent;
     private final NewDayListener newDayListener;
@@ -28,6 +36,7 @@ public class StockMarketManager extends RequestResponder {
     public StockMarketManager(StockMarket stockMarketAgent, NewDayListener newDayListener) {
         this.stockMarketAgent = stockMarketAgent;
         this.newDayListener = newDayListener;
+        this.stockPrices = loadStockPrices(stockMarketAgent);
     }
 
     @Override
@@ -148,5 +157,16 @@ public class StockMarketManager extends RequestResponder {
         RequestInitiator initiator = new RequestInitiator(receivers, action);
         stockMarketAgent.addBehaviour(new RequestInitiatorBehaviour(stockMarketAgent, initiator));
         return null; // TODO: obtain answer somehow
+    }
+
+    public static Map<Integer, StockMarketPriceEntry> loadStockPrices(Agent agent) {
+        Map<Integer, StockMarketPriceEntry> stocks = null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+            stocks = gson.fromJson(reader, Map.class);
+        }
+        catch (JsonSyntaxException | IOException exception) {
+            Utils.log(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
+        }
+        return stocks;
     }
 }

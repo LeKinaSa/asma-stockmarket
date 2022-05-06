@@ -18,17 +18,13 @@ import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.NewDayListener;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
-import stockmarket.utils.StockMarketEntry;
 import stockmarket.utils.Utils;
 
 public class StockMarketManager extends RequestResponder {
-    public class StockMarketAgentEntry extends StockMarketEntry<Integer> {}
-    public class StockMarketPriceEntry extends StockMarketEntry<Double> {}
-
     private static final Gson gson = new Gson();
     private static final File file = new File("data/formatted_stock_prices.json");
-    private final Map< String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
-    private final Map<Integer, StockMarketPriceEntry> stockPrices;
+    private final Map<String, Map<String, Integer>> stockMarketEntries = new HashMap<>();
+    private final Map<String, Map<String, Double >> stockPrices;
     
     private final StockMarketAgent    stockMarketAgent;
     private final NewDayListener newDayListener;
@@ -56,13 +52,13 @@ public class StockMarketManager extends RequestResponder {
         ActionType actionType = action.getType();
         switch (actionType) {
             case START: {
-                StockMarketAgentEntry entry = new StockMarketAgentEntry();
+                Map<String, Integer> entry = new HashMap<>();
                 try {
-                    entry = gson.fromJson(action.getInformation(), StockMarketAgentEntry.class);
+                    entry = gson.fromJson(action.getInformation(), Map.class);
                 }
                 catch (JsonSyntaxException e) {}
 
-                for (String stock : entry.keys()) {
+                for (String stock : entry.keySet()) {
                     if (entry.get(stock) < 0) {
                         entry.put(stock, 0);
                     }
@@ -79,46 +75,46 @@ public class StockMarketManager extends RequestResponder {
             }
             case CHECK_OWNED_STOCK: {
                 // TODO: lock stock
-                StockMarketAgentEntry entry = stockMarketEntries.get(agent);
+                Map<String, Integer> entry = stockMarketEntries.get(agent);
                 // TODO: unlock stock
 
-                return "Owned Stocks: " + entry + ".";
+                return "Owned Stocks: " + gson.toJson(entry) + ".";
             }
             case CHECK_STOCK_PRICES: {
-                return "Current Stock Prices (day " + newDayListener.getDay() + "): " + getDailyStocks() + ".";
+                return "Current Stock Prices (day " + newDayListener.getDay() + "): " + gson.toJson(getDailyStocks()) + ".";
             }
             case BUY_STOCK: {
-                StockMarketAgentEntry exchangeEntry;
+                Map<String, Integer> exchangeEntry;
                 try {
-                    exchangeEntry = gson.fromJson(action.getInformation(), StockMarketAgentEntry.class);
+                    exchangeEntry = gson.fromJson(action.getInformation(), Map.class);
                 }
                 catch (JsonSyntaxException e) {
                     return Utils.invalidAction("Invalid Stock Exchange");
                 }
 
                 // Check Request Validity
-                StockMarketAgentEntry stockEntry = stockMarketEntries.get(agent);
+                Map<String, Integer> stockEntry = stockMarketEntries.get(agent);
                 Integer amount;
-                for (String stock : exchangeEntry.keys()) {
+                for (String stock : exchangeEntry.keySet()) {
                     amount = exchangeEntry.get(stock);
                     if (amount == null) {
                         // Amount can't be null
                         return Utils.invalidAction("Invalid Amount");
                     }
 
-                    if (!stockEntry.contains(stock) && amount < 0) {
+                    if (!stockEntry.containsKey(stock) && amount < 0) {
                         // Amount must be positive when agent doesn't own any stocks of that type
                         return Utils.invalidAction("No Stock to Sell");
                     }
 
-                    if (!getDailyStocks().contains(stock)) {
+                    if (!getDailyStocks().containsKey(stock)) {
                         // Stock doesn't exist
                         return Utils.invalidAction("Invalid stock");
                     }
                 }
 
                 double total = 0D;
-                for (String stock : exchangeEntry.keys()) {
+                for (String stock : exchangeEntry.keySet()) {
                     amount = exchangeEntry.get(stock);
                     total += amount * getDailyPrice(stock);
                 }
@@ -133,9 +129,9 @@ public class StockMarketManager extends RequestResponder {
 
                 int newAmount, oldAmount;
                 // TODO: lock stock
-                for (String stock : exchangeEntry.keys()) {
+                for (String stock : exchangeEntry.keySet()) {
                     amount = exchangeEntry.get(stock);
-                    oldAmount = (!stockEntry.contains(stock)) ? 0 : stockEntry.get(stock); 
+                    oldAmount = (!stockEntry.containsKey(stock)) ? 0 : stockEntry.get(stock); 
                     newAmount = oldAmount + amount;
                     stockEntry.put(stock, newAmount);
                 }
@@ -149,8 +145,8 @@ public class StockMarketManager extends RequestResponder {
         }
     }
 
-    public StockMarketPriceEntry getDailyStocks() {
-        return stockPrices.get(newDayListener.getDay());
+    public Map<String, Double> getDailyStocks() {
+        return stockPrices.get(String.valueOf(newDayListener.getDay()));
     }
 
     public double getDailyPrice(String stock) {
@@ -165,8 +161,8 @@ public class StockMarketManager extends RequestResponder {
         return null; // TODO: obtain answer somehow
     }
 
-    public static Map<Integer, StockMarketPriceEntry> loadStockPrices(Agent agent) {
-        Map<Integer, StockMarketPriceEntry> stocks = null;
+    public static Map<String, Map<String, Double>> loadStockPrices(Agent agent) {
+        Map<String, Map<String, Double >> stocks = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             stocks = gson.fromJson(reader, Map.class);
         }

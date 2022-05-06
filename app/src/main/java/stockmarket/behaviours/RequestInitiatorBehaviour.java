@@ -4,17 +4,15 @@ import java.util.Vector;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
-import stockmarket.listeners.protocols.RequestInitiator;
+import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
-    private RequestInitiator initiator;
     private int nResponders;
 
-    public RequestInitiatorBehaviour(Agent agent, RequestInitiator initiator, ACLMessage message, int nResponders) {
-        super(agent, message);
-        this.initiator = initiator;
-        this.nResponders = nResponders;
+    public RequestInitiatorBehaviour(Agent agent, RequestInitiator initiator) {
+        super(agent, initiator.getMessage());
+        this.nResponders = initiator.getNResponders();
     }
 
     @Override

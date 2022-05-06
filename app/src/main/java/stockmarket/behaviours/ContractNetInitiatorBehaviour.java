@@ -1,16 +1,15 @@
 package stockmarket.behaviours;
 
-import java.util.Enumeration;
 import java.util.Vector;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
-import stockmarket.listeners.protocols.ContractInitiator;
+import stockmarket.behaviours.managers.protocols.ContractInitiator;
 import stockmarket.utils.Utils;
 
 public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
-    private ContractInitiator initiator;
+    private final ContractInitiator initiator;
     private int nResponders;
 
     public ContractNetInitiatorBehaviour(Agent agent, ContractInitiator initiator, ACLMessage message, int nResponders) {
@@ -44,10 +43,10 @@ public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
         else {
             Utils.log(failure.getSender(), "Failed to perform the requested action");
         }
-        
+
         -- nResponders;
     }
-    
+
     @Override
     protected void handleAllResponses(Vector responses, Vector acceptances) {
         if (responses.size() < nResponders) {
@@ -84,6 +83,6 @@ public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
         if (accept != null) {
             Utils.log(myAgent, "Accepting proposal " + bestProposal + "from responder " + bestProposer.getLocalName());
             accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-        }						
+        }
     }
 }

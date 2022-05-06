@@ -25,6 +25,9 @@ dependencies {
 
     // https://mavenlibs.com/maven/dependency/net.sf.ingenias/jade
     implementation("net.sf.ingenias:jade:4.3")
+
+    // https://search.maven.org/artifact/com.google.code.gson/gson/2.9.0/jar
+    implementation("com.google.code.gson:gson:2.9.0")
 }
 
 application {

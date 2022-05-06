@@ -12,3 +12,6 @@ build
 
 # JADE txt files
 *.txt
+
+# data
+data/all_stocks_5yr.csv

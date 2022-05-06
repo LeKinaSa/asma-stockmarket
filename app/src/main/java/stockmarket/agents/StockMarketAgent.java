@@ -1,15 +1,15 @@
-package stockmarket;
+package stockmarket.agents;
 
 import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestResponderBehaviour;
-import stockmarket.listeners.messages.NewDayListener;
-import stockmarket.listeners.protocols.StockMarketManager;
+import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.behaviours.managers.protocols.StockMarketManager;
 import stockmarket.utils.Utils;
 
-public class StockMarket extends Agent {
+public class StockMarketAgent extends Agent {
     private final NewDayListener newDayListener = new NewDayListener();
     private final List<String> bankAgents = Arrays.asList("bank"); // TODO: fix this magic
 

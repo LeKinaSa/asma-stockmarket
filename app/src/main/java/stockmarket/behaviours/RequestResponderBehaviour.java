@@ -7,7 +7,7 @@ import jade.proto.AchieveREResponder;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
-import stockmarket.listeners.protocols.RequestResponder;
+import stockmarket.behaviours.managers.protocols.RequestResponder;
 import stockmarket.utils.Utils;
 
 public class RequestResponderBehaviour extends AchieveREResponder {

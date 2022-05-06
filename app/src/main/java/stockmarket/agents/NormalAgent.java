@@ -1,4 +1,4 @@
-package stockmarket;
+package stockmarket.agents;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,9 +6,9 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
-import stockmarket.listeners.messages.NewDayListener;
-import stockmarket.listeners.messages.OracleTipListener;
-import stockmarket.listeners.protocols.RequestInitiator;
+import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.behaviours.managers.messages.OracleTipListener;
+import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;

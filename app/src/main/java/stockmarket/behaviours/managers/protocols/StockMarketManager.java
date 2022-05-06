@@ -1,4 +1,4 @@
-package stockmarket.listeners.protocols;
+package stockmarket.behaviours.managers.protocols;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import stockmarket.StockMarket;
+import stockmarket.agents.StockMarketAgent;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
-import stockmarket.listeners.messages.NewDayListener;
+import stockmarket.behaviours.managers.messages.NewDayListener;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.StockMarketEntry;
@@ -30,10 +30,10 @@ public class StockMarketManager extends RequestResponder {
     private final Map< String, StockMarketAgentEntry> stockMarketEntries = new HashMap<>();
     private final Map<Integer, StockMarketPriceEntry> stockPrices;
     
-    private final StockMarket    stockMarketAgent;
+    private final StockMarketAgent    stockMarketAgent;
     private final NewDayListener newDayListener;
 
-    public StockMarketManager(StockMarket stockMarketAgent, NewDayListener newDayListener) {
+    public StockMarketManager(StockMarketAgent stockMarketAgent, NewDayListener newDayListener) {
         this.stockMarketAgent = stockMarketAgent;
         this.newDayListener = newDayListener;
         this.stockPrices = loadStockPrices(stockMarketAgent);

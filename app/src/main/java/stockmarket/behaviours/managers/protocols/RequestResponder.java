@@ -1,4 +1,4 @@
-package stockmarket.listeners.protocols;
+package stockmarket.behaviours.managers.protocols;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;

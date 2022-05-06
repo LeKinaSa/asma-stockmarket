@@ -3,8 +3,8 @@ package stockmarket.utils;
 import org.junit.jupiter.api.Test;
 
 import jade.lang.acl.ACLMessage;
-import stockmarket.listeners.messages.MessageListener;
-import stockmarket.listeners.messages.NewDayListener;
+import stockmarket.behaviours.managers.messages.MessageListener;
+import stockmarket.behaviours.managers.messages.NewDayListener;
 
 import static org.junit.jupiter.api.Assertions.*;
 

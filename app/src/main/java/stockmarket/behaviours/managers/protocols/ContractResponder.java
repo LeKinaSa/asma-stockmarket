@@ -1,9 +1,9 @@
-package stockmarket.listeners.protocols;
+package stockmarket.behaviours.managers.protocols;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import stockmarket.listeners.Listener;
+import stockmarket.behaviours.managers.Listener;
 import stockmarket.utils.Utils;
 
 public class ContractResponder implements Listener {

@@ -8,8 +8,8 @@ import stockmarket.behaviours.managers.messages.OracleNewDayListener;
 import stockmarket.utils.Utils;
 
 public class OracleAgent extends Agent {
+	private final List<String> normalAgents = Arrays.asList("a1", "a2");	// TODO: fix this magic
 	private final OracleNewDayListener oracleNewDayListener = new OracleNewDayListener(this);
-	private List<String> agents = Arrays.asList("a1", "a2"); // TODO: fix this magic
 
 	public void setup() {
 		// Repetitive Behaviours
@@ -19,6 +19,6 @@ public class OracleAgent extends Agent {
 	}
 
 	public List<String> getAgents() {
-		return agents;
+		return normalAgents;
 	}
 }

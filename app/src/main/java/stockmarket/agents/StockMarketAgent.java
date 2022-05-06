@@ -10,12 +10,8 @@ import stockmarket.behaviours.managers.protocols.StockMarketManager;
 import stockmarket.utils.Utils;
 
 public class StockMarketAgent extends Agent {
+    private final List<String> bankAgents = Arrays.asList("bank");  // TODO: fix this magic
     private final NewDayListener newDayListener = new NewDayListener();
-    private final List<String> bankAgents = Arrays.asList("bank"); // TODO: fix this magic
-
-    public List<String> getBankAgents() {
-        return bankAgents;
-    }
 
 	public void setup() {
         // Repetitive Behaviours
@@ -25,4 +21,8 @@ public class StockMarketAgent extends Agent {
 
 		Utils.log(this, "Ready");
 	}
+
+    public List<String> getBankAgents() {
+        return bankAgents;
+    }
 }

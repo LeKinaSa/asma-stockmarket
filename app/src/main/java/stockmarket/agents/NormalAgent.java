@@ -14,19 +14,19 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class NormalAgent extends Agent {
+	private final List<String> bankAgents  = Arrays.asList("bank"); // TODO: fix this magic
+	private final List<String> stockAgents = Arrays.asList("stockmarket"); // TODO: fix this magic
+	private final List<String> timeAgents  = Arrays.asList("time"); // TODO: fix this magic
 	private NewDayListener newDayListener = new NewDayListener();
 	private OracleTipListener oracleTipListener = new OracleTipListener();
 	private boolean readyToChangeDay = true;
-	private List<String> bankAgents  = Arrays.asList("bank"); // TODO: fix this magic
-	private List<String> stockAgents = Arrays.asList("stockmarket"); // TODO: fix this magic
-	private List<String> timeAgents  = Arrays.asList("time"); // TODO: fix this magic
 
 	public void setup() {
 		// Initialize Agent, Bank Account and Owned Stocks
 		Action startBankAccount = new Action(ActionType.START,  "0");
 		Action startOwnStocks   = new Action(ActionType.START, "{}");
-		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator( bankAgents, startBankAccount)));
-		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator(stockAgents, startOwnStocks  )));
+		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator( getBankAgents(), startBankAccount)));
+		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator(getStockAgents(), startOwnStocks  )));
 
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour(this, newDayListener));
@@ -42,5 +42,17 @@ public class NormalAgent extends Agent {
 		});
 
 		Utils.log(this, "Ready");
+	}
+
+	public List<String> getBankAgents() {
+		return bankAgents;
+	}
+
+	public List<String> getStockAgents() {
+		return stockAgents;
+	}
+
+	public List<String> getTimeAgents() {
+		return timeAgents;
 	}
 }

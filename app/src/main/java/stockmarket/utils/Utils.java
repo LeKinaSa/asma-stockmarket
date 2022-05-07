@@ -1,6 +1,8 @@
 package stockmarket.utils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import jade.core.AID;
 import jade.core.Agent;
@@ -8,6 +10,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -25,7 +28,7 @@ public class Utils {
         return template;
     }
 
-    public static ACLMessage createMessage(
+    private static ACLMessage createMessage(
             String protocol, int performative,
             ActionType ontology, String content,
             List<String> receivers, Date date) {
@@ -98,28 +101,84 @@ public class Utils {
     }
 
     // Yellow Page Utilitaries
+    public static DFAgentDescription getRegisterTemplate(AgentType type) {
+        ServiceDescription serviceTemplate = new ServiceDescription();
+        serviceTemplate.setType(type.toString());
+        DFAgentDescription template = new DFAgentDescription();
+        template.addServices(serviceTemplate);
+        return template;
+    }
+
     public static void registerInYellowPages(Agent agent, AgentType type) {
         try {
-            DFAgentDescription register = new DFAgentDescription();
+            // Service Configuration
             ServiceDescription service = new ServiceDescription();
-
             service.setName(agent.getLocalName());
             service.setType(type.toString());
             service.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
-
             for (String ontology : type.getOntologies()) {
                 service.addOntologies(ontology);
             }
             // TODO: Properties: service.addProperties(new Property("country", "Italy"));
 
+            // Register Configuration
+            DFAgentDescription register = new DFAgentDescription();
             register.setName(agent.getAID());
             register.addServices(service);
 
+            // Register the Agent
             DFService.register(agent, register);
         }
         catch (FIPAException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public static List<String> searchInYellowPages(Agent agent, AgentType type) {
+        List<String> services = new ArrayList<>();
+        try {
+            // Build Template
+            DFAgentDescription template = getRegisterTemplate(type);
+
+            // Search for the Specified Agent Type
+            DFAgentDescription[] results = DFService.search(agent, template, new SearchConstraints());
+
+            // Select the Services
+            services = searchInResults(agent, type, results);
+        }
+        catch (FIPAException exception) {
+            exception.printStackTrace();
+        }
+        return services;
+    }
+
+    public static List<String> searchInResults(Agent agent, AgentType type, DFAgentDescription[] results) {
+        List<String> services = new ArrayList<>();
+        DFAgentDescription register;
+        ServiceDescription service;
+        AID provider;
+        Iterator it;
+        if (results.length > 0) {
+            Utils.log(agent, "Found Agents from Type " + type);
+            for (int i = 0; i < results.length; ++ i) {
+                register = results[i];
+                provider = register.getName();
+
+                // Select the Service we are looking for
+                it = register.getAllServices();
+                while (it.hasNext()) {
+                    service = (ServiceDescription) it.next();
+                    if (service.getType().equals(type.toString())) {
+                        services.add(provider.getLocalName());
+                        System.out.println("Service " + service.getName() + " provided by agent " + provider.getLocalName()); // TODO: remove later
+                    }
+                }
+            }
+        }
+        else {
+            Utils.log(agent, "No Agent from Type " + type + " Found");
+        }
+        return services;
     }
 
     // Sleep

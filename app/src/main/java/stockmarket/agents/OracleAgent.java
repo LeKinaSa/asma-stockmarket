@@ -14,6 +14,9 @@ public class OracleAgent extends Agent {
 	private final OracleNewDayListener oracleNewDayListener = new OracleNewDayListener(this);
 
 	public void setup() {
+		// Register
+		Utils.registerInYellowPages(this, AgentType.ORACLE);
+
 		// Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
 

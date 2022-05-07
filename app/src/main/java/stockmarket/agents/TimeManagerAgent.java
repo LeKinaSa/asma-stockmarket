@@ -17,6 +17,9 @@ public class TimeManagerAgent extends Agent {
     private final DayOverListener dayOverListener = new DayOverListener();
 
     public void setup() {
+        // Register
+        Utils.registerInYellowPages(this, AgentType.TIME);
+
         // Subscriptions
         addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK ,  stockAgents));
         addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ORACLE, oracleAgents));

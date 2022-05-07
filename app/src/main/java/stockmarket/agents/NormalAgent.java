@@ -25,6 +25,9 @@ public class NormalAgent extends Agent {
 	private boolean readyToChangeDay = true;
 
 	public void setup() {
+		// Register
+		Utils.registerInYellowPages(this, AgentType.NORMAL);
+
 		// Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.BANK  ,   bankAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK ,  stockAgents));

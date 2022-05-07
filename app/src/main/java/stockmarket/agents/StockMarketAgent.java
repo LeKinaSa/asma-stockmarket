@@ -16,6 +16,9 @@ public class StockMarketAgent extends Agent {
     private final NewDayListener newDayListener = new NewDayListener();
 
 	public void setup() {
+        // Register
+        Utils.registerInYellowPages(this, AgentType.STOCK);
+
         // Subscriptions
         addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.BANK, bankAgents));
 

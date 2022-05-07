@@ -13,6 +13,9 @@ public class BankAgent extends Agent {
     private final List<String> stockAgents = new ArrayList<>();
 
     public void setup() {
+        // Register
+        Utils.registerInYellowPages(this, AgentType.BANK);
+
         // Subscriptions
         addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK, stockAgents));
 

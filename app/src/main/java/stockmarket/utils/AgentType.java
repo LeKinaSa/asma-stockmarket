@@ -5,9 +5,9 @@ import java.util.List;
 
 public enum AgentType {
     BANK,
-    STOCK_MARKET,
+    STOCK,
     ORACLE,
-    TIME_MANAGER,
+    TIME,
     NORMAL;
 
     public List<String> getOntologies() {
@@ -19,7 +19,7 @@ public enum AgentType {
                     ActionType.TRANSFER_MONEY.toString(),
                     ActionType.MANAGE_MONEY.toString()
                 );
-            case STOCK_MARKET:
+            case STOCK:
                 return Arrays.asList(
                     ActionType.START.toString(),
                     ActionType.CHECK_OWNED_STOCK.toString(),
@@ -31,7 +31,7 @@ public enum AgentType {
                 return Arrays.asList(
                     ActionType.NEW_DAY.toString()
                 );
-            case TIME_MANAGER:
+            case TIME:
                 return Arrays.asList(
                     ActionType.DAY_OVER.toString()
                 );

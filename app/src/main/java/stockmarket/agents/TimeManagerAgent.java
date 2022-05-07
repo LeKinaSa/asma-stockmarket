@@ -1,21 +1,27 @@
 package stockmarket.agents;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
+import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.DayOverListener;
+import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class TimeManagerAgent extends Agent {
-    private final List<String> stockAgents  = Arrays.asList("stockmarket"); // TODO: fix this magic
-    private final List<String> oracleAgents = Arrays.asList("oracle");      // TODO: fix this magic
-    private final List<String> normalAgents = Arrays.asList("a1", "a2");    // TODO: fix this magic
+    private final List<String> stockAgents  = new ArrayList<>();
+    private final List<String> oracleAgents = new ArrayList<>();
+    private final List<String> normalAgents = new ArrayList<>();
     private final DayOverListener dayOverListener = new DayOverListener();
 
     public void setup() {
+        // Subscriptions
+        addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK ,  stockAgents));
+        addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ORACLE, oracleAgents));
+        addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
+
         // Repetitive Behaviours
         addBehaviour(new MessageListenerBehaviour(this, dayOverListener));
         addBehaviour(new CyclicBehaviour() { // New Day Sender

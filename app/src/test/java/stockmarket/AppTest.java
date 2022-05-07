@@ -11,6 +11,8 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.Gson;
 
 class AppTest {
@@ -23,12 +25,24 @@ class AppTest {
         MoneyTransfer transferCopy = gson.fromJson(gson.toJson(transfer), MoneyTransfer.class);
         String transferCopyStr = gson.toJson(transferCopy);
         
-        assertEquals(transferStr, transferCopyStr);
+        assertEquals(transferCopyStr, transferStr);
+    }
+
+    void modifyList(List<String> list) {
+        list.add("Index 1");
+        list.add("Index 2");
+    }
+
+    @Test void listTest() {
+        List<String> list = new ArrayList<>();
+        list.add("Index 0");
+        modifyList(list);
+        assertEquals(3, list.size());
     }
 
     @Test void increaseDayTest() {
         DayOverListener listener = new DayOverListener();
-        assertEquals(listener.nextDay(), 1);
+        assertEquals(1, listener.nextDay());
     }
 
     @Test void actionTest() {

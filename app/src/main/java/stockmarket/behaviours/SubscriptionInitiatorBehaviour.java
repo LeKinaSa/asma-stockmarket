@@ -13,8 +13,9 @@ import stockmarket.utils.Utils;
 
 public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
     private final AgentType type;
+    private final List<String> services;
 
-    public SubscriptionInitiatorBehaviour(Agent agent, AgentType type) {
+    public SubscriptionInitiatorBehaviour(Agent agent, AgentType type, List<String> services) {
         super(
             agent,
             DFService.createSubscriptionMessage(
@@ -24,6 +25,7 @@ public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
             )
         );
         this.type = type;
+        this.services = services;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
         try {
             DFAgentDescription[] results = DFService.decodeNotification(inform.getContent());
 
-            List<String> services = Utils.searchInResults(myAgent, type, results); // TODO: use these services
+            Utils.searchInResults(myAgent, type, services, results); // TODO: use these services
         }
         catch (FIPAException fe) {
             fe.printStackTrace();

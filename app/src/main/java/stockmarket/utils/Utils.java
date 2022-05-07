@@ -28,7 +28,7 @@ public class Utils {
         return template;
     }
 
-    private static ACLMessage createMessage(
+    public static ACLMessage createMessage(
             String protocol, int performative,
             ActionType ontology, String content,
             List<String> receivers, Date date) {
@@ -134,8 +134,7 @@ public class Utils {
         }
     }
 
-    public static List<String> searchInYellowPages(Agent agent, AgentType type) {
-        List<String> services = new ArrayList<>();
+    public static void searchInYellowPages(Agent agent, AgentType type, List<String> services) {
         try {
             // Build Template
             DFAgentDescription template = getRegisterTemplate(type);
@@ -144,16 +143,14 @@ public class Utils {
             DFAgentDescription[] results = DFService.search(agent, template, new SearchConstraints());
 
             // Select the Services
-            services = searchInResults(agent, type, results);
+            searchInResults(agent, type, services, results);
         }
         catch (FIPAException exception) {
             exception.printStackTrace();
         }
-        return services;
     }
 
-    public static List<String> searchInResults(Agent agent, AgentType type, DFAgentDescription[] results) {
-        List<String> services = new ArrayList<>();
+    public static void searchInResults(Agent agent, AgentType type, List<String> services, DFAgentDescription[] results) {
         DFAgentDescription register;
         ServiceDescription service;
         AID provider;
@@ -178,7 +175,6 @@ public class Utils {
         else {
             Utils.log(agent, "No Agent from Type " + type + " Found");
         }
-        return services;
     }
 
     // Sleep

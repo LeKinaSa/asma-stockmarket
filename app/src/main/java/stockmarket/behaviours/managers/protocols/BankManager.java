@@ -43,20 +43,18 @@ public class BankManager extends RequestResponder {
                 }
                 catch (NumberFormatException ignored) {}
 
-                // TODO: lock bank
-                if (!bankAccount.containsKey(agent)) {
-                    bankAccount.put(agent, value);
-
-                    // TODO: unlock bank
-                    return "Started Bank Account with " + value + ".";
+                synchronized (bankAccount) {
+                    if (!bankAccount.containsKey(agent)) {
+                        bankAccount.put(agent, value);
+                        return "Started Bank Account with " + value + ".";
+                    }
                 }
-                // TODO: unlock bank
             }
             case CHECK_BALANCE: {
-                // TODO: lock bank
-                double balance = bankAccount.get(agent);
-                // TODO: unlock bank
-
+                double balance;
+                synchronized (bankAccount) {
+                    balance = bankAccount.get(agent);
+                }
                 return "Balance is at " + balance + ".";
             }
             case TRANSFER_MONEY: {
@@ -68,20 +66,19 @@ public class BankManager extends RequestResponder {
                     return Utils.invalidAction("Invalid Transfer");
                 }
 
-                // TODO: lock bank
-                if (!bankAccount.containsKey(transfer.to)) {
-                    // TODO: unlock bank
-                    return Utils.invalidAction("Unknown Transfer Destination Agent");
-                }
-                if (bankAccount.get(agent) < transfer.amount) {
-                    // TODO: unlock bank
-                    return Utils.invalidAction("Not Enough Money for Transfer");
-                }
-                bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
-                bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
+                double balance;
+                synchronized (bankAccount) {
+                    if (!bankAccount.containsKey(transfer.to)) {
+                        return Utils.invalidAction("Unknown Transfer Destination Agent");
+                    }
+                    if (bankAccount.get(agent) < transfer.amount) {
+                        return Utils.invalidAction("Not Enough Money for Transfer");
+                    }
+                    bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
+                    bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
 
-                double balance = bankAccount.get(agent);
-                // TODO: unlock bank
+                    balance = bankAccount.get(agent);
+                }
 
                 return transfer.amount + " transfered. Balance is now at " + balance + ".";
             }
@@ -98,17 +95,15 @@ public class BankManager extends RequestResponder {
                     return Utils.invalidAction("Only the Stock Market can Perform this Action");
                 }
 
-                // TODO: lock bank
-                if (!bankAccount.containsKey(transfer.to)) {
-                    // TODO: unlock bank
-                    return Utils.invalidAction("Unknown Agent is Managing the Stocks");
+                synchronized (bankAccount) {
+                    if (!bankAccount.containsKey(transfer.to)) {
+                        return Utils.invalidAction("Unknown Agent is Managing the Stocks");
+                    }
+                    if (transfer.amount < 0 && -transfer.amount > bankAccount.get(transfer.to)) {
+                        return Utils.invalidAction("Not Enough Money for These Stocks");
+                    }
+                    bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
                 }
-                if (transfer.amount < 0 && -transfer.amount > bankAccount.get(transfer.to)) {
-                    // TODO: unlock bank
-                    return Utils.invalidAction("Not Enough Money for These Stocks");
-                }
-                bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
-                // TODO: unlock bank
 
                 if (transfer.amount > 0) {
                     return transfer.amount + " added to account " + transfer.to + ".";

@@ -64,20 +64,18 @@ public class StockMarketManager extends RequestResponder {
                     }
                 }
 
-                // TODO: lock stock
-                if (!stockMarketEntries.containsKey(agent)) {
-                    stockMarketEntries.put(agent, entry);
-
-                    // TODO: unlock stock
-                    return "Started Stock Market Entry with " + entry + ".";
+                synchronized (stockMarketEntries) {
+                    if (!stockMarketEntries.containsKey(agent)) {
+                        stockMarketEntries.put(agent, entry);
+                        return "Started Stock Market Entry with " + entry + ".";
+                    }
                 }
-                // TODO: unlock stock
             }
             case CHECK_OWNED_STOCK: {
-                // TODO: lock stock
-                Map<String, Integer> entry = stockMarketEntries.get(agent);
-                // TODO: unlock stock
-
+                Map<String, Integer> entry;
+                synchronized (stockMarketEntries) {
+                    entry = stockMarketEntries.get(agent);
+                }
                 return "Owned Stocks: " + gson.toJson(entry) + ".";
             }
             case CHECK_STOCK_PRICES: {
@@ -93,7 +91,10 @@ public class StockMarketManager extends RequestResponder {
                 }
 
                 // Check Request Validity
-                Map<String, Integer> stockEntry = stockMarketEntries.get(agent);
+                Map<String, Integer> stockEntry;
+                synchronized (stockMarketEntries) {
+                    stockEntry = stockMarketEntries.get(agent);
+                }
                 Integer amount;
                 for (String stock : exchangeEntry.keySet()) {
                     amount = exchangeEntry.get(stock);
@@ -128,14 +129,14 @@ public class StockMarketManager extends RequestResponder {
                 }
 
                 int newAmount, oldAmount;
-                // TODO: lock stock
-                for (String stock : exchangeEntry.keySet()) {
-                    amount = exchangeEntry.get(stock);
-                    oldAmount = (!stockEntry.containsKey(stock)) ? 0 : stockEntry.get(stock); 
-                    newAmount = oldAmount + amount;
-                    stockEntry.put(stock, newAmount);
+                synchronized (stockMarketEntries) {
+                    for (String stock : exchangeEntry.keySet()) {
+                        amount = exchangeEntry.get(stock);
+                        oldAmount = (!stockEntry.containsKey(stock)) ? 0 : stockEntry.get(stock); 
+                        newAmount = oldAmount + amount;
+                        stockEntry.put(stock, newAmount);
+                    }
                 }
-                // TODO: unlock stock
 
                 return "Stock Exchange Completed with Success.";
             }

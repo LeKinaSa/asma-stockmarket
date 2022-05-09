@@ -46,7 +46,7 @@ public class NormalAgent extends Agent {
 		addBehaviour(new CyclicBehaviour() {
 			@Override
 			public void action() {
-				if (readyToChangeDay) {
+				if (readyToChangeDay && timeAgents.size() > 0) {
 					send(Utils.createDayOverMessage(timeAgents, newDayListener.getDay()));
 					readyToChangeDay = false;
 				}

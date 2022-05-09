@@ -1,17 +1,25 @@
 package stockmarket.agents;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import jade.core.Agent;
 import stockmarket.behaviours.MessageListenerBehaviour;
+import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.OracleNewDayListener;
+import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class OracleAgent extends Agent {
+	private final List<String> normalAgents = new ArrayList<>();
 	private final OracleNewDayListener oracleNewDayListener = new OracleNewDayListener(this);
-	private List<String> agents = Arrays.asList("a1", "a2"); // TODO: fix this magic
 
 	public void setup() {
+		// Register
+		Utils.registerInYellowPages(this, AgentType.ORACLE);
+
+		// Subscriptions
+		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
+
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour(this, oracleNewDayListener));
 
@@ -19,6 +27,6 @@ public class OracleAgent extends Agent {
 	}
 
 	public List<String> getAgents() {
-		return agents;
+		return normalAgents;
 	}
 }

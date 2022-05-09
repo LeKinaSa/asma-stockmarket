@@ -7,7 +7,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.OracleAgent;
 import stockmarket.behaviours.managers.protocols.StockMarketManager;
-import stockmarket.behaviours.managers.protocols.StockMarketManager.StockMarketPriceEntry;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
@@ -15,7 +14,7 @@ public class OracleNewDayListener implements MessageListener {
     private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     
     private final OracleAgent oracle;
-    private final Map<Integer, StockMarketPriceEntry> stockPrices;
+    private final Map<String, Map<String, Double>> stockPrices;
 
     public OracleNewDayListener(OracleAgent oracle) {
         this.oracle = oracle;

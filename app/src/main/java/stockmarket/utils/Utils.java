@@ -118,7 +118,6 @@ public class Utils {
             for (String ontology : type.getOntologies()) {
                 service.addOntologies(ontology);
             }
-            // TODO: Properties: service.addProperties(new Property("country", "Italy"));
 
             // Register Configuration
             DFAgentDescription register = new DFAgentDescription();

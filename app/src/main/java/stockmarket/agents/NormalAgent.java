@@ -7,7 +7,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
-import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
 import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Action;
@@ -20,8 +20,8 @@ public class NormalAgent extends Agent {
 	private final List<String>  stockAgents = new ArrayList<>();
 	private final List<String>   timeAgents = new ArrayList<>();
 	private final List<String> normalAgents = new ArrayList<>();
-	private NewDayListener newDayListener = new NewDayListener();
-	private OracleTipListener oracleTipListener = new OracleTipListener();
+	private final OracleTipListener oracleTipListener = new OracleTipListener();
+	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener);
 	private boolean readyToChangeDay = true;
 
 	public void setup() {

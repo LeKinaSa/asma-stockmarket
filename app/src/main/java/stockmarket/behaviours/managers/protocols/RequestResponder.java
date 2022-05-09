@@ -14,7 +14,7 @@ public abstract class RequestResponder {
         return template;
     }
 
-    public abstract boolean checkAction(ACLMessage request); // TODO: throw NotUnderstoodException ???
+    public abstract boolean checkAction(ACLMessage request);
 
     public abstract String performAction(ACLMessage request);
 }

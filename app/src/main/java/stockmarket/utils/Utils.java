@@ -1,6 +1,5 @@
 package stockmarket.utils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -134,23 +133,7 @@ public class Utils {
         }
     }
 
-    public static void searchInYellowPages(Agent agent, AgentType type, List<String> services) {
-        try {
-            // Build Template
-            DFAgentDescription template = getRegisterTemplate(type);
-
-            // Search for the Specified Agent Type
-            DFAgentDescription[] results = DFService.search(agent, template, new SearchConstraints());
-
-            // Select the Services
-            searchInResults(agent, type, services, results);
-        }
-        catch (FIPAException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public static void searchInResults(Agent agent, AgentType type, List<String> services, DFAgentDescription[] results) {
+    public static void searchInYellowPageResults(Agent agent, AgentType type, List<String> services, DFAgentDescription[] results) {
         DFAgentDescription register;
         ServiceDescription service;
         AID provider;

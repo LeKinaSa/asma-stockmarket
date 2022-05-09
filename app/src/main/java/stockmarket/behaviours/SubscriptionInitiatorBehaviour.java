@@ -35,7 +35,7 @@ public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
         try {
             DFAgentDescription[] results = DFService.decodeNotification(inform.getContent());
 
-            Utils.searchInResults(myAgent, type, services, results); // TODO: use these services
+            Utils.searchInYellowPageResults(myAgent, type, services, results);
         }
         catch (FIPAException fe) {
             fe.printStackTrace();

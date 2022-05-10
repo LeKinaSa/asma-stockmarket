@@ -1,7 +1,7 @@
 package stockmarket.agents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
@@ -16,10 +16,10 @@ import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class NormalAgent extends Agent {
-	private final List<String>   bankAgents = new ArrayList<>();
-	private final List<String>  stockAgents = new ArrayList<>();
-	private final List<String>   timeAgents = new ArrayList<>();
-	private final List<String> normalAgents = new ArrayList<>();
+	private final Set<String>   bankAgents = new HashSet<>();
+	private final Set<String>  stockAgents = new HashSet<>();
+	private final Set<String>   timeAgents = new HashSet<>();
+	private final Set<String> normalAgents = new HashSet<>();
 	private final OracleTipListener oracleTipListener = new OracleTipListener();
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener);
 	private boolean readyToChangeDay = true;
@@ -56,15 +56,15 @@ public class NormalAgent extends Agent {
 		Utils.log(this, "Ready");
 	}
 
-	public List<String> getBankAgents() {
+	public Set<String> getBankAgents() {
 		return bankAgents;
 	}
 
-	public List<String> getStockAgents() {
+	public Set<String> getStockAgents() {
 		return stockAgents;
 	}
 
-	public List<String> getTimeAgents() {
+	public Set<String> getTimeAgents() {
 		return timeAgents;
 	}
 }

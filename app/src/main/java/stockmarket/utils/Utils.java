@@ -2,7 +2,7 @@ package stockmarket.utils;
 
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -29,7 +29,7 @@ public class Utils {
     public static ACLMessage createMessage(
             String protocol, int performative,
             ActionType ontology, String content,
-            List<String> receivers, Date date) {
+            Set<String> receivers, Date date) {
 
         ACLMessage message = new ACLMessage(performative);
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
@@ -55,7 +55,7 @@ public class Utils {
         return message;
     }
 
-    public static ACLMessage createNewDayMessage(List<String> receivers, Integer day) {
+    public static ACLMessage createNewDayMessage(Set<String> receivers, Integer day) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.NEW_DAY, day.toString(),
@@ -63,7 +63,7 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createOracleTipMessage(List<String> receivers, String tip) {
+    public static ACLMessage createOracleTipMessage(Set<String> receivers, String tip) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.ORACLE_TIP, tip,
@@ -71,7 +71,7 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createDayOverMessage(List<String> receivers, Integer day) {
+    public static ACLMessage createDayOverMessage(Set<String> receivers, Integer day) {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.DAY_OVER, day.toString(),
@@ -131,7 +131,7 @@ public class Utils {
         }
     }
 
-    public static void searchInYellowPageResults(Agent agent, AgentType type, List<String> services, DFAgentDescription[] results) {
+    public static void searchInYellowPageResults(Agent agent, AgentType type, Set<String> services, DFAgentDescription[] results) {
         DFAgentDescription register;
         ServiceDescription service;
         AID provider;

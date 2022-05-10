@@ -1,7 +1,7 @@
 package stockmarket.agents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import jade.core.Agent;
 import stockmarket.behaviours.RequestResponderBehaviour;
 import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
@@ -10,7 +10,7 @@ import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class BankAgent extends Agent {
-    private final List<String> stockAgents = new ArrayList<>();
+    private final Set<String> stockAgents = new HashSet<>();
 
     public void setup() {
         // Register

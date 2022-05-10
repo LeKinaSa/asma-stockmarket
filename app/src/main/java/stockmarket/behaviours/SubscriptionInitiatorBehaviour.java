@@ -1,6 +1,6 @@
 package stockmarket.behaviours;
 
-import java.util.List;
+import java.util.Set;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
@@ -13,9 +13,9 @@ import stockmarket.utils.Utils;
 
 public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
     private final AgentType type;
-    private final List<String> services;
+    private final Set<String> services;
 
-    public SubscriptionInitiatorBehaviour(Agent agent, AgentType type, List<String> services) {
+    public SubscriptionInitiatorBehaviour(Agent agent, AgentType type, Set<String> services) {
         super(
             agent,
             DFService.createSubscriptionMessage(

@@ -31,7 +31,7 @@ public class OracleNewDayListener extends NewDayListener {
         Random random = new Random();
         int randomIndex;
 
-        List<String> agents = oracle.getAgents();
+        List<String> agents = new ArrayList<>(oracle.getAgents());
         Set<String> receivers = new HashSet<>();
         String agent;
         while (receivers.size() < AGENTS_TO_TIPS) {
@@ -54,6 +54,6 @@ public class OracleNewDayListener extends NewDayListener {
             tips.put(String.valueOf(dayOfTheTip), dailyTips);
         }
 
-        return Utils.createOracleTipMessage(new ArrayList<>(receivers), gson.toJson(tips));
+        return Utils.createOracleTipMessage(receivers, gson.toJson(tips));
     }
 }

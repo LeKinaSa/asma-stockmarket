@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import jade.core.Agent;
@@ -155,7 +155,7 @@ public class StockMarketManager extends RequestResponder {
     }
 
     public String waitResponse(double total) {
-        List<String> receivers = stockMarketAgent.getBankAgents();
+        Set<String> receivers = stockMarketAgent.getBankAgents();
         Action action = new Action(ActionType.MANAGE_MONEY, String.valueOf(total));
         RequestInitiator initiator = new RequestInitiator(receivers, action);
         stockMarketAgent.addBehaviour(new RequestInitiatorBehaviour(stockMarketAgent, initiator));

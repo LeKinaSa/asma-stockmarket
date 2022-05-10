@@ -31,6 +31,7 @@ public class StockMarketAgent extends Agent {
 	}
 
     public void takedown() {
+		// Unregister
         Utils.unregisterFromYellowPages(this);
     }
 

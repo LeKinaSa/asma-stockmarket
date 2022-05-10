@@ -20,6 +20,7 @@ public class NormalAgent extends Agent {
 	private final Set<String>  stockAgents = new HashSet<>();
 	private final Set<String>   timeAgents = new HashSet<>();
 	private final Set<String> normalAgents = new HashSet<>();
+	private final Set<String>  orderAgents = new HashSet<>();
 	private final OracleTipListener oracleTipListener = new OracleTipListener();
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener);
 	private boolean readyToChangeDay = true;
@@ -33,6 +34,7 @@ public class NormalAgent extends Agent {
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK ,  stockAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.TIME  ,   timeAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
+		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ORDER,   orderAgents));
 
 		// Initialize Agent, Bank Account and Owned Stocks
 		Action startBankAccount = new Action(ActionType.START,  "0");
@@ -57,6 +59,7 @@ public class NormalAgent extends Agent {
 	}
 
     public void takedown() {
+		// Unregister
         Utils.unregisterFromYellowPages(this);
     }
 

@@ -21,6 +21,8 @@ public class NormalAgentNewDayListener extends NewDayListener {
         super.actionOnReceive(message);
         String dayString = String.valueOf(day);
 
+        // collect money from stocks that "end" that day
+
         if (loans.containsKey(dayString)) {
             Map<String, Double> dailyLoans = loans.get(dayString);
             if (dailyLoans.size() > 0) {
@@ -29,8 +31,20 @@ public class NormalAgentNewDayListener extends NewDayListener {
             loans.remove(dayString);
         }
 
-        Utils.sleep(2); // Wait for Oracle Tips
+        Utils.sleep(2); // Wait for Oracle Tips and Money Transfers
+
+        // check bank balance (check that we have enough money to pay loans)
+        // buy stocks (based on tips)
+            // loan
+        // day over
 
         // TODO: daily agent behaviour
     }
+
+    // LOAN
+    /*
+        - if we want loan, we auto-deny all loans requests
+        loan % needs to be smaller than stock gains
+        we accept loan when loan % > stock gain %
+    */
 }

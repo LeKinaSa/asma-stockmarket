@@ -47,6 +47,7 @@ public class TimeManagerAgent extends Agent {
     }
 
     public void takedown() {
+		// Unregister
         Utils.unregisterFromYellowPages(this);
     }
 

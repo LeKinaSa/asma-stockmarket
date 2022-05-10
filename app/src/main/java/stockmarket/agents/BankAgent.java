@@ -30,6 +30,7 @@ public class BankAgent extends Agent {
     }
 
     public void takedown() {
+		// Unregister
         Utils.unregisterFromYellowPages(this);
     }
 }

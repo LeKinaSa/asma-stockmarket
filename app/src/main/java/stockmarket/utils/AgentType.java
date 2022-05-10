@@ -8,6 +8,7 @@ public enum AgentType {
     STOCK,
     ORACLE,
     TIME,
+    ORDER,
     NORMAL;
 
     public List<String> getOntologies() {

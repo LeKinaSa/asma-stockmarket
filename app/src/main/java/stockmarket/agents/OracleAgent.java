@@ -27,6 +27,7 @@ public class OracleAgent extends Agent {
 	}
 
     public void takedown() {
+		// Unregister
         Utils.unregisterFromYellowPages(this);
     }
 

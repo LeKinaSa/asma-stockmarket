@@ -30,6 +30,10 @@ public class StockMarketAgent extends Agent {
 		Utils.log(this, "Ready");
 	}
 
+    public void takedown() {
+        Utils.unregisterFromYellowPages(this);
+    }
+
     public Set<String> getBankAgents() {
         return bankAgents;
     }

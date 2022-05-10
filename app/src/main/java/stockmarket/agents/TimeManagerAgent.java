@@ -46,6 +46,10 @@ public class TimeManagerAgent extends Agent {
         Utils.log(this, "Ready");
     }
 
+    public void takedown() {
+        Utils.unregisterFromYellowPages(this);
+    }
+
     private int getNAgents() {
         return normalAgents.size();
     }

@@ -1,13 +1,13 @@
 package stockmarket.agents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
-import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
 import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Action;
@@ -16,12 +16,12 @@ import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class NormalAgent extends Agent {
-	private final List<String>   bankAgents = new ArrayList<>();
-	private final List<String>  stockAgents = new ArrayList<>();
-	private final List<String>   timeAgents = new ArrayList<>();
-	private final List<String> normalAgents = new ArrayList<>();
-	private NewDayListener newDayListener = new NewDayListener();
-	private OracleTipListener oracleTipListener = new OracleTipListener();
+	private final Set<String>   bankAgents = new HashSet<>();
+	private final Set<String>  stockAgents = new HashSet<>();
+	private final Set<String>   timeAgents = new HashSet<>();
+	private final Set<String> normalAgents = new HashSet<>();
+	private final OracleTipListener oracleTipListener = new OracleTipListener();
+	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener);
 	private boolean readyToChangeDay = true;
 
 	public void setup() {
@@ -46,7 +46,7 @@ public class NormalAgent extends Agent {
 		addBehaviour(new CyclicBehaviour() {
 			@Override
 			public void action() {
-				if (readyToChangeDay) {
+				if (readyToChangeDay && timeAgents.size() > 0) {
 					send(Utils.createDayOverMessage(timeAgents, newDayListener.getDay()));
 					readyToChangeDay = false;
 				}
@@ -56,15 +56,15 @@ public class NormalAgent extends Agent {
 		Utils.log(this, "Ready");
 	}
 
-	public List<String> getBankAgents() {
+	public Set<String> getBankAgents() {
 		return bankAgents;
 	}
 
-	public List<String> getStockAgents() {
+	public Set<String> getStockAgents() {
 		return stockAgents;
 	}
 
-	public List<String> getTimeAgents() {
+	public Set<String> getTimeAgents() {
 		return timeAgents;
 	}
 }

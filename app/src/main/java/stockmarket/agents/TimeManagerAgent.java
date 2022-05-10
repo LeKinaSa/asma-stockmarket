@@ -1,7 +1,7 @@
 package stockmarket.agents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
@@ -11,9 +11,9 @@ import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class TimeManagerAgent extends Agent {
-    private final List<String> stockAgents  = new ArrayList<>();
-    private final List<String> oracleAgents = new ArrayList<>();
-    private final List<String> normalAgents = new ArrayList<>();
+    private final Set<String> stockAgents  = new HashSet<>();
+    private final Set<String> oracleAgents = new HashSet<>();
+    private final Set<String> normalAgents = new HashSet<>();
     private final DayOverListener dayOverListener = new DayOverListener();
 
     public void setup() {
@@ -50,8 +50,8 @@ public class TimeManagerAgent extends Agent {
         return normalAgents.size();
     }
 
-    private List<String> getReceivers() {
-        List<String> receivers = new ArrayList<>();
+    private Set<String> getReceivers() {
+        Set<String> receivers = new HashSet<>();
         receivers.addAll(normalAgents);
         receivers.addAll(stockAgents);
         receivers.addAll(oracleAgents);

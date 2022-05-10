@@ -1,17 +1,17 @@
 package stockmarket.behaviours.managers.protocols;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import stockmarket.utils.Action;
 import stockmarket.utils.Utils;
 
 public class RequestInitiator {
-	private final List<String> receivers;
+	private final Set<String> receivers;
 	private final Action action;
 
-	public RequestInitiator(List<String> receivers, Action action) {
+	public RequestInitiator(Set<String> receivers, Action action) {
 		this.receivers = receivers;
 		this.action = action;
 	}

@@ -1,7 +1,7 @@
 package stockmarket.agents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import jade.core.Agent;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestResponderBehaviour;
@@ -12,7 +12,7 @@ import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class StockMarketAgent extends Agent {
-    private final List<String> bankAgents = new ArrayList<>();
+    private final Set<String> bankAgents = new HashSet<>();
     private final NewDayListener newDayListener = new NewDayListener();
 
 	public void setup() {
@@ -30,7 +30,7 @@ public class StockMarketAgent extends Agent {
 		Utils.log(this, "Ready");
 	}
 
-    public List<String> getBankAgents() {
+    public Set<String> getBankAgents() {
         return bankAgents;
     }
 }

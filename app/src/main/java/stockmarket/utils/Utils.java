@@ -7,7 +7,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
-import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
@@ -32,7 +31,6 @@ public class Utils {
             Set<String> receivers, Date date) {
 
         ACLMessage message = new ACLMessage(performative);
-        message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         if (protocol != null) {
             message.setProtocol(protocol);
         }
@@ -113,7 +111,6 @@ public class Utils {
             ServiceDescription service = new ServiceDescription();
             service.setName(agent.getLocalName());
             service.setType(type.toString());
-            service.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
             for (String ontology : type.getOntologies()) {
                 service.addOntologies(ontology);
             }
@@ -121,14 +118,27 @@ public class Utils {
             // Register Configuration
             DFAgentDescription register = new DFAgentDescription();
             register.setName(agent.getAID());
-            register.addServices(service);
 
-            // Register the Agent
+            // Unregister if the Agent is Already Registered
+            DFAgentDescription[] results = DFService.search(agent, register);
+            if (results.length > 0) {
+                DFService.deregister(agent);
+            }
+
+            // Register the Agent with the Service
+            register.addServices(service);
             DFService.register(agent, register);
         }
         catch (FIPAException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public static void unregisterFromYellowPages(Agent agent) {
+        try {
+            DFService.deregister(agent);
+        }
+        catch (FIPAException ignored) {}
     }
 
     public static void searchInYellowPageResults(Agent agent, AgentType type, Set<String> services, DFAgentDescription[] results) {

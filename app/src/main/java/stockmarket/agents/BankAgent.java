@@ -28,4 +28,8 @@ public class BankAgent extends Agent {
     public boolean knowsStockAgent(String agent) {
         return stockAgents.contains(agent);
     }
+
+    public void takedown() {
+        Utils.unregisterFromYellowPages(this);
+    }
 }

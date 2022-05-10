@@ -26,6 +26,10 @@ public class OracleAgent extends Agent {
 		Utils.log(this, "Ready");
 	}
 
+    public void takedown() {
+        Utils.unregisterFromYellowPages(this);
+    }
+
 	public Set<String> getAgents() {
 		return normalAgents;
 	}

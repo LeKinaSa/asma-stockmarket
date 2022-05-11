@@ -3,7 +3,7 @@ package stockmarket.behaviours.managers.protocols.initiators;
 import java.util.Set;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.ContractNetInitiatorBehaviour;
+import stockmarket.behaviours.protocols.ContractNetInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;

@@ -77,6 +77,22 @@ public class Utils {
         );
     }
 
+    public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, double interest) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.LOAN_REQUEST, String.valueOf(interest),
+            receivers, null
+        );
+    }
+
+    public static ACLMessage createLoanPermissionMessage(Set<String> receivers, String chosenAgent) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.LOAN_REQUEST, chosenAgent,
+            receivers, null
+        );
+    }
+
     public static ACLMessage createReply(ACLMessage msg, int performative, String content) {
         ACLMessage reply = msg.createReply();
         reply.setPerformative(performative);

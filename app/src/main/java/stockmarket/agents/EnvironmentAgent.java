@@ -7,11 +7,11 @@ import jade.core.Agent;
 import stockmarket.behaviours.EnvironmentBehaviour;
 import stockmarket.behaviours.LoanPermissionBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
-import stockmarket.behaviours.RequestResponderBehaviour;
-import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.DayOverListener;
 import stockmarket.behaviours.managers.messages.LoanPermissionListener;
 import stockmarket.behaviours.managers.protocols.responders.ResponderManager;
+import stockmarket.behaviours.protocols.RequestResponderBehaviour;
+import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 

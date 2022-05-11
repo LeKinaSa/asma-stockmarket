@@ -1,7 +1,9 @@
 package stockmarket.behaviours;
 
 import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
+import stockmarket.utils.Utils;
 
 public class LoanPermissionBehaviour extends CyclicBehaviour {
     private final EnvironmentAgent agent;
@@ -20,6 +22,7 @@ public class LoanPermissionBehaviour extends CyclicBehaviour {
     }
 
     public void sendLoanPermissionMessage(String betterOffer) {
-        // TODO
+        ACLMessage message = Utils.createLoanPermissionMessage(agent.getAgents(), betterOffer);
+        agent.send(message);
     }
 }

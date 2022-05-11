@@ -1,4 +1,4 @@
-package stockmarket.behaviours;
+package stockmarket.behaviours.protocols;
 
 import java.util.Vector;
 import jade.core.AID;

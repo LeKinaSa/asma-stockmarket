@@ -8,44 +8,84 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import stockmarket.agents.StockMarketAgent;
-import stockmarket.behaviours.RequestInitiatorBehaviour;
-import stockmarket.behaviours.managers.messages.NewDayListener;
-import stockmarket.behaviours.managers.protocols.initiators.RequestInitiator;
+import stockmarket.agents.EnvironmentAgent;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
+import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
-public class StockMarketManager extends RequestResponder {
+public class ResponderManager extends RequestResponder {
     private static final Gson gson = new Gson();
     private static final File file = new File("data/formatted_stock_prices.json");
-    private final Map<String, Map<String, Integer>> stockMarketEntries = new HashMap<>();
     private final Map<String, Map<String, Double >> stockPrices;
-    
-    private final StockMarketAgent    stockMarketAgent;
-    private final NewDayListener newDayListener;
+    private final Map<String, Map<String, Integer>> stockMarketEntries = new HashMap<>();
+    private final Map<String, Double> bankAccount = new HashMap<>();
+    private final EnvironmentAgent agent;
 
-    public StockMarketManager(StockMarketAgent stockMarketAgent, NewDayListener newDayListener) {
-        this.stockMarketAgent = stockMarketAgent;
-        this.newDayListener = newDayListener;
-        this.stockPrices = loadStockPrices(stockMarketAgent);
+    public ResponderManager(EnvironmentAgent agent) {
+        this.agent = agent;
+        this.stockPrices = loadStockPrices();
     }
 
     @Override
     public String performAction(ACLMessage request) {
         Action action = Action.toAction(request.getOntology(), request.getContent());
-        String agent = request.getSender().getLocalName();
+        String agentName = request.getSender().getLocalName();
         if (action == null) {
             return Utils.invalidAction("");
         }
 
         ActionType actionType = action.getType();
         switch (actionType) {
+            case START_BANK: {
+                double value = 0D;
+                try {
+                    value = Double.parseDouble(action.getInformation());
+                }
+                catch (NumberFormatException ignored) {}
+
+                synchronized (bankAccount) {
+                    if (!bankAccount.containsKey(agentName)) {
+                        bankAccount.put(agentName, value);
+                        return "Started Bank Account with " + value + ".";
+                    }
+                }
+            }
+            case CHECK_BALANCE: {
+                double balance;
+                synchronized (bankAccount) {
+                    balance = bankAccount.get(agentName);
+                }
+                return "Balance is at " + balance + ".";
+            }
+            case TRANSFER_MONEY: {
+                MoneyTransfer transfer = null;
+                try {
+                    transfer = gson.fromJson(action.getInformation(), MoneyTransfer.class);
+                }
+                catch (JsonSyntaxException e) {
+                    return Utils.invalidAction("Invalid Transfer");
+                }
+
+                double balance;
+                synchronized (bankAccount) {
+                    if (!bankAccount.containsKey(transfer.getTo())) {
+                        return Utils.invalidAction("Unknown Transfer Destination Agent");
+                    }
+                    if (bankAccount.get(agentName) < transfer.getAmount()) {
+                        return Utils.invalidAction("Not Enough Money for Transfer");
+                    }
+                    bankAccount.put(agentName, bankAccount.get(agentName)       - transfer.getAmount());
+                    bankAccount.put(agentName, bankAccount.get(transfer.getTo()) + transfer.getAmount());
+
+                    balance = bankAccount.get(agentName);
+                }
+
+                return transfer.getAmount() + " transfered. Balance is now at " + balance + ".";
+            }
             case START_STOCK: {
                 Map<String, Integer> entry = new HashMap<>();
                 try {
@@ -60,8 +100,8 @@ public class StockMarketManager extends RequestResponder {
                 }
 
                 synchronized (stockMarketEntries) {
-                    if (!stockMarketEntries.containsKey(agent)) {
-                        stockMarketEntries.put(agent, entry);
+                    if (!stockMarketEntries.containsKey(agentName)) {
+                        stockMarketEntries.put(agentName, entry);
                         return "Started Stock Market Entry with " + entry + ".";
                     }
                 }
@@ -69,12 +109,12 @@ public class StockMarketManager extends RequestResponder {
             case CHECK_OWNED_STOCK: {
                 Map<String, Integer> entry;
                 synchronized (stockMarketEntries) {
-                    entry = stockMarketEntries.get(agent);
+                    entry = stockMarketEntries.get(agentName);
                 }
                 return "Owned Stocks: " + gson.toJson(entry) + ".";
             }
             case CHECK_STOCK_PRICES: {
-                return "Current Stock Prices (day " + newDayListener.getDay() + "): " + gson.toJson(getDailyStocks()) + ".";
+                return "Current Stock Prices (day " + agent.getDay() + "): " + gson.toJson(getDailyStocks()) + ".";
             }
             case BUY_STOCK: {
                 Map<String, Integer> exchangeEntry;
@@ -88,7 +128,7 @@ public class StockMarketManager extends RequestResponder {
                 // Check Request Validity
                 Map<String, Integer> stockEntry;
                 synchronized (stockMarketEntries) {
-                    stockEntry = stockMarketEntries.get(agent);
+                    stockEntry = stockMarketEntries.get(agentName);
                 }
                 Integer amount;
                 for (String stock : exchangeEntry.keySet()) {
@@ -115,12 +155,15 @@ public class StockMarketManager extends RequestResponder {
                     total += amount * getDailyPrice(stock);
                 }
 
-                String bankMessage = waitResponse(total);
-                if (bankMessage == null) {
-                    return Utils.invalidAction("Invalid Answer from the Bank");
-                }
-                if (bankMessage.startsWith("Invalid Action")) {
-                    return Utils.invalidAction("Bank Denied with Error \"" + bankMessage + "\"");
+                MoneyTransfer transfer = new MoneyTransfer(agentName, total);
+                synchronized (bankAccount) {
+                    if (!bankAccount.containsKey(transfer.getTo())) {
+                        return Utils.invalidAction("Unknown Agent is Managing the Stocks");
+                    }
+                    if (transfer.getAmount() < 0 && -transfer.getAmount() > bankAccount.get(transfer.getTo())) {
+                        return Utils.invalidAction("Not Enough Money for These Stocks");
+                    }
+                    bankAccount.put(agentName, bankAccount.get(transfer.getTo()) + transfer.getAmount());
                 }
 
                 int newAmount, oldAmount;
@@ -141,23 +184,7 @@ public class StockMarketManager extends RequestResponder {
         }
     }
 
-    public Map<String, Double> getDailyStocks() {
-        return stockPrices.get(String.valueOf(newDayListener.getDay()));
-    }
-
-    public double getDailyPrice(String stock) {
-        return getDailyStocks().get(stock);
-    }
-
-    public String waitResponse(double total) {
-        Set<String> receivers = stockMarketAgent.getBankAgents();
-        Action action = new Action(ActionType.MANAGE_MONEY, String.valueOf(total));
-        RequestInitiator initiator = new RequestInitiator(receivers, action);
-        stockMarketAgent.addBehaviour(new RequestInitiatorBehaviour(stockMarketAgent, initiator));
-        return null; // TODO: obtain answer somehow
-    }
-
-    public static Map<String, Map<String, Double>> loadStockPrices(Agent agent) {
+    public Map<String, Map<String, Double>> loadStockPrices() {
         Map<String, Map<String, Double >> stocks = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             stocks = gson.fromJson(reader, Map.class);
@@ -166,5 +193,17 @@ public class StockMarketManager extends RequestResponder {
             Utils.log(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
         }
         return stocks;
+    }
+
+    public Map<String, Map<String, Double>> getStockPrices() {
+        return stockPrices;
+    }
+    
+    public Map<String, Double> getDailyStocks() {
+        return stockPrices.get(String.valueOf(agent.getDay()));
+    }
+
+    public double getDailyPrice(String stock) {
+        return getDailyStocks().get(stock);
     }
 }

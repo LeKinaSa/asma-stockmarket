@@ -38,4 +38,8 @@ public class DayOverListener implements MessageListener {
         receivedMessages = 0;
         return ++ day;
     }
+
+    public int getDay() {
+        return day;
+    }
 }

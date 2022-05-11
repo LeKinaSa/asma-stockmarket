@@ -40,8 +40,8 @@ public class NormalAgent extends Agent {
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
 
 		// Initialize Agent, Bank Account and Owned Stocks
-		Action startBankAccount = new Action(ActionType.START,  "0");
-		Action startOwnStocks   = new Action(ActionType.START, "{}");
+		Action startBankAccount = new Action(ActionType.START_BANK,  "0");
+		Action startOwnStocks   = new Action(ActionType.START_STOCK, "{}");
 		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator( getBankAgents(), startBankAccount)));
 		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator(getStockAgents(), startOwnStocks  )));
 

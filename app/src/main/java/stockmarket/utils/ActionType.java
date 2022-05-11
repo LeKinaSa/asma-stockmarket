@@ -1,9 +1,10 @@
 package stockmarket.utils;
 
 public enum ActionType {
-    START             , // Start a Bank Account or an Entry at the Stock Market
+    START_BANK        , // Start a Bank Account
     CHECK_BALANCE     , // Check the Balance for the Agent's Bank Account
     TRANSFER_MONEY    , // Transfer Money to Another Agent's Account
+    START_STOCK       , // Start an Entry at the Stock Market
     CHECK_OWNED_STOCK , // Check the Agent's Owned Stock
     CHECK_STOCK_PRICES, // Check the Current Stock Prices
     BUY_STOCK         , // Buy / Sell Stock

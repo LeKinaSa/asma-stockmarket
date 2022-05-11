@@ -182,10 +182,10 @@ public class Utils {
     }
 
     public static void log(AID agent, String message) {
-        System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        //System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
 
     public static void logProvided(ServiceDescription service, AID provider) {
-        System.out.println("Service " + service.getName() + " provided by agent " + provider.getLocalName());
+        //System.out.println("Service " + service.getName() + " provided by agent " + provider.getLocalName());
     }
 }

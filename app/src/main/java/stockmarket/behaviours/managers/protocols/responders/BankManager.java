@@ -30,7 +30,7 @@ public class BankManager extends RequestResponder {
 
         ActionType actionType = action.getType();
         switch (actionType) {
-            case START: {
+            case START_BANK: {
                 double value = 0D;
                 try {
                     value = Double.parseDouble(action.getInformation());

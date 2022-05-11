@@ -81,7 +81,7 @@ public class Utils {
     public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, double interest) {
         return createMessage(
             null, ACLMessage.INFORM,
-            ActionType.LOAN_REQUEST, String.valueOf(interest),
+            ActionType.ASK_PERMISSION, String.valueOf(interest),
             receivers, null
         );
     }
@@ -89,7 +89,7 @@ public class Utils {
     public static ACLMessage createLoanPermissionMessage(Set<String> receivers, String chosenAgent) {
         return createMessage(
             null, ACLMessage.INFORM,
-            ActionType.LOAN_REQUEST, chosenAgent,
+            ActionType.GIVE_PERMISSION, chosenAgent,
             receivers, null
         );
     }

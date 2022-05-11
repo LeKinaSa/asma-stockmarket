@@ -61,6 +61,10 @@ public class NormalAgent extends Agent {
 		return normalAgents;
 	}
 
+	public int getDay() {
+		return newDayListener.getDay();
+	}
+
 	public void setInvestments(String companyToInvest, double interest, int returnInvestmentDay) {
 		this.companyToInvest = companyToInvest;
 		this.interest = interest;

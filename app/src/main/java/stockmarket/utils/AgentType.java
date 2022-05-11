@@ -19,13 +19,13 @@ public enum AgentType {
                     ActionType.CHECK_STOCK_PRICES.toString(),
                     ActionType.BUY_STOCK.toString(),
                     ActionType.DAY_OVER.toString(),
-                    ActionType.LOAN_REQUEST.toString()
+                    ActionType.ASK_PERMISSION.toString()
                 );
             case NORMAL:
                 return Arrays.asList(
                     ActionType.NEW_DAY.toString(),
                     ActionType.ORACLE_TIP.toString(),
-                    ActionType.LOAN_REQUEST.toString(),
+                    ActionType.GIVE_PERMISSION.toString(),
                     ActionType.LOAN_MONEY.toString()
                 );
             default:

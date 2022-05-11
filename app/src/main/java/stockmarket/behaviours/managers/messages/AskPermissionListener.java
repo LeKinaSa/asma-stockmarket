@@ -7,8 +7,8 @@ import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
-public class LoanPermissionListener implements MessageListener {
-    private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.LOAN_REQUEST);
+public class AskPermissionListener implements MessageListener {
+    private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ASK_PERMISSION);
     private Map<String, Double> receivedOffers = new HashMap<>();
 
     @Override

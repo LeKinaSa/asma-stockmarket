@@ -8,7 +8,7 @@ import stockmarket.behaviours.managers.protocols.initiators.RequestInitiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
-    private final RequestInitiator initiator;
+    private final RequestInitiator initiator; // TODO: either use or remove
     private int nResponders;
 
     public RequestInitiatorBehaviour(Agent agent, RequestInitiator initiator) {
@@ -52,7 +52,6 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
             if (notification instanceof ACLMessage) {
                 ACLMessage answer = (ACLMessage) notification;
                 Utils.log(answer.getSender(), answer.getContent());
-                initiator.handleResult(answer);
             }
         }
     }

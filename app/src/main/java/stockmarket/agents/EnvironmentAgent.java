@@ -8,7 +8,7 @@ import stockmarket.behaviours.EnvironmentBehaviour;
 import stockmarket.behaviours.LoanPermissionBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.managers.messages.DayOverListener;
-import stockmarket.behaviours.managers.messages.LoanPermissionListener;
+import stockmarket.behaviours.managers.messages.AskPermissionListener;
 import stockmarket.behaviours.managers.protocols.responders.ResponderManager;
 import stockmarket.behaviours.protocols.RequestResponderBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
@@ -20,7 +20,7 @@ public class EnvironmentAgent extends Agent {
     private final ResponderManager manager = new ResponderManager(this);
     private final DayOverListener dayListener = new DayOverListener();
     private final EnvironmentBehaviour newDayBehaviour = new EnvironmentBehaviour(this);
-    private final LoanPermissionListener loanListener = new LoanPermissionListener();
+    private final AskPermissionListener loanListener = new AskPermissionListener();
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
 
     public void setup() {
@@ -67,7 +67,7 @@ public class EnvironmentAgent extends Agent {
         return dayListener.getDay();
     }
 
-    public LoanPermissionListener getLoanListener() {
+    public AskPermissionListener getLoanListener() {
         return loanListener;
     }
 

@@ -74,4 +74,8 @@ public class NormalAgent extends Agent {
 	public Set<String> getTimeAgents() {
 		return timeAgents;
 	}
+
+	public Set<String> getOrderAgents() {
+		return orderAgents;
+	}
 }

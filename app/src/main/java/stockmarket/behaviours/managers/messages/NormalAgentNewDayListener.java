@@ -7,6 +7,7 @@ import java.util.Map;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
+import stockmarket.behaviours.managers.protocols.LoanRequestInitiator;
 import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
@@ -39,7 +40,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         super.actionOnReceive(message);
 
         // Check which Stocks we possess
-        // TODO
+        // TODO: check which stocks we possess
         Map<String, Double> ownedStocks = new HashMap<>(); // TODO
 
         // Collect Money from stocks that "end" that day and that we possess
@@ -71,21 +72,38 @@ public class NormalAgentNewDayListener extends NewDayListener {
         // TODO: check if we need this sleep
         // Utils.sleep(2); // Wait for Oracle Tips and Money Transfers
 
-        // TODO: ask for loan
-        
-        // check bank balance (check that we have enough money to pay loans)
-        // loan - request
-            // request response
-            // Yes: contract net + loans + buy stocks + day over
-            // No: day over (contract net + give loan)
+        // Decide Next Investments
 
-        // TODO: daily agent behaviour
+        // Get the Current Stocks
+        Map<String, Double> currentStocks = new HashMap<>();
+        agent.addBehaviour(new RequestInitiatorBehaviour(
+            agent, new RequestInitiator(
+                agent.getStockAgents(), new Action(ActionType.CHECK_STOCK_PRICES)
+            )
+        ));
+
+        // Get the Tips
+        Map<String, Map<String, Double>> tips = tipListener.getTips();
+
+        // Decide what is Best Profit
+        double currentPrice, futurePrice;
+        double profit, bestProfit = 0;
+        String bestCompany = "", bestDay = "0";
+        for (String company : currentStocks.keySet()) {
+            currentPrice = currentStocks.get(company);
+            for (String dayString : tips.keySet()) {
+                futurePrice = tips.get(dayString).get(company);
+                profit = futurePrice / currentPrice;
+                if (profit > bestProfit) {
+                    bestProfit = profit;
+                    bestCompany = company;
+                    bestDay = dayString;
+                }
+            }
+        }
+
+        agent.addBehaviour(new RequestInitiatorBehaviour(
+            agent, new LoanRequestInitiator(agent.getOrderAgents(), agent, day, bestProfit, bestCompany, bestDay)
+        ));
     }
-
-    // LOAN
-    /*
-        - if we want loan, we auto-deny all loans requests
-        loan % needs to be smaller than stock gains
-        we accept loan when loan % > stock gain %
-    */
 }

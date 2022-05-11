@@ -28,4 +28,6 @@ public class RequestInitiator {
 	public int getNResponders() {
 		return receivers.size();
 	}
+
+	public void handleResult(ACLMessage result) {}
 }

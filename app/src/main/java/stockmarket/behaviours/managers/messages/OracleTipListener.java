@@ -26,6 +26,10 @@ public class OracleTipListener implements MessageListener {
         tips.remove(String.valueOf(day));
     }
 
+    public Map<String, Map<String, Double>> getTips() {
+        return tips;
+    }
+
     @Override
     public MessageTemplate getTemplate() {
         return template;

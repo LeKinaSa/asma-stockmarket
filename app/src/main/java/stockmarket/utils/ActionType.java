@@ -11,5 +11,6 @@ public enum ActionType {
     DAY_OVER          , // The Agent has concluded its Actions for the Day
     NEW_DAY           , // New Day has Started
     ORACLE_TIP        , // Oracle Gives a Tip to an Agent
+    LOAN_REQUEST      , // Request the Order Agent to Ask Other Agents for a Loan
     LOAN_MONEY        , // Agent Asks for a Loan to another Agent
 }

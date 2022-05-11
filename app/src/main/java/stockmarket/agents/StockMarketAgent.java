@@ -7,7 +7,7 @@ import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestResponderBehaviour;
 import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.NewDayListener;
-import stockmarket.behaviours.managers.protocols.StockMarketManager;
+import stockmarket.behaviours.managers.protocols.responders.StockMarketManager;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 

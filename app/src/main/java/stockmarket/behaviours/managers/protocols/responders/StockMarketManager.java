@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols;
+package stockmarket.behaviours.managers.protocols.responders;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +16,7 @@ import jade.lang.acl.ACLMessage;
 import stockmarket.agents.StockMarketAgent;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.behaviours.managers.protocols.initiators.RequestInitiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;

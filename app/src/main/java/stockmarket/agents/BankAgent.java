@@ -5,7 +5,7 @@ import java.util.Set;
 import jade.core.Agent;
 import stockmarket.behaviours.RequestResponderBehaviour;
 import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
-import stockmarket.behaviours.managers.protocols.BankManager;
+import stockmarket.behaviours.managers.protocols.responders.BankManager;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 

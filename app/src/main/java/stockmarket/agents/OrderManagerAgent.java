@@ -3,7 +3,7 @@ package stockmarket.agents;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.RequestResponderBehaviour;
-import stockmarket.behaviours.managers.protocols.RequestResponder;
+import stockmarket.behaviours.managers.protocols.responders.RequestResponder;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 

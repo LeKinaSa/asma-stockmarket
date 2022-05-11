@@ -10,7 +10,7 @@ import java.util.Set;
 import com.google.gson.Gson;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.OracleAgent;
-import stockmarket.behaviours.managers.protocols.StockMarketManager;
+import stockmarket.behaviours.managers.protocols.responders.StockMarketManager;
 import stockmarket.utils.Utils;
 
 public class OracleNewDayListener extends NewDayListener {

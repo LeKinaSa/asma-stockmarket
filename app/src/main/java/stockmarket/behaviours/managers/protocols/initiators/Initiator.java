@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols;
+package stockmarket.behaviours.managers.protocols.initiators;
 
 import java.util.Date;
 import java.util.Set;

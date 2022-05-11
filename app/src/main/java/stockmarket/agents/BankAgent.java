@@ -19,8 +19,8 @@ public class BankAgent extends Agent {
         // Subscriptions
         addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK, stockAgents));
 
-        BankManager responder = new BankManager(this);
-        addBehaviour(new RequestResponderBehaviour(this, responder, responder.getTemplate()));
+        // Repetitive Behaviours
+        addBehaviour(new RequestResponderBehaviour(this, new BankManager(this)));
 
         Utils.log(this, "Ready");
     }

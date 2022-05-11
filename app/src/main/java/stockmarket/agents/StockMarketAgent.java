@@ -23,8 +23,7 @@ public class StockMarketAgent extends Agent {
         addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.BANK, bankAgents));
 
         // Repetitive Behaviours
-        StockMarketManager responder = new StockMarketManager(this, newDayListener);
-        addBehaviour(new RequestResponderBehaviour(this, responder, responder.getTemplate()));
+        addBehaviour(new RequestResponderBehaviour(this, new StockMarketManager(this, newDayListener)));
         addBehaviour(new MessageListenerBehaviour(this, newDayListener));
 
 		Utils.log(this, "Ready");

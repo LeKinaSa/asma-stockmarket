@@ -2,7 +2,6 @@ package stockmarket.behaviours;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
@@ -13,8 +12,8 @@ import stockmarket.utils.Utils;
 public class RequestResponderBehaviour extends AchieveREResponder {
     private final RequestResponder responder;
 
-    public RequestResponderBehaviour(Agent agent, RequestResponder responder, MessageTemplate template) {
-        super(agent, template);
+    public RequestResponderBehaviour(Agent agent, RequestResponder responder) {
+        super(agent, responder.getTemplate());
         this.responder = responder;
     }
 

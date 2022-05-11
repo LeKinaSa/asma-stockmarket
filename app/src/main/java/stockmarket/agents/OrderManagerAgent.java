@@ -1,7 +1,9 @@
 package stockmarket.agents;
 
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.RequestResponderBehaviour;
+import stockmarket.behaviours.managers.protocols.RequestResponder;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
@@ -10,7 +12,10 @@ public class OrderManagerAgent extends Agent {
         // Register
 		Utils.registerInYellowPages(this, AgentType.ORDER);
 
-        addBehaviour(new RequestResponderBehaviour(this, null, null)); // TODO: add responder
+        addBehaviour(new RequestResponderBehaviour(this, new RequestResponder() {
+            @Override public boolean checkAction(ACLMessage request) {return false;}
+            @Override public String performAction(ACLMessage request) {return null;}
+        })); // TODO: add responder
 
         Utils.log(this, "Ready");
     }

@@ -21,8 +21,8 @@ public class NormalAgent extends Agent {
 	private final Set<String>   bankAgents = new HashSet<>();
 	private final Set<String>  stockAgents = new HashSet<>();
 	private final Set<String>   timeAgents = new HashSet<>();
-	private final Set<String> normalAgents = new HashSet<>();
 	private final Set<String>  orderAgents = new HashSet<>();
+	private final Set<String> normalAgents = new HashSet<>();
 	private final OracleTipListener oracleTipListener = new OracleTipListener();
 	private final ContractResponder loanListener = new ContractResponder();
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener, loanListener);
@@ -36,8 +36,8 @@ public class NormalAgent extends Agent {
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.BANK  ,   bankAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.STOCK ,  stockAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.TIME  ,   timeAgents));
-		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ORDER,   orderAgents));
+		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, normalAgents));
 
 		// Initialize Agent, Bank Account and Owned Stocks
 		Action startBankAccount = new Action(ActionType.START,  "0");
@@ -81,5 +81,9 @@ public class NormalAgent extends Agent {
 
 	public Set<String> getOrderAgents() {
 		return orderAgents;
+	}
+
+	public Set<String> getNormalAgents() {
+		return normalAgents;
 	}
 }

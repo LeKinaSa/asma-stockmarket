@@ -12,10 +12,10 @@ public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
     private final ContractInitiator initiator;
     private int nResponders;
 
-    public ContractNetInitiatorBehaviour(Agent agent, ContractInitiator initiator, ACLMessage message, int nResponders) {
-        super(agent, message);
+    public ContractNetInitiatorBehaviour(Agent agent, ContractInitiator initiator) {
+        super(agent, initiator.getMessage());
         this.initiator = initiator;
-        this.nResponders = nResponders;
+        this.nResponders = initiator.getNResponders();
     }
 
     @Override

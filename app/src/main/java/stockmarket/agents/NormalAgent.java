@@ -22,6 +22,9 @@ public class NormalAgent extends Agent {
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
 	private final ContractResponder           loanListener = new ContractResponder();
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener, loanListener);
+	private String companyToInvest;
+	private double interest;
+	private int    returnInvestmentDay;
 
 	public void setup() {
 		// Register
@@ -57,4 +60,10 @@ public class NormalAgent extends Agent {
 	public Set<String> getNormalAgents() {
 		return normalAgents;
 	}
+
+	public void setInvestments(String companyToInvest, double interest, int returnInvestmentDay) {
+		this.companyToInvest = companyToInvest;
+		this.interest = interest;
+		this.returnInvestmentDay = returnInvestmentDay;
+	} // TODO: use gets too
 }

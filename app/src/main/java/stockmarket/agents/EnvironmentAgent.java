@@ -31,9 +31,9 @@ public class EnvironmentAgent extends Agent {
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents));
 
 		// Repetitive Behaviours
-        addBehaviour(new RequestResponderBehaviour(this, manager));
-        addBehaviour(new MessageListenerBehaviour (this, dayListener));
-        addBehaviour(new MessageListenerBehaviour (this, loanListener));
+        addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
+        addBehaviour(new MessageListenerBehaviour (this, dayListener));  // Time
+        addBehaviour(new MessageListenerBehaviour (this, loanListener)); // Order
         addBehaviour(newDayBehaviour);
         addBehaviour(loanPermissionBehaviour);
 
@@ -45,8 +45,6 @@ public class EnvironmentAgent extends Agent {
 
         Utils.log(this, "Ready");
     }
-
-    // TODO: see if we need all these functions
 
     public void takedown() {
 		// Unregister

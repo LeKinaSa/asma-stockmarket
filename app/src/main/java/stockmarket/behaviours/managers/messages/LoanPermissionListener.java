@@ -16,10 +16,6 @@ public class LoanPermissionListener implements MessageListener {
         return template;
     }
 
-    public void restart() {
-        receivedOffers = new HashMap<>();
-    }
-
     @Override
     public void actionOnReceive(ACLMessage message) {
         String agent = message.getSender().getLocalName();
@@ -48,6 +44,7 @@ public class LoanPermissionListener implements MessageListener {
                 highestOfferSender = sender;
             }
         }
+        receivedOffers = new HashMap<>(); // Prepare for next round
         return highestOfferSender;
     }
 }

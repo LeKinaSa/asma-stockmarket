@@ -13,6 +13,4 @@ public class RequestInitiator extends Initiator {
 	public ACLMessage getMessage() {
 		return getMessage(FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST);
 	}
-
-	public void handleResult(ACLMessage result) {}
 }

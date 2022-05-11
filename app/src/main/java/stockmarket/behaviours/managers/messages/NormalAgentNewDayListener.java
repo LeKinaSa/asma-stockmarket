@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.managers.protocols.initiators.LoanRequestInitiator;
 import stockmarket.behaviours.managers.protocols.initiators.RequestInitiator;
 import stockmarket.behaviours.managers.protocols.responders.ContractResponder;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
+import stockmarket.utils.Utils;
 
 public class NormalAgentNewDayListener extends NewDayListener {
 	private final NormalAgent agent;
@@ -27,6 +27,8 @@ public class NormalAgentNewDayListener extends NewDayListener {
     @Override
     public void actionOnReceive(ACLMessage message) {
         super.actionOnReceive(message);
+
+        // TODO: action 1
 
         // Check which Stocks we possess
         // TODO: check which stocks we possess
@@ -77,7 +79,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         // Decide what is Best Profit
         double currentPrice, futurePrice;
         double profit, bestProfit = 0;
-        String bestCompany = "", bestDay = "0";
+        String bestCompany = "", bestDayString = "0";
         for (String company : currentStocks.keySet()) {
             currentPrice = currentStocks.get(company);
             for (String dayString : tips.keySet()) {
@@ -86,13 +88,21 @@ public class NormalAgentNewDayListener extends NewDayListener {
                 if (profit > bestProfit) {
                     bestProfit = profit;
                     bestCompany = company;
-                    bestDay = dayString;
+                    bestDayString = dayString;
                 }
             }
         }
 
-        agent.addBehaviour(new RequestInitiatorBehaviour(
-            agent, new LoanRequestInitiator(agent.getEnvironmentAgents(), agent, day, bestProfit, bestCompany, bestDay)
-        ));
+        int bestDay;
+        try {
+            bestDay = Integer.parseInt(bestDayString);
+        }
+        catch (NumberFormatException exception) {
+            return;
+        }
+
+        agent.setInvestments(bestCompany, bestProfit, bestDay);
+        Utils.createAskForLoanPermissionMessage(agent.getEnvironmentAgents(), bestProfit);
+        agent.send(message);
     }
 }

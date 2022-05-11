@@ -39,7 +39,15 @@ public class LoanPermissionListener implements MessageListener {
     }
 
     public String getHighestOffer() {
-        // TODO
-        return null;
+        double offer, highestOffer = 0;
+        String highestOfferSender = null;
+        for (String sender : receivedOffers.keySet()) {
+            offer = receivedOffers.get(sender);
+            if (offer > highestOffer) {
+                highestOffer = offer;
+                highestOfferSender = sender;
+            }
+        }
+        return highestOfferSender;
     }
 }

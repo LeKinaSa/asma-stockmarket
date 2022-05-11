@@ -1,12 +1,12 @@
 package stockmarket.behaviours.managers.messages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
+import stockmarket.behaviours.managers.protocols.ContractResponder;
 import stockmarket.behaviours.managers.protocols.LoanRequestInitiator;
 import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Action;
@@ -14,25 +14,14 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
 
 public class NormalAgentNewDayListener extends NewDayListener {
-	private final Map<String, List<MoneyTransfer>> loans = new HashMap<>();
 	private final NormalAgent agent;
     private final OracleTipListener tipListener;
+    private final ContractResponder loanListener;
 
-    public NormalAgentNewDayListener(NormalAgent agent, OracleTipListener tipListener) {
+    public NormalAgentNewDayListener(NormalAgent agent, OracleTipListener tipListener, ContractResponder loanListener) {
         this.agent = agent;
         this.tipListener = tipListener;
-    }
-
-    public List<MoneyTransfer> getLoansForTheDay(int day) {
-        String dayString = String.valueOf(day);
-        if (loans.containsKey(dayString)) {
-            return loans.get(dayString);
-        }
-        return new ArrayList<>();
-    }
-
-    public void removeDayFromLoans(int day) {
-        loans.remove(String.valueOf(day));
+        this.loanListener = loanListener;
     }
 
     @Override
@@ -59,7 +48,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         tipListener.removeDayFromTips(day);
 
         // Pay Loans that "end" that day
-        List<MoneyTransfer> loansForTheDay = getLoansForTheDay(day);
+        List<MoneyTransfer> loansForTheDay = loanListener.getLoansForTheDay(day);
         for (MoneyTransfer loan : loansForTheDay) {
             agent.addBehaviour(new RequestInitiatorBehaviour(
                 agent, new RequestInitiator(
@@ -67,7 +56,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
                 )
             ));
         }
-        removeDayFromLoans(day);
+        loanListener.removeDayFromLoans(day);
 
         // TODO: check if we need this sleep
         // Utils.sleep(2); // Wait for Oracle Tips and Money Transfers

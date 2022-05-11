@@ -5,7 +5,6 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
 import stockmarket.utils.Utils;
@@ -13,8 +12,8 @@ import stockmarket.utils.Utils;
 public class ContractNetResponderBehaviour extends ContractNetResponder {
     private final ContractResponder responder;
 
-    public ContractNetResponderBehaviour(Agent agent, ContractResponder responder, MessageTemplate template) {
-        super(agent, template);
+    public ContractNetResponderBehaviour(Agent agent, ContractResponder responder) {
+        super(agent, responder.getTemplate());
         this.responder = responder;
     }
 

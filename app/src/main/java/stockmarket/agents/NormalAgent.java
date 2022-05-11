@@ -4,11 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import stockmarket.behaviours.ContractNetResponderBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.RequestInitiatorBehaviour;
 import stockmarket.behaviours.SubscriptionInitiatorBehaviour;
 import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
+import stockmarket.behaviours.managers.protocols.ContractResponder;
 import stockmarket.behaviours.managers.protocols.RequestInitiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
@@ -22,7 +24,8 @@ public class NormalAgent extends Agent {
 	private final Set<String> normalAgents = new HashSet<>();
 	private final Set<String>  orderAgents = new HashSet<>();
 	private final OracleTipListener oracleTipListener = new OracleTipListener();
-	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener);
+	private final ContractResponder loanListener = new ContractResponder();
+	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener, loanListener);
 	private boolean readyToChangeDay = true;
 
 	public void setup() {
@@ -45,6 +48,7 @@ public class NormalAgent extends Agent {
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour(this, newDayListener));
 		addBehaviour(new MessageListenerBehaviour(this, oracleTipListener));
+		addBehaviour(new ContractNetResponderBehaviour(this, loanListener));
 		addBehaviour(new CyclicBehaviour() {
 			@Override
 			public void action() {

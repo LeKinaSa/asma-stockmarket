@@ -36,7 +36,7 @@ public class LoanRequestInitiator extends RequestInitiator {
             ));
         }
         else {
-            agent.send(Utils.createDayOverMessage(agent.getTimeAgents(), day));
+            agent.send(Utils.createDayOverMessage(agent.getEnvironmentAgents(), day));
         }
     }
 }

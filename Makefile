@@ -10,10 +10,7 @@ clean:
 
 start:
 	java -cp "app/lib/gson.jar:app/lib/jade.jar:bin" jade.Boot -agents \
-	"time:stockmarket.agents.TimeManagerAgent; \
-	bank:stockmarket.agents.BankAgent; \
-	stockmarket:stockmarket.agents.StockMarketAgent; \
-	oracle:stockmarket.agents.OracleAgent; \
+	"environment:stockmarket.agents.EnvironmentAgent; \
 	a1:stockmarket.agents.NormalAgent; \
 	a2:stockmarket.agents.NormalAgent" \
 	-gui

@@ -40,7 +40,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
                 nStocks = ownedStocks.get(stock);
                 agent.addBehaviour(new RequestInitiatorBehaviour(
                     agent, new RequestInitiator(
-                        agent.getStockAgents(), new Action(ActionType.BUY_STOCK, String.valueOf(-nStocks))
+                        agent.getEnvironmentAgents(), new Action(ActionType.BUY_STOCK, String.valueOf(-nStocks))
                     )
                 ));
             }
@@ -52,7 +52,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         for (MoneyTransfer loan : loansForTheDay) {
             agent.addBehaviour(new RequestInitiatorBehaviour(
                 agent, new RequestInitiator(
-                    agent.getBankAgents(), new Action(ActionType.TRANSFER_MONEY, loan.toString())
+                    agent.getEnvironmentAgents(), new Action(ActionType.TRANSFER_MONEY, loan.toString())
                 )
             ));
         }
@@ -67,7 +67,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         Map<String, Double> currentStocks = new HashMap<>();
         agent.addBehaviour(new RequestInitiatorBehaviour(
             agent, new RequestInitiator(
-                agent.getStockAgents(), new Action(ActionType.CHECK_STOCK_PRICES)
+                agent.getEnvironmentAgents(), new Action(ActionType.CHECK_STOCK_PRICES)
             )
         ));
 
@@ -92,7 +92,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         }
 
         agent.addBehaviour(new RequestInitiatorBehaviour(
-            agent, new LoanRequestInitiator(agent.getOrderAgents(), agent, day, bestProfit, bestCompany, bestDay)
+            agent, new LoanRequestInitiator(agent.getEnvironmentAgents(), agent, day, bestProfit, bestCompany, bestDay)
         ));
     }
 }

@@ -15,8 +15,8 @@ import stockmarket.utils.Utils;
 
 public class EnvironmentBehaviour extends CyclicBehaviour {
     private static final Gson gson = new Gson();
-    private static final int AGENTS_TO_TIP = 1;
-    private static final int TIP_DAYS = 3;
+    private static final int AGENTS_TO_TIP  = 1;
+    private static final int TIP_DAYS       = 3;
     private static final int NUMBER_OF_TIPS = 10;
     private final EnvironmentAgent agent;
 

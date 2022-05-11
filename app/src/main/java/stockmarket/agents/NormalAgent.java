@@ -38,8 +38,8 @@ public class NormalAgent extends Agent {
 		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator(getEnvironmentAgents(), startOwnStocks  )));
 
 		// Repetitive Behaviours
-		addBehaviour(new MessageListenerBehaviour(this, newDayListener));
-		addBehaviour(new MessageListenerBehaviour(this, oracleTipListener));
+		addBehaviour(new MessageListenerBehaviour     (this, newDayListener));
+		addBehaviour(new MessageListenerBehaviour     (this, oracleTipListener));
 		addBehaviour(new ContractNetResponderBehaviour(this, loanListener));
 
 		Utils.log(this, "Ready");

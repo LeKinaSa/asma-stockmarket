@@ -8,7 +8,7 @@ import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
-public class LoanRequestInitiator extends RequestInitiator {
+public class LoanRequestInitiator extends RequestInitiator { // TODO: remove and move code somewhere else
     private final NormalAgent agent;
     private final int day;
     private final double bestProfit;
@@ -31,7 +31,7 @@ public class LoanRequestInitiator extends RequestInitiator {
             agent.addBehaviour(new ContractNetInitiatorBehaviour(
                 agent, new ContractInitiator(
                     agent.getNormalAgents(),
-                    new Action(ActionType.LOAN_MONEY, "TODO") // TODO
+                    new Action(ActionType.LOAN_MONEY, "TODO") // TODO: information inside contract net initiator content
                 )
             ));
         }

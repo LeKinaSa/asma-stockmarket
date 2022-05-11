@@ -9,10 +9,6 @@ public class NewDayListener implements MessageListener {
     private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     protected int day;
 
-    public int getDay() {
-        return day;
-    }
-
     @Override
     public MessageTemplate getTemplate() {
         return template;
@@ -24,5 +20,9 @@ public class NewDayListener implements MessageListener {
             day = Integer.parseInt(message.getContent());
         }
         catch (NumberFormatException ignored) {}
+    }
+
+    public int getDay() {
+        return day;
     }
 }

@@ -9,7 +9,7 @@ import stockmarket.behaviours.managers.protocols.initiators.ContractInitiator;
 import stockmarket.utils.Utils;
 
 public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
-    private final ContractInitiator initiator;
+    private final ContractInitiator initiator; // TODO: either use or remove
     private int nResponders;
 
     public ContractNetInitiatorBehaviour(Agent agent, ContractInitiator initiator) {

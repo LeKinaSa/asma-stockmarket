@@ -25,6 +25,7 @@ public enum AgentType {
                 return Arrays.asList(
                     ActionType.NEW_DAY.toString(),
                     ActionType.ORACLE_TIP.toString(),
+                    ActionType.LOAN_REQUEST.toString(),
                     ActionType.LOAN_MONEY.toString()
                 );
             default:

@@ -14,7 +14,8 @@ import jade.lang.acl.MessageTemplate;
 
 public class Utils {
     // Message Related Utilitaries
-    public static MessageTemplate getMessageTemplate(String protocol, int performative, ActionType ontology) {
+    public static MessageTemplate getMessageTemplate(String protocol, int performative,
+            ActionType ontology) {
         MessageTemplate template = MessageTemplate.MatchPerformative(performative);
         if (protocol != null) {
             template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(protocol));
@@ -157,7 +158,8 @@ public class Utils {
         catch (FIPAException ignored) {}
     }
 
-    public static void searchInYellowPageResults(Agent agent, AgentType type, Set<String> services, DFAgentDescription[] results) {
+    public static void searchInYellowPageResults(Agent agent, AgentType type,
+            Set<String> services, DFAgentDescription[] results) {
         DFAgentDescription register;
         ServiceDescription service;
         AID provider;
@@ -198,10 +200,10 @@ public class Utils {
     }
 
     public static void log(AID agent, String message) {
-        //System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
 
     public static void logProvided(ServiceDescription service, AID provider) {
-        //System.out.println("Service " + service.getName() + " provided by agent " + provider.getLocalName());
+        System.out.println("Service " + service.getName() + " provided by agent " + provider.getLocalName());
     }
 }

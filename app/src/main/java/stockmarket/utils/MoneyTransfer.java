@@ -7,8 +7,8 @@ public class MoneyTransfer {
     private double amount;
 
     public MoneyTransfer(String to, double amount) {
-        this.setTo(to);
-        this.setAmount(amount);
+        this.to = to;
+        this.amount = amount;
     }
 
     public String getTo() {
@@ -17,14 +17,6 @@ public class MoneyTransfer {
 
     public double getAmount() {
         return amount;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     @Override

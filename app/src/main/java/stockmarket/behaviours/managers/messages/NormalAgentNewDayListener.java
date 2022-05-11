@@ -6,7 +6,7 @@ import java.util.Map;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
-import stockmarket.behaviours.managers.protocols.RequestInitiator;
+import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
@@ -41,7 +41,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
             if (ownedStocks.containsKey(stock)) {
                 nStocks = ownedStocks.get(stock);
                 agent.addBehaviour(new RequestInitiatorBehaviour(
-                    agent, new RequestInitiator(
+                    agent, new Initiator(
                         agent.getEnvironmentAgents(), new Action(ActionType.BUY_STOCK, String.valueOf(-nStocks))
                     )
                 ));
@@ -53,7 +53,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         List<MoneyTransfer> loansForTheDay = loanListener.getLoansForTheDay(day);
         for (MoneyTransfer loan : loansForTheDay) {
             agent.addBehaviour(new RequestInitiatorBehaviour(
-                agent, new RequestInitiator(
+                agent, new Initiator(
                     agent.getEnvironmentAgents(), new Action(ActionType.TRANSFER_MONEY, loan.toString())
                 )
             ));
@@ -68,7 +68,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         // Get the Current Stocks
         Map<String, Double> currentStocks = new HashMap<>();
         agent.addBehaviour(new RequestInitiatorBehaviour(
-            agent, new RequestInitiator(
+            agent, new Initiator(
                 agent.getEnvironmentAgents(), new Action(ActionType.CHECK_STOCK_PRICES)
             )
         ));

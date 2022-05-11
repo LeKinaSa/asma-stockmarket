@@ -7,7 +7,7 @@ import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
-import stockmarket.behaviours.managers.protocols.RequestInitiator;
+import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.ContractNetResponderBehaviour;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
@@ -37,8 +37,8 @@ public class NormalAgent extends Agent {
 		// Initialize Agent, Bank Account and Owned Stocks
 		Action startBankAccount = new Action(ActionType.START_BANK,  "0");
 		Action startOwnStocks   = new Action(ActionType.START_STOCK, "{}");
-		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator(getEnvironmentAgents(), startBankAccount)));
-		addBehaviour(new RequestInitiatorBehaviour(this, new RequestInitiator(getEnvironmentAgents(), startOwnStocks  )));
+		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startBankAccount)));
+		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startOwnStocks  )));
 
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour     (this, newDayListener));

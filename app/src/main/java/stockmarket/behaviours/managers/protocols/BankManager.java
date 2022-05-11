@@ -68,22 +68,22 @@ public class BankManager extends RequestResponder {
 
                 double balance;
                 synchronized (bankAccount) {
-                    if (!bankAccount.containsKey(transfer.to)) {
+                    if (!bankAccount.containsKey(transfer.getTo())) {
                         return Utils.invalidAction("Unknown Transfer Destination Agent");
                     }
-                    if (bankAccount.get(agent) < transfer.amount) {
+                    if (bankAccount.get(agent) < transfer.getAmount()) {
                         return Utils.invalidAction("Not Enough Money for Transfer");
                     }
-                    bankAccount.put(agent, bankAccount.get(agent)       - transfer.amount);
-                    bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
+                    bankAccount.put(agent, bankAccount.get(agent)       - transfer.getAmount());
+                    bankAccount.put(agent, bankAccount.get(transfer.getTo()) + transfer.getAmount());
 
                     balance = bankAccount.get(agent);
                 }
 
-                return transfer.amount + " transfered. Balance is now at " + balance + ".";
+                return transfer.getAmount() + " transfered. Balance is now at " + balance + ".";
             }
             case MANAGE_MONEY: {
-                MoneyTransfer transfer = new MoneyTransfer();
+                MoneyTransfer transfer = new MoneyTransfer(null, 0);
                 try {
                     transfer = gson.fromJson(action.getInformation(), MoneyTransfer.class);
                 }
@@ -96,20 +96,20 @@ public class BankManager extends RequestResponder {
                 }
 
                 synchronized (bankAccount) {
-                    if (!bankAccount.containsKey(transfer.to)) {
+                    if (!bankAccount.containsKey(transfer.getTo())) {
                         return Utils.invalidAction("Unknown Agent is Managing the Stocks");
                     }
-                    if (transfer.amount < 0 && -transfer.amount > bankAccount.get(transfer.to)) {
+                    if (transfer.getAmount() < 0 && -transfer.getAmount() > bankAccount.get(transfer.getTo())) {
                         return Utils.invalidAction("Not Enough Money for These Stocks");
                     }
-                    bankAccount.put(agent, bankAccount.get(transfer.to) + transfer.amount);
+                    bankAccount.put(agent, bankAccount.get(transfer.getTo()) + transfer.getAmount());
                 }
 
-                if (transfer.amount > 0) {
-                    return transfer.amount + " added to account " + transfer.to + ".";
+                if (transfer.getAmount() > 0) {
+                    return transfer.getAmount() + " added to account " + transfer.getTo() + ".";
                 }
                 else {
-                    return (-transfer.amount) + "removed from account" + transfer.to + ".";
+                    return (-transfer.getAmount()) + "removed from account" + transfer.getTo() + ".";
                 }
             }
             default: {

@@ -19,7 +19,7 @@ class AppTest {
     @Test void dependenciesTest() {
         Gson gson = new Gson();
 
-        MoneyTransfer transfer = new MoneyTransfer();
+        MoneyTransfer transfer = new MoneyTransfer(null, 0);
         String transferStr = gson.toJson(transfer);
         
         MoneyTransfer transferCopy = gson.fromJson(gson.toJson(transfer), MoneyTransfer.class);

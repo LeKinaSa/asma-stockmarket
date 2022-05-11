@@ -21,10 +21,6 @@ public class MessageListenerBehaviour extends CyclicBehaviour {
             String sender = message.getSender().getLocalName();
             Utils.log(myAgent, "Received from " + sender + ". Action is " + message.getOntology() + " " + message.getContent());
             listener.actionOnReceive(message);
-            ACLMessage reply = listener.getReply(message);
-            if (reply != null) {
-                myAgent.send(reply);
-            }
         }
         else {
             block();

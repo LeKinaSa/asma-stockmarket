@@ -58,7 +58,9 @@ public class NormalAgent extends Agent {
 	}
 
 	public Set<String> getNormalAgents() {
-		return normalAgents;
+		Set<String> otherAgents = new HashSet<>(normalAgents);
+		otherAgents.remove(this.getLocalName());
+		return otherAgents;
 	}
 
 	public int getDay() {

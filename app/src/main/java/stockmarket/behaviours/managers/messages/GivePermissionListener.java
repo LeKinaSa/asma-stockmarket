@@ -23,10 +23,11 @@ public class GivePermissionListener implements MessageListener {
     }
     
     @Override
-    public ACLMessage getReply(ACLMessage message) {
+    public void actionOnReceive(ACLMessage message) {
         String sender = message.getSender().getLocalName();
         if (!agent.getLocalName().equals(sender)) {
-            return Utils.createDayOverMessage(agent.getEnvironmentAgents(), agent.getDay());
+            ACLMessage reply = Utils.createDayOverMessage(agent.getEnvironmentAgents(), agent.getDay());
+            agent.send(reply);
         }
 
         // Agent has Permission to Get Loans from Other Agents
@@ -37,6 +38,5 @@ public class GivePermissionListener implements MessageListener {
                 new Action(ActionType.LOAN_MONEY, "")
             )
         ));
-        return null;
     }
 }

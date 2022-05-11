@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols.initiators;
+package stockmarket.behaviours.managers.protocols;
 
 import java.util.Set;
 import jade.domain.FIPANames;

@@ -3,18 +3,19 @@ package stockmarket.behaviours.protocols;
 import java.util.Vector;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
-import stockmarket.behaviours.managers.protocols.initiators.ContractInitiator;
+import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
-    private final ContractInitiator initiator; // TODO: either use or remove
     private int nResponders;
 
-    public ContractNetInitiatorBehaviour(Agent agent, ContractInitiator initiator) {
-        super(agent, initiator.getMessage());
-        this.initiator = initiator;
+    public ContractNetInitiatorBehaviour(Agent agent, Initiator initiator) {
+        super(agent, initiator.getMessage(
+            FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP
+        ));
         this.nResponders = initiator.getNResponders();
     }
 

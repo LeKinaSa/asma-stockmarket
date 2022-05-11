@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols.responders;
+package stockmarket.behaviours.managers.protocols;
 
 import java.util.ArrayList;
 import java.util.HashMap;

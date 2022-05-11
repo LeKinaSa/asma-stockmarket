@@ -6,7 +6,7 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetResponder;
-import stockmarket.behaviours.managers.protocols.responders.ContractResponder;
+import stockmarket.behaviours.managers.protocols.ContractResponder;
 import stockmarket.utils.Utils;
 
 public class ContractNetResponderBehaviour extends ContractNetResponder {

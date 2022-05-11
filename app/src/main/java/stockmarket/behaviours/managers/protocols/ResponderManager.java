@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols.responders;
+package stockmarket.behaviours.managers.protocols;
 
 import java.io.BufferedReader;
 import java.io.File;

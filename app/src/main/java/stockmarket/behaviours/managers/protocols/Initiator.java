@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols.initiators;
+package stockmarket.behaviours.managers.protocols;
 
 import java.util.Date;
 import java.util.Set;
@@ -15,7 +15,7 @@ public class Initiator {
 		this.action = action;
 	}
 
-	protected ACLMessage getMessage(String protocol, int performative) {
+	public ACLMessage getMessage(String protocol, int performative) {
 		ACLMessage message = Utils.createMessage(
             protocol, performative,
 			action.getType(), action.getInformation(),

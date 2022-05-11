@@ -2,18 +2,19 @@ package stockmarket.behaviours.protocols;
 
 import java.util.Vector;
 import jade.core.Agent;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
-import stockmarket.behaviours.managers.protocols.initiators.RequestInitiator;
+import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
-    private final RequestInitiator initiator; // TODO: either use or remove
     private int nResponders;
 
-    public RequestInitiatorBehaviour(Agent agent, RequestInitiator initiator) {
-        super(agent, initiator.getMessage());
-        this.initiator = initiator;
+    public RequestInitiatorBehaviour(Agent agent, Initiator initiator) {
+        super(agent, initiator.getMessage(
+            FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST
+        ));
         this.nResponders = initiator.getNResponders();
     }
 

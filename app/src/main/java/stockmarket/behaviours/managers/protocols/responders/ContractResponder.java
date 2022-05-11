@@ -17,18 +17,6 @@ public class ContractResponder implements Listener {
 	);
 	private final Map<String, List<MoneyTransfer>> loans = new HashMap<>();
 
-    public List<MoneyTransfer> getLoansForTheDay(int day) {
-        String dayString = String.valueOf(day);
-        if (loans.containsKey(dayString)) {
-            return loans.get(dayString);
-        }
-        return new ArrayList<>();
-    }
-
-    public void removeDayFromLoans(int day) {
-        loans.remove(String.valueOf(day));
-    }
-
 	public MessageTemplate getTemplate() {
 		return template;
 	}
@@ -42,4 +30,16 @@ public class ContractResponder implements Listener {
 		// TODO
 		return true;
 	}
+
+    public List<MoneyTransfer> getLoansForTheDay(int day) {
+        String dayString = String.valueOf(day);
+        if (loans.containsKey(dayString)) {
+            return loans.get(dayString);
+        }
+        return new ArrayList<>();
+    }
+
+    public void removeDayFromLoans(int day) {
+        loans.remove(String.valueOf(day));
+    }
 }

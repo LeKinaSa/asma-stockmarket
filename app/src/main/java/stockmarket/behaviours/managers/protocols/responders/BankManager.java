@@ -21,12 +21,6 @@ public class BankManager extends RequestResponder {
     }
 
     @Override
-    public boolean checkAction(ACLMessage request) {
-        Action action = Action.toAction(request.getOntology(), request.getContent());
-        return action != null;
-    }
-
-    @Override
     public String performAction(ACLMessage request) {
         Action action = Action.toAction(request.getOntology(), request.getContent());
         String agent = request.getSender().getLocalName();

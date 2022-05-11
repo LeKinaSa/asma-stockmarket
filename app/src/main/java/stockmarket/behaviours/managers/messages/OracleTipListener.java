@@ -14,22 +14,6 @@ public class OracleTipListener implements MessageListener {
     private static final Gson gson = new Gson();
 	private final Map<String, Map<String, Double>> tips = new HashMap<>();
 
-    public Map<String, Double> getTipsForTheDay(int day) {
-        String dayString = String.valueOf(day);
-        if (tips.containsKey(dayString)) {
-            return tips.get(dayString);
-        }
-        return new HashMap<>();
-    }
-
-    public void removeDayFromTips(int day) {
-        tips.remove(String.valueOf(day));
-    }
-
-    public Map<String, Map<String, Double>> getTips() {
-        return tips;
-    }
-
     @Override
     public MessageTemplate getTemplate() {
         return template;
@@ -53,5 +37,21 @@ public class OracleTipListener implements MessageListener {
                 tips.get(tipDay).put(tipCompany, tipsReceived.get(tipDay).get(tipCompany));
             }
         }
+    }
+
+    public Map<String, Double> getTipsForTheDay(int day) {
+        String dayString = String.valueOf(day);
+        if (tips.containsKey(dayString)) {
+            return tips.get(dayString);
+        }
+        return new HashMap<>();
+    }
+
+    public void removeDayFromTips(int day) {
+        tips.remove(String.valueOf(day));
+    }
+
+    public Map<String, Map<String, Double>> getTips() {
+        return tips;
     }
 }

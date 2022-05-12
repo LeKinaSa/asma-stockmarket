@@ -1,7 +1,6 @@
 package stockmarket.behaviours.managers.messages;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.NormalAgent;
@@ -10,7 +9,6 @@ import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
-import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class NormalAgentNewDayListener extends NewDayListener {
@@ -28,44 +26,12 @@ public class NormalAgentNewDayListener extends NewDayListener {
     public void actionOnReceive(ACLMessage message) {
         super.actionOnReceive(message);
 
-        // TODO: action 1
+        // TODO: sell all the stocks
+        // TODO: pay loans
+        // TODO: check current stock prices
+        // TODO: decide next investment, based on the tips (stock profit / number of days for return)
+        // TODO: ask for permission to loan
 
-        // Check which Stocks we possess
-        // TODO: check which stocks we possess
-        Map<String, Double> ownedStocks = new HashMap<>(); // TODO
-
-        // Collect Money from stocks that "end" that day and that we possess
-        Map<String, Double> tipsForTheDay = tipListener.getTipsForTheDay(day);
-        double nStocks;
-        for (String stock : tipsForTheDay.keySet()) {
-            if (ownedStocks.containsKey(stock)) {
-                nStocks = ownedStocks.get(stock);
-                agent.addBehaviour(new RequestInitiatorBehaviour(
-                    agent, new Initiator(
-                        agent.getEnvironmentAgents(),
-                        new Action(ActionType.BUY_SELL_STOCK, String.valueOf(-nStocks)),
-                        null // TODO: check
-                    )
-                ));
-            }
-        }
-        tipListener.removeDayFromTips(day);
-
-        // Pay Loans that "end" that day
-        List<MoneyTransfer> loansForTheDay = loanListener.getLoansForTheDay(day);
-        for (MoneyTransfer loan : loansForTheDay) {
-            agent.addBehaviour(new RequestInitiatorBehaviour(
-                agent, new Initiator(
-                    agent.getEnvironmentAgents(),
-                    new Action(ActionType.TRANSFER_MONEY, loan.toString()),
-                    null // TODO: check
-                )
-            ));
-        }
-        loanListener.removeDayFromLoans(day);
-
-        // TODO: check if we need this sleep
-        // Utils.sleep(2); // Wait for Oracle Tips and Money Transfers
 
         // Decide Next Investments
 
@@ -85,7 +51,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         // Decide what is Best Profit
         double currentPrice, futurePrice;
         double profit, bestProfit = 0;
-        String bestCompany = "", bestDayString = "0";
+        String bestCompany = "";
         for (String company : currentStocks.keySet()) {
             currentPrice = currentStocks.get(company);
             for (String dayString : tips.keySet()) {
@@ -94,20 +60,11 @@ public class NormalAgentNewDayListener extends NewDayListener {
                 if (profit > bestProfit) {
                     bestProfit = profit;
                     bestCompany = company;
-                    bestDayString = dayString;
                 }
             }
         }
 
-        int bestDay;
-        try {
-            bestDay = Integer.parseInt(bestDayString);
-        }
-        catch (NumberFormatException exception) {
-            return;
-        }
-
-        agent.setInvestments(bestCompany, bestProfit, bestDay);
+        agent.setInvestments(bestCompany, bestProfit);
         Utils.createAskForLoanPermissionMessage(agent.getEnvironmentAgents(), bestProfit);
         agent.send(message);
     }

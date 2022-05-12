@@ -26,7 +26,6 @@ public class NormalAgent extends Agent {
 	private double bankBalance;
 	private String companyToInvest;
 	private double interest;
-	private int    returnInvestmentDay;
 
 	public void setup() {
 		// Register
@@ -77,10 +76,9 @@ public class NormalAgent extends Agent {
 		return bankBalance;
 	}
 
-	public void setInvestments(String companyToInvest, double interest, int returnInvestmentDay) {
+	public void setInvestments(String companyToInvest, double interest) {
 		this.companyToInvest = companyToInvest;
 		this.interest = interest;
-		this.returnInvestmentDay = returnInvestmentDay;
 	}
 
 	public String getInvestmentCompany() {
@@ -91,22 +89,17 @@ public class NormalAgent extends Agent {
 		return interest;
 	}
 
-	public int getInvestmentOverDay() {
-		return returnInvestmentDay;
-	}
-
 	public double getAskedInterest() {
 		return interest + 0.01; // TODO: make the agent ask for more or not?
 	}
 
 	public void invest(ACLMessage message) {
-		if (message == null) {
-			message = Utils.createDayOverMessage(getEnvironmentAgents(), getDay());
-		}
-
+		// TODO: check how many money the agent has
+		// TODO: check how much the stock costs
+		// TODO: buy stocks
 		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(
 			getEnvironmentAgents(),
-			new Action(ActionType.BUY_SELL_STOCK, null), // TODO: introduce stock here
+			new Action(ActionType.BUY_STOCK, null), // TODO: introduce stock here
 			message
 		)));
 	}

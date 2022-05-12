@@ -19,6 +19,6 @@ public class SendMessageBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
         agent.send(message);
-        agent.addBehaviour(initiator.getAfter());
+        initiator.activateNextBehaviour(agent);
     }
 }

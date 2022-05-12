@@ -77,6 +77,7 @@ public class GivePermissionListener implements MessageListener {
         );
 
         // Start the Behaviours
-        agent.addBehaviour(queuedBehaviours.remove());
+        Initiator initiator = new Initiator(queuedBehaviours);
+        initiator.activateNextBehaviour(agent);
     }
 }

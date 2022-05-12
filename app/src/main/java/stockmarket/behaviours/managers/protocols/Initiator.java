@@ -3,6 +3,7 @@ package stockmarket.behaviours.managers.protocols;
 import java.util.Date;
 import java.util.Queue;
 import java.util.Set;
+import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.utils.Action;
@@ -38,10 +39,17 @@ public class Initiator {
 		return receivers.size();
 	}
 
-	public Behaviour getAfter() {
+	private Behaviour getAfter() {
 		if (after == null || after.isEmpty()) {
 			return null;
 		}
 		return after.remove();
+	}
+
+	public void activateNextBehaviour(Agent agent) {
+		Behaviour behaviour = getAfter();
+		if (behaviour != null) {
+			agent.addBehaviour(behaviour);
+		}
 	}
 }

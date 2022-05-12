@@ -34,7 +34,7 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
             Map<String, Double> stockPrices = Utils.getSingleMapFromJson(inform.getContent());
             agent.setStockPrices(stockPrices);
         }
-        myAgent.addBehaviour(initiator.getAfter());
+        initiator.activateNextBehaviour(myAgent);
         Utils.log(inform.getSender(), "Successfully performed the requested action");
     }
 

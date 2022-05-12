@@ -35,6 +35,6 @@ public class DecideInvestmentBehaviour extends OneShotBehaviour {
         }
         agent.setInvestments(bestCompany, bestProfit);
 
-        agent.addBehaviour(initiator.getAfter());
+        initiator.activateNextBehaviour(agent);
     }
 }

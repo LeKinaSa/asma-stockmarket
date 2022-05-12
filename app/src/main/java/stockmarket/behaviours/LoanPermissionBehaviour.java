@@ -3,6 +3,7 @@ package stockmarket.behaviours;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
+import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class LoanPermissionBehaviour extends CyclicBehaviour {
@@ -17,7 +18,7 @@ public class LoanPermissionBehaviour extends CyclicBehaviour {
         if (agent.getLoanListener().allReceived(agent.getNAgents())) {
             String betterOffer = agent.getLoanListener().getHighestOffer();
             ACLMessage message = Utils.createLoanPermissionMessage(agent.getAgents(), betterOffer);
-            agent.addBehaviour(new SendMessageBehaviour(agent, message, null));
+            agent.addBehaviour(new SendMessageBehaviour(agent, message, new Initiator(null)));
         }
     }
 }

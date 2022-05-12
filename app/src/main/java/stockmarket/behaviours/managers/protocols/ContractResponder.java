@@ -82,6 +82,7 @@ public class ContractResponder implements Listener {
 		);
 
 		// Start the Behaviours
-		agent.addBehaviour(queuedBehaviours.remove());
+		Initiator initiator = new Initiator(queuedBehaviours);
+		initiator.activateNextBehaviour(agent);
 	}
 }

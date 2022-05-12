@@ -51,7 +51,9 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
                 new Initiator(queuedBehaviours)
             )
         );
-        agent.addBehaviour(queuedBehaviours.remove());
+
+        Initiator initiator = new Initiator(queuedBehaviours);
+        initiator.activateNextBehaviour(agent);
     }
 
     private ACLMessage getNewDayMessage(int newDay) {

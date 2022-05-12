@@ -29,7 +29,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
         -- nResponders;
         if (nResponders == 0) {
             Utils.log(inform.getSender(), "Successfully performed the requested action");
-            agent.addBehaviour(initiator.getAfter());
+            initiator.activateNextBehaviour(agent);
         }
     }
 

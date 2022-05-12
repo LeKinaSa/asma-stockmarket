@@ -4,12 +4,17 @@ import java.util.Map;
 import java.util.Vector;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREInitiator;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
+    private MessageTemplate checkStockPricesTemplate = Utils.getMessageTemplate(
+        FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.INFORM, ActionType.CHECK_STOCK_PRICES
+    );
     private final NormalAgent agent;
     private final Initiator initiator;
     private int nResponders;
@@ -25,7 +30,7 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
 
     @Override
     protected void handleInform(ACLMessage inform) {
-        if (true) { // TODO
+        if (checkStockPricesTemplate.match(inform)) {
             Map<String, Double> stockPrices = Utils.getSingleMapFromJson(inform.getContent());
             agent.setStockPrices(stockPrices);
         }

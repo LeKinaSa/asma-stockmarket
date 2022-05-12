@@ -3,10 +3,13 @@ package stockmarket.behaviours;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
@@ -26,17 +29,27 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
     public void action() {
         if (agent.getDayListener().canPassToNextDay(agent.getNAgents())) {
             int nextDay = agent.getDayListener().nextDay();
-            sendNewDayMessage(nextDay);
-            sendOracleTipMessage(nextDay);
+            startDay(nextDay);
         }
     }
 
-    public void sendNewDayMessage(int newDay) {
-        ACLMessage message = Utils.createNewDayMessage(agent.getAgents(), newDay);
-        agent.addBehaviour(new SendMessageBehaviour(agent, message));
+    public void startDay(int nextDay) {
+        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+        queuedBehaviours.add(
+            oracleTipBehaviour(nextDay)
+        );
+        queuedBehaviours.add(
+            newDayBehaviour(nextDay)
+        );
+        agent.addBehaviour(queuedBehaviours.remove());
     }
 
-    public void sendOracleTipMessage(int newDay) {
+    private Behaviour newDayBehaviour(int newDay) {
+        ACLMessage message = Utils.createNewDayMessage(agent.getAgents(), newDay);
+        return new SendMessageBehaviour(agent, message);
+    }
+
+    private Behaviour oracleTipBehaviour(int newDay) {
         Random random = new Random();
         int randomIndex;
 
@@ -64,6 +77,6 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         }
 
         ACLMessage message = Utils.createOracleTipMessage(receivers, Utils.gson.toJson(tips));
-        agent.addBehaviour(new SendMessageBehaviour(agent, message));
+        return new SendMessageBehaviour(agent, message);
     }
 }

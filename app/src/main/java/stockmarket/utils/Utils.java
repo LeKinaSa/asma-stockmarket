@@ -220,8 +220,18 @@ public class Utils {
         return stocks;
     }
 
-    public static Map<String, Map<String, Double>> getMapFromJson(String json) {
+    public static Map<String, Map<String, Double>> getDoubleMapFromJson(String json) {
         interface StockPrices extends Map<String, Map<String, Double>> {};
+        StockPrices map = null;
+        try {
+            map = Utils.gson.fromJson(json, StockPrices.class);
+        }
+        catch (JsonSyntaxException ignored) {}
+        return map;
+    }
+
+    public static Map<String, Double> getSingleMapFromJson(String json) {
+        interface StockPrices extends Map<String, Double> {};
         StockPrices map = null;
         try {
             map = Utils.gson.fromJson(json, StockPrices.class);

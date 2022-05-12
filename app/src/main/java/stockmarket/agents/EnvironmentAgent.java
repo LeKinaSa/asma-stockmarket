@@ -17,10 +17,10 @@ import stockmarket.utils.Utils;
 
 public class EnvironmentAgent extends Agent {
     private final Set<String> agents = new HashSet<>();
-    private final ResponderManager manager = new ResponderManager(this);
-    private final DayOverListener dayListener = new DayOverListener();
-    private final EnvironmentBehaviour newDayBehaviour = new EnvironmentBehaviour(this);
+    private final ResponderManager           manager = new ResponderManager(this);
+    private final DayOverListener        dayListener = new DayOverListener();
     private final AskPermissionListener loanListener = new AskPermissionListener();
+    private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
 
     public void setup() {
@@ -41,7 +41,7 @@ public class EnvironmentAgent extends Agent {
         Utils.sleep(1);
 
         // Start Simulation
-        newDayBehaviour.sendNewDayMessage(0);
+        newDayBehaviour.startDay(0);
 
         Utils.log(this, "Ready");
     }

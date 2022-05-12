@@ -1,27 +1,34 @@
 package stockmarket.behaviours.protocols;
 
+import java.util.Map;
 import java.util.Vector;
-import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
+import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
+    private final NormalAgent agent;
     private final Initiator initiator;
     private int nResponders;
 
-    public RequestInitiatorBehaviour(Agent agent, Initiator initiator) {
+    public RequestInitiatorBehaviour(NormalAgent agent, Initiator initiator) {
         super(agent, initiator.getMessage(
             FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST
         ));
+        this.agent = agent;
         this.initiator = initiator;
         this.nResponders = initiator.getNResponders();
     }
 
     @Override
     protected void handleInform(ACLMessage inform) {
+        if (true) { // TODO
+            Map<String, Double> stockPrices = Utils.getSingleMapFromJson(inform.getContent());
+            agent.setStockPrices(stockPrices);
+        }
         myAgent.addBehaviour(initiator.getAfter());
         Utils.log(inform.getSender(), "Successfully performed the requested action");
     }

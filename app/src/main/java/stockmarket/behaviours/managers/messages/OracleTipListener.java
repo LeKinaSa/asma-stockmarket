@@ -18,7 +18,7 @@ public class OracleTipListener implements MessageListener {
 
     @Override
     public void actionOnReceive(ACLMessage message) {
-        Map<String, Map<String, Double>> tipsReceived = Utils.getMapFromJson(message.getContent());
+        Map<String, Map<String, Double>> tipsReceived = Utils.getDoubleMapFromJson(message.getContent());
         if (tipsReceived == null) {
             return;
         }

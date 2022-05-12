@@ -30,6 +30,7 @@ public class NormalAgent extends Agent {
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
 	private final ContractResponder           loanListener = new ContractResponder(this);
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this);
+	private Map<String, Double> stockPrices = null;
 	private double bankBalance;
 	private String companyToInvest;
 	private double interest;
@@ -95,8 +96,16 @@ public class NormalAgent extends Agent {
 		return oracleTipListener.getTips();
 	}
 
-	public void removePreviousDayTips() {
-		oracleTipListener.removeDayFromTips(getDay() - 1);
+	public void removeDayTips() {
+		oracleTipListener.removeDayFromTips(getDay());
+	}
+
+	public void setStockPrices(Map<String, Double> stockPrices) {
+		this.stockPrices = stockPrices;
+	}
+
+	public Map<String, Double> getStockPrices() {
+		return stockPrices;
 	}
 
 	public void setBankBalance(double bankBalance) {

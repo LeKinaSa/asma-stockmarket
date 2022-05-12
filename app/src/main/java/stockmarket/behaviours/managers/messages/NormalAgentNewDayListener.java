@@ -25,7 +25,8 @@ public class NormalAgentNewDayListener extends NewDayListener {
     public void actionOnReceive(ACLMessage message) {
         super.actionOnReceive(message);
 
-        agent.removePreviousDayTips();
+        agent.removeDayTips();
+        agent.setInvestments(null, 0);
 
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
 
@@ -37,7 +38,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
                     agent.getEnvironmentAgents(),
                     new Action(ActionType.SELL_STOCK),
                     queuedBehaviours
-                ) 
+                )
             )
         );
 

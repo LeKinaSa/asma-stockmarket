@@ -1,8 +1,6 @@
 package stockmarket.behaviours;
 
 import java.util.Map;
-import java.util.Queue;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
@@ -19,7 +17,7 @@ public class DecideInvestmentBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
         Map<String, Map<String, Double>> tips = agent.getTips();
-        Map<String, Double> currentStocks = agent.getStocks(); // TODO
+        Map<String, Double> currentStocks = agent.getStockPrices();
 
         double currentPrice, futurePrice;
         double profit, bestProfit = 0;

@@ -132,6 +132,7 @@ public class ResponderManager extends RequestResponder {
                 StockEntry stockEntry;
                 synchronized (stockMarketEntries) {
                     stockEntry = stockMarketEntries.get(agentName);
+                    stockMarketEntries.remove(agentName);
                 }
                 if (stockEntry == null) {
                     return "No Stocks to Sell.";

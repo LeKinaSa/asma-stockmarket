@@ -29,6 +29,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
     public void action() {
         if (agent.getDayListener().canPassToNextDay(agent.getNAgents())) {
             int nextDay = agent.getDayListener().nextDay();
+            Utils.log(agent, "Starting Day " + nextDay);
             startDay(nextDay);
         }
     }

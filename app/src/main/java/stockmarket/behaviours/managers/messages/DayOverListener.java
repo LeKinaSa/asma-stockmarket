@@ -31,7 +31,7 @@ public class DayOverListener implements MessageListener {
     }
 
     public boolean canPassToNextDay(int numberOfAgents) {
-        return numberOfAgents > 0 && numberOfAgents == receivedMessages;
+        return numberOfAgents > 0 && (numberOfAgents == receivedMessages || day == 0);
     }
 
     public int nextDay() {

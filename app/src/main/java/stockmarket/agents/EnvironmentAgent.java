@@ -30,18 +30,14 @@ public class EnvironmentAgent extends Agent {
         // Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents));
 
+        Utils.sleep(1);
+
 		// Repetitive Behaviours
         addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
         addBehaviour(new MessageListenerBehaviour (this, dayListener));  // Time
         addBehaviour(new MessageListenerBehaviour (this, loanListener)); // Order
         addBehaviour(newDayBehaviour);
         addBehaviour(loanPermissionBehaviour);
-
-        // Make sure all the other agents have initialized
-        Utils.sleep(1);
-
-        // Start Simulation
-        newDayBehaviour.startDay(0);
 
         Utils.log(this, "Ready");
     }

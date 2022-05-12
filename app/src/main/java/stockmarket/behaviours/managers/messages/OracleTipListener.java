@@ -2,8 +2,6 @@ package stockmarket.behaviours.managers.messages;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
@@ -11,7 +9,6 @@ import stockmarket.utils.Utils;
 
 public class OracleTipListener implements MessageListener {
     private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ORACLE_TIP);
-    private static final Gson gson = new Gson();
 	private final Map<String, Map<String, Double>> tips = new HashMap<>();
 
     @Override
@@ -21,11 +18,8 @@ public class OracleTipListener implements MessageListener {
 
     @Override
     public void actionOnReceive(ACLMessage message) {
-        Map<String, Map<String, Double>> tipsReceived;
-        try {
-            tipsReceived = gson.fromJson(message.getContent(), Map.class);
-        }
-        catch (JsonSyntaxException exception) {
+        Map<String, Map<String, Double>> tipsReceived = Utils.getDoubleMapFromJson(message.getContent());
+        if (tipsReceived == null) {
             return;
         }
 

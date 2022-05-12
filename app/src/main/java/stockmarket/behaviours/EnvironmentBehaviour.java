@@ -7,14 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import com.google.gson.Gson;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
 import stockmarket.utils.Utils;
 
 public class EnvironmentBehaviour extends CyclicBehaviour {
-    private static final Gson gson = new Gson();
     private static final int AGENTS_TO_TIP  = 1;
     private static final int TIP_DAYS       = 3;
     private static final int NUMBER_OF_TIPS = 10;
@@ -65,7 +63,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
             tips.put(String.valueOf(dayOfTheTip), dailyTips);
         }
 
-        ACLMessage message = Utils.createOracleTipMessage(receivers, gson.toJson(tips));
+        ACLMessage message = Utils.createOracleTipMessage(receivers, Utils.gson.toJson(tips));
         agent.send(message);
     }
 }

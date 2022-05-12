@@ -1,8 +1,6 @@
 package stockmarket.behaviours.protocols;
 
 import java.util.Vector;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
@@ -12,7 +10,6 @@ import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 
 public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
-    private static final Gson gson = new Gson();
     private final NormalAgent agent;
     private int nResponders;
 
@@ -72,11 +69,8 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
         for (Object object : responses) {
             message = (ACLMessage) object;
             if (message.getPerformative() == ACLMessage.PROPOSE) {
-                Loan loan;
-                try {
-                    loan = gson.fromJson(message.getContent(), Loan.class);
-                }
-                catch (JsonSyntaxException exception) {
+                Loan loan = Utils.getLoanFromJson(message.getContent());
+                if (loan == null) {
                     loan = new Loan();
                 }
 
@@ -85,7 +79,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
                     loan.deny();
                 }
 
-                reply = Utils.createReply(message, ACLMessage.ACCEPT_PROPOSAL, gson.toJson(loan));
+                reply = Utils.createReply(message, ACLMessage.ACCEPT_PROPOSAL, loan.toString());
                 acceptances.addElement(reply);
             }
         }

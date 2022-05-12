@@ -1,15 +1,7 @@
 package stockmarket.behaviours.managers.protocols;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
 import stockmarket.utils.Action;
@@ -18,8 +10,6 @@ import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class ResponderManager extends RequestResponder {
-    private static final Gson gson = new Gson();
-    private static final File file = new File("data/formatted_stock_prices.json");
     private final Map<String, Map<String, Double >> stockPrices;
     private final Map<String, Map<String, Integer>> stockMarketEntries = new HashMap<>();
     private final Map<String, Double> bankAccount = new HashMap<>();
@@ -27,7 +17,7 @@ public class ResponderManager extends RequestResponder {
 
     public ResponderManager(EnvironmentAgent agent) {
         this.agent = agent;
-        this.stockPrices = loadStockPrices();
+        this.stockPrices = Utils.loadStockPrices(agent);
     }
 
     @Override
@@ -62,11 +52,8 @@ public class ResponderManager extends RequestResponder {
                 return "Balance is at " + balance + ".";
             }
             case TRANSFER_MONEY: {
-                MoneyTransfer transfer = null;
-                try {
-                    transfer = gson.fromJson(action.getInformation(), MoneyTransfer.class);
-                }
-                catch (JsonSyntaxException e) {
+                MoneyTransfer transfer = Utils.getTransferFromJson(action.getInformation());
+                if (transfer == null) {
                     return Utils.invalidAction("Invalid Transfer");
                 }
 
@@ -87,11 +74,10 @@ public class ResponderManager extends RequestResponder {
                 return transfer.getAmount() + " transfered. Balance is now at " + balance + ".";
             }
             case START_STOCK: {
-                Map<String, Integer> entry = new HashMap<>();
-                try {
-                    entry = gson.fromJson(action.getInformation(), Map.class);
+                Map<String, Integer> entry = Utils.getSingleMapFromJson(action.getInformation());
+                if (entry == null) {
+                    entry = new HashMap<>();
                 }
-                catch (JsonSyntaxException e) {}
 
                 for (String stock : entry.keySet()) {
                     if (entry.get(stock) < 0) {
@@ -111,17 +97,14 @@ public class ResponderManager extends RequestResponder {
                 synchronized (stockMarketEntries) {
                     entry = stockMarketEntries.get(agentName);
                 }
-                return "Owned Stocks: " + gson.toJson(entry) + ".";
+                return "Owned Stocks: " + Utils.gson.toJson(entry) + ".";
             }
             case CHECK_STOCK_PRICES: {
-                return "Current Stock Prices (day " + agent.getDay() + "): " + gson.toJson(getDailyStocks()) + ".";
+                return "Current Stock Prices (day " + agent.getDay() + "): " + Utils.gson.toJson(getDailyStocks()) + ".";
             }
             case BUY_STOCK: {
-                Map<String, Integer> exchangeEntry;
-                try {
-                    exchangeEntry = gson.fromJson(action.getInformation(), Map.class);
-                }
-                catch (JsonSyntaxException e) {
+                Map<String, Integer> exchangeEntry = Utils.getSingleMapFromJson(action.getInformation());
+                if (exchangeEntry == null) {
                     return Utils.invalidAction("Invalid Stock Exchange");
                 }
 
@@ -182,17 +165,6 @@ public class ResponderManager extends RequestResponder {
                 return Utils.invalidAction("Action Not Supported");
             }
         }
-    }
-
-    public Map<String, Map<String, Double>> loadStockPrices() {
-        Map<String, Map<String, Double >> stocks = null;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-            stocks = gson.fromJson(reader, Map.class);
-        }
-        catch (JsonSyntaxException | IOException exception) {
-            Utils.log(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
-        }
-        return stocks;
     }
 
     public Map<String, Map<String, Double>> getStockPrices() {

@@ -13,17 +13,14 @@ import stockmarket.utils.Utils;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.Gson;
 
 class AppTest {
     @Test void dependenciesTest() {
-        Gson gson = new Gson();
-
         MoneyTransfer transfer = new MoneyTransfer(null, 0);
-        String transferStr = gson.toJson(transfer);
+        String transferStr = transfer.toString();
         
-        MoneyTransfer transferCopy = gson.fromJson(gson.toJson(transfer), MoneyTransfer.class);
-        String transferCopyStr = gson.toJson(transferCopy);
+        MoneyTransfer transferCopy = Utils.gson.fromJson(transfer.toString(), MoneyTransfer.class);
+        String transferCopyStr = transferCopy.toString();
         
         assertEquals(transferCopyStr, transferStr);
     }

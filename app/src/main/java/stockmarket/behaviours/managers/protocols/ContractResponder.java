@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -19,7 +17,6 @@ import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class ContractResponder implements Listener {
-	private final Gson gson = new Gson();
 	private final static MessageTemplate template = Utils.getMessageTemplate(
 		FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP, null
 	);
@@ -35,11 +32,8 @@ public class ContractResponder implements Listener {
 	}
 
 	public void performAction(ACLMessage message) {
-		Loan loan;
-		try {
-			loan = gson.fromJson(message.getContent(), Loan.class);
-		}
-		catch (JsonSyntaxException exception) {
+		Loan loan = Utils.getLoanFromJson(message.getContent());
+		if (loan == null) {
 			Utils.log(agent, Utils.invalidAction("Invalid Loan"));
 			return;
 		}
@@ -52,7 +46,7 @@ public class ContractResponder implements Listener {
 				agent,
 				new Initiator(
 					agent.getEnvironmentAgents(),
-					new Action(ActionType.TRANSFER_MONEY, gson.toJson(transfer))
+					new Action(ActionType.TRANSFER_MONEY, transfer.toString())
 				)
 			)); // TODO: send message after
 		}

@@ -1,7 +1,5 @@
 package stockmarket.utils;
 
-import com.google.gson.Gson;
-
 public class MoneyTransfer {
     private String to;
     private double amount;
@@ -21,7 +19,6 @@ public class MoneyTransfer {
 
     @Override
     public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+        return Utils.gson.toJson(this);
     }
 }

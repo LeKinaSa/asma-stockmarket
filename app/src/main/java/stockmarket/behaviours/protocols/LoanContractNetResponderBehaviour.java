@@ -1,6 +1,5 @@
 package stockmarket.behaviours.protocols;
 
-import com.google.gson.Gson;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
@@ -12,7 +11,6 @@ import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 
 public class LoanContractNetResponderBehaviour extends ContractNetResponder {
-    private static final Gson gson = new Gson();
     private final NormalAgent agent;
     private final ContractResponder responder;
 
@@ -29,7 +27,7 @@ public class LoanContractNetResponderBehaviour extends ContractNetResponder {
 
         Loan loan = new Loan(agent.getAskedInterest(), agent.getCurrentBankBalance());
 
-        return Utils.createReply(cfp, ACLMessage.PROPOSE, gson.toJson(loan));
+        return Utils.createReply(cfp, ACLMessage.PROPOSE, loan.toString());
     }
 
     @Override

@@ -1,8 +1,17 @@
 package stockmarket.utils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -184,6 +193,57 @@ public class Utils {
         else {
             Utils.log(agent, "No Agent from Type " + type + " Found");
         }
+    }
+
+    // Message Content
+    public static final Gson gson = new Gson();
+
+    public static Map<String, Map<String, Double>> loadStockPrices(Agent agent) {
+        final File file = new File("data/formatted_stock_prices.json");
+        Map<String, Map<String, Double>> stocks = null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+            stocks = gson.fromJson(reader, Map.class);
+        }
+        catch (JsonSyntaxException | IOException exception) {
+            Utils.log(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
+        }
+        return stocks;
+    }
+
+    public static Map<String, Map<String, Double>> getDoubleMapFromJson(String json) {
+        Map<String, Map<String, Double>> map = null;
+        try {
+            map = Utils.gson.fromJson(json, Map.class);
+        }
+        catch (JsonSyntaxException ignored) {}
+        return map;
+    }
+
+    public static Map<String, Integer> getSingleMapFromJson(String json) {
+        Map<String, Integer> entry = null;
+        try {
+            entry = Utils.gson.fromJson(json, Map.class);
+        }
+        catch (JsonSyntaxException ignored) {}
+        return entry;
+    }
+
+    public static MoneyTransfer getTransferFromJson(String json) {
+        MoneyTransfer transfer = null;
+        try {
+            transfer = Utils.gson.fromJson(json, MoneyTransfer.class);
+        }
+        catch (JsonSyntaxException ignored) {}
+        return transfer;
+    }
+
+    public static Loan getLoanFromJson(String json) {
+        Loan loan = null;
+		try {
+			loan = gson.fromJson(json, Loan.class);
+		}
+		catch (JsonSyntaxException ignored) {}
+        return loan;
     }
 
     // Sleep

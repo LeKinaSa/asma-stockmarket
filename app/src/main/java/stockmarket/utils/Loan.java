@@ -25,4 +25,9 @@ public class Loan {
     public void deny() {
         amount = 0;
     }
+
+    @Override
+    public String toString() {
+        return Utils.gson.toJson(this);
+    }
 }

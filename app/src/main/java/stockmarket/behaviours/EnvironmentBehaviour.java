@@ -13,6 +13,7 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
+import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class EnvironmentBehaviour extends CyclicBehaviour {
@@ -37,20 +38,27 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
     public void startDay(int nextDay) {
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         queuedBehaviours.add(
-            oracleTipBehaviour(nextDay)
+            new SendMessageBehaviour(
+                agent,
+                getOracleTipMessage(nextDay),
+                new Initiator(queuedBehaviours)
+            )
         );
         queuedBehaviours.add(
-            newDayBehaviour(nextDay)
+            new SendMessageBehaviour(
+                agent,
+                getNewDayMessage(nextDay),
+                new Initiator(queuedBehaviours)
+            )
         );
         agent.addBehaviour(queuedBehaviours.remove());
     }
 
-    private Behaviour newDayBehaviour(int newDay) {
-        ACLMessage message = Utils.createNewDayMessage(agent.getAgents(), newDay);
-        return new SendMessageBehaviour(agent, message);
+    private ACLMessage getNewDayMessage(int newDay) {
+        return Utils.createNewDayMessage(agent.getAgents(), newDay);
     }
 
-    private Behaviour oracleTipBehaviour(int newDay) {
+    private ACLMessage getOracleTipMessage(int newDay) {
         Random random = new Random();
         int randomIndex;
 
@@ -77,7 +85,6 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
             tips.put(String.valueOf(dayOfTheTip), dailyTips);
         }
 
-        ACLMessage message = Utils.createOracleTipMessage(receivers, Utils.gson.toJson(tips));
-        return new SendMessageBehaviour(agent, message);
+        return Utils.createOracleTipMessage(receivers, Utils.gson.toJson(tips));
     }
 }

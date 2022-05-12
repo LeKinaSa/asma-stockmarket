@@ -19,6 +19,12 @@ public class Initiator {
 		this.after     = after;
 	}
 
+	public Initiator(Queue<Behaviour> after) {
+		this.receivers = null;
+		this.action    = null;
+		this.after     = after;
+	}
+
 	public ACLMessage getMessage(String protocol, int performative) {
 		ACLMessage message = Utils.createMessage(
             protocol, performative,

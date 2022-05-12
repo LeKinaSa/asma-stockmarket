@@ -72,7 +72,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
         queuedBehaviours.add(
             new DecideInvestmentBehaviour(
                 agent,
-                new Initiator(null, null, queuedBehaviours)
+                new Initiator(queuedBehaviours)
             )
         );
 
@@ -83,7 +83,8 @@ public class NormalAgentNewDayListener extends NewDayListener {
                 Utils.createAskForLoanPermissionMessage(
                     agent.getEnvironmentAgents(),
                     agent
-                )
+                ),
+                new Initiator(queuedBehaviours)
             )
         );
     }

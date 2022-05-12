@@ -32,7 +32,7 @@ public class GivePermissionListener implements MessageListener {
         String sender = message.getSender().getLocalName();
         if (!agent.getLocalName().equals(sender)) {
             ACLMessage reply = Utils.createDayOverMessage(agent.getEnvironmentAgents(), agent.getDay());
-            agent.addBehaviour(new SendMessageBehaviour(agent, reply));
+            agent.addBehaviour(new SendMessageBehaviour(agent, reply, new Initiator(null)));
             return;
         }
 
@@ -71,7 +71,8 @@ public class GivePermissionListener implements MessageListener {
                 Utils.createDayOverMessage(
                     agent.getEnvironmentAgents(),
                     agent.getDay()
-                )
+                ),
+                new Initiator(queuedBehaviours)
             )
         );
 

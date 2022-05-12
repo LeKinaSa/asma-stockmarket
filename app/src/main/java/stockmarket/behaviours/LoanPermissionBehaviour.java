@@ -17,7 +17,7 @@ public class LoanPermissionBehaviour extends CyclicBehaviour {
         if (agent.getLoanListener().allReceived(agent.getNAgents())) {
             String betterOffer = agent.getLoanListener().getHighestOffer();
             ACLMessage message = Utils.createLoanPermissionMessage(agent.getAgents(), betterOffer);
-            agent.addBehaviour(new SendMessageBehaviour(agent, message));
+            agent.addBehaviour(new SendMessageBehaviour(agent, message, null));
         }
     }
 }

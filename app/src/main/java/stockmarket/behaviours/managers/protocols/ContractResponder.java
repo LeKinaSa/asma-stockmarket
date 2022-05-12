@@ -76,7 +76,8 @@ public class ContractResponder implements Listener {
 		queuedBehaviours.add(
 			new SendMessageBehaviour(
 				agent,
-				Utils.createFinishedMessage(receivers)
+				Utils.createFinishedMessage(receivers),
+				new Initiator(queuedBehaviours)
 			)
 		);
 

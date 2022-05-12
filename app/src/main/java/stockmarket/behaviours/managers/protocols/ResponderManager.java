@@ -7,11 +7,12 @@ import stockmarket.agents.EnvironmentAgent;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
+import stockmarket.utils.StockEntry;
 import stockmarket.utils.Utils;
 
 public class ResponderManager extends RequestResponder {
     private final Map<String, Map<String, Double >> stockPrices;
-    private final Map<String, Map<String, Integer>> stockMarketEntries = new HashMap<>();
+    private final Map<String, StockEntry> stockMarketEntries = new HashMap<>();
     private final Map<String, Double> bankAccount = new HashMap<>();
     private final EnvironmentAgent agent;
 
@@ -102,64 +103,68 @@ public class ResponderManager extends RequestResponder {
             case CHECK_STOCK_PRICES: {
                 return "Current Stock Prices (day " + agent.getDay() + "): " + Utils.gson.toJson(getDailyStocks()) + ".";
             }
-            case BUY_SELL_STOCK: {
-                Map<String, Integer> exchangeEntry = Utils.getSingleMapFromJson(action.getInformation());
-                if (exchangeEntry == null) {
-                    return Utils.invalidAction("Invalid Stock Exchange");
+            case BUY_STOCK: {
+                // Buy Max Possible Stocks
+                String company = request.getContent();
+                Double price = getDailyPrice(company);
+                if (price == null) {
+                    return Utils.invalidAction("Invalid Company");
+                }
+                if (price <= 0) {
+                    return Utils.invalidAction("Invalid Stock Price");
                 }
 
-                // Check Request Validity
-                Map<String, Integer> stockEntry;
+                Double money;
+                int buy;
+                StockEntry stockEntry;
+                double rest;
+                synchronized (bankAccount) {
+                    money = bankAccount.get(agentName);
+                    if (money == null) {
+                        return Utils.invalidAction("Agent doesn't have a Bank Account.");
+                    }
+                    buy = (int) (money / price);
+                    rest = money - buy * price;
+
+                    bankAccount.put(agentName, rest);
+                }
+
+                stockEntry = new StockEntry(company, buy);
+                synchronized (stockMarketEntries) {
+                    stockMarketEntries.put(agentName, stockEntry);
+                }
+
+                return "Buy Stocks Completed with Success.";
+            }
+            case SELL_STOCK: {
+                // Sell Owned Stocks
+                StockEntry stockEntry;
                 synchronized (stockMarketEntries) {
                     stockEntry = stockMarketEntries.get(agentName);
                 }
-                Integer amount;
-                for (String stock : exchangeEntry.keySet()) {
-                    amount = exchangeEntry.get(stock);
-                    if (amount == null) {
-                        // Amount can't be null
-                        return Utils.invalidAction("Invalid Amount");
-                    }
-
-                    if (!stockEntry.containsKey(stock) && amount < 0) {
-                        // Amount must be positive when agent doesn't own any stocks of that type
-                        return Utils.invalidAction("No Stock to Sell");
-                    }
-
-                    if (!getDailyStocks().containsKey(stock)) {
-                        // Stock doesn't exist
-                        return Utils.invalidAction("Invalid stock");
-                    }
+                if (stockEntry == null) {
+                    return "No Stocks to Sell.";
                 }
 
-                double total = 0D;
-                for (String stock : exchangeEntry.keySet()) {
-                    amount = exchangeEntry.get(stock);
-                    total += amount * getDailyPrice(stock);
+                Double price = getDailyPrice(stockEntry.getCompany());
+                if (price == null) {
+                    return Utils.invalidAction("Invalid Company");
+                }
+                if (price <= 0) {
+                    return Utils.invalidAction("Invalid Stock Price");
                 }
 
-                MoneyTransfer transfer = new MoneyTransfer(agentName, total);
+                Double total = price * stockEntry.getStocks();
+                Double balance;
                 synchronized (bankAccount) {
-                    if (!bankAccount.containsKey(transfer.getTo())) {
-                        return Utils.invalidAction("Unknown Agent is Managing the Stocks");
+                    balance = bankAccount.get(agentName);
+                    if (balance == null) {
+                        return Utils.invalidAction("Agent doesn't have a Bank Account.");
                     }
-                    if (transfer.getAmount() < 0 && -transfer.getAmount() > bankAccount.get(transfer.getTo())) {
-                        return Utils.invalidAction("Not Enough Money for These Stocks");
-                    }
-                    bankAccount.put(agentName, bankAccount.get(transfer.getTo()) + transfer.getAmount());
+                    bankAccount.put(agentName, balance + total);
                 }
 
-                int newAmount, oldAmount;
-                synchronized (stockMarketEntries) {
-                    for (String stock : exchangeEntry.keySet()) {
-                        amount = exchangeEntry.get(stock);
-                        oldAmount = (!stockEntry.containsKey(stock)) ? 0 : stockEntry.get(stock); 
-                        newAmount = oldAmount + amount;
-                        stockEntry.put(stock, newAmount);
-                    }
-                }
-
-                return "Stock Exchange Completed with Success.";
+                return "Sell Stocks Completed with Success.";
             }
             default: {
                 return Utils.invalidAction("Action Not Supported");

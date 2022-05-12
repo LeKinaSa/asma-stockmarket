@@ -43,7 +43,7 @@ public class NormalAgentNewDayListener extends NewDayListener {
                 agent.addBehaviour(new RequestInitiatorBehaviour(
                     agent, new Initiator(
                         agent.getEnvironmentAgents(),
-                        new Action(ActionType.BUY_STOCK, String.valueOf(-nStocks)),
+                        new Action(ActionType.BUY_SELL_STOCK, String.valueOf(-nStocks)),
                         null // TODO: check
                     )
                 ));

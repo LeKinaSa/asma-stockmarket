@@ -106,7 +106,7 @@ public class NormalAgent extends Agent {
 
 		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(
 			getEnvironmentAgents(),
-			new Action(ActionType.BUY_STOCK, null), // TODO: introduce stock here
+			new Action(ActionType.BUY_SELL_STOCK, null), // TODO: introduce stock here
 			message
 		)));
 	}

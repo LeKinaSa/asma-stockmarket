@@ -102,7 +102,7 @@ public class ResponderManager extends RequestResponder {
             case CHECK_STOCK_PRICES: {
                 return "Current Stock Prices (day " + agent.getDay() + "): " + Utils.gson.toJson(getDailyStocks()) + ".";
             }
-            case BUY_STOCK: {
+            case BUY_SELL_STOCK: {
                 Map<String, Integer> exchangeEntry = Utils.getSingleMapFromJson(action.getInformation());
                 if (exchangeEntry == null) {
                     return Utils.invalidAction("Invalid Stock Exchange");

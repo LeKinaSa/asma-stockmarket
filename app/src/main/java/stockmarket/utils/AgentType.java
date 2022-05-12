@@ -17,7 +17,7 @@ public enum AgentType {
                     ActionType.START_STOCK.toString(),
                     ActionType.CHECK_OWNED_STOCK.toString(),
                     ActionType.CHECK_STOCK_PRICES.toString(),
-                    ActionType.BUY_STOCK.toString(),
+                    ActionType.BUY_SELL_STOCK.toString(),
                     ActionType.DAY_OVER.toString(),
                     ActionType.ASK_PERMISSION.toString()
                 );

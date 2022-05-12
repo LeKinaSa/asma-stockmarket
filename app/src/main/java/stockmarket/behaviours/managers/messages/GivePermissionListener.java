@@ -4,7 +4,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
-import stockmarket.behaviours.protocols.ContractNetInitiatorBehaviour;
+import stockmarket.behaviours.protocols.LoanContractNetInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
@@ -31,7 +31,7 @@ public class GivePermissionListener implements MessageListener {
         }
 
         // Agent has Permission to Get Loans from Other Agents
-        agent.addBehaviour(new ContractNetInitiatorBehaviour(
+        agent.addBehaviour(new LoanContractNetInitiatorBehaviour(
             agent,
             new Initiator(
                 agent.getNormalAgents(),

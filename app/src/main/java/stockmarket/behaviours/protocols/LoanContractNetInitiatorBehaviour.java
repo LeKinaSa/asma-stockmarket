@@ -1,21 +1,26 @@
 package stockmarket.behaviours.protocols;
 
 import java.util.Vector;
-import jade.core.AID;
-import jade.core.Agent;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
+import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 
-public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
+public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
+    private static final Gson gson = new Gson();
+    private final NormalAgent agent;
     private int nResponders;
 
-    public ContractNetInitiatorBehaviour(Agent agent, Initiator initiator) {
+    public LoanContractNetInitiatorBehaviour(NormalAgent agent, Initiator initiator) {
         super(agent, initiator.getMessage(
             FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP
         ));
+        this.agent = agent;
         this.nResponders = initiator.getNResponders();
     }
 
@@ -58,32 +63,27 @@ public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
 
         Utils.log(myAgent, "All proposals received");
 
-        // Evaluate proposals.
-        int bestProposal = -1, proposal;
-        AID bestProposer = null;
-        ACLMessage accept = null;
+        ACLMessage message, reply;
+        double proposal, bestInterest = agent.getBestInterest();
         for (Object object : responses) {
-            ACLMessage message = (ACLMessage) object;
+            message = (ACLMessage) object;
             if (message.getPerformative() == ACLMessage.PROPOSE) {
-                ACLMessage reply = Utils.createReply(message, ACLMessage.REJECT_PROPOSAL, null);
-                acceptances.addElement(reply);
-                proposal = -1;
+                Loan loan;
                 try {
-                    proposal = Integer.parseInt(message.getContent());
+                    loan = gson.fromJson(message.getContent(), Loan.class);
                 }
-                catch (NumberFormatException ignored) {}
-                if (proposal > bestProposal) {
-                    bestProposal = proposal;
-                    bestProposer = message.getSender();
-                    accept = reply;
+                catch (JsonSyntaxException exception) {
+                    loan = new Loan();
                 }
-            }
-        }
 
-        // Accept the proposal of the best proposer
-        if (accept != null) {
-            Utils.log(myAgent, "Accepting proposal " + bestProposal + "from responder " + bestProposer.getLocalName());
-            accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                proposal = loan.getProfit();
+                if (proposal <= bestInterest) {
+                    loan.deny();
+                }
+
+                reply = Utils.createReply(message, ACLMessage.ACCEPT_PROPOSAL, gson.toJson(loan));
+                acceptances.addElement(reply);
+            }
         }
     }
 }

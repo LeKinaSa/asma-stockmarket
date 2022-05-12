@@ -9,10 +9,10 @@ import jade.proto.ContractNetResponder;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
 import stockmarket.utils.Utils;
 
-public class ContractNetResponderBehaviour extends ContractNetResponder {
+public class LoanContractNetResponderBehaviour extends ContractNetResponder {
     private final ContractResponder responder;
 
-    public ContractNetResponderBehaviour(Agent agent, ContractResponder responder) {
+    public LoanContractNetResponderBehaviour(Agent agent, ContractResponder responder) {
         super(agent, responder.getTemplate());
         this.responder = responder;
     }

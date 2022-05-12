@@ -8,7 +8,7 @@ import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
 import stockmarket.behaviours.managers.protocols.Initiator;
-import stockmarket.behaviours.protocols.ContractNetResponderBehaviour;
+import stockmarket.behaviours.protocols.LoanContractNetResponderBehaviour;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
 import stockmarket.utils.Action;
@@ -41,9 +41,9 @@ public class NormalAgent extends Agent {
 		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startOwnStocks  )));
 
 		// Repetitive Behaviours
-		addBehaviour(new MessageListenerBehaviour     (this, newDayListener));
-		addBehaviour(new MessageListenerBehaviour     (this, oracleTipListener));
-		addBehaviour(new ContractNetResponderBehaviour(this, loanListener));
+		addBehaviour(new MessageListenerBehaviour         (this, newDayListener));
+		addBehaviour(new MessageListenerBehaviour         (this, oracleTipListener));
+		addBehaviour(new LoanContractNetResponderBehaviour(this, loanListener));
 
 		Utils.log(this, "Ready");
 	}
@@ -72,4 +72,8 @@ public class NormalAgent extends Agent {
 		this.interest = interest;
 		this.returnInvestmentDay = returnInvestmentDay;
 	} // TODO: use gets too
+
+	public double getBestInterest() {
+		return interest;
+	}
 }

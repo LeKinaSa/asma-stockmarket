@@ -3,6 +3,7 @@ package stockmarket.agents;
 import java.util.HashSet;
 import java.util.Set;
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
@@ -20,7 +21,7 @@ public class NormalAgent extends Agent {
 	private final Set<String> environmentAgents = new HashSet<>();
 	private final Set<String>      normalAgents = new HashSet<>();
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
-	private final ContractResponder           loanListener = new ContractResponder();
+	private final ContractResponder           loanListener = new ContractResponder(this);
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener, loanListener);
 	private double bankBalance;
 	private String companyToInvest;
@@ -96,5 +97,12 @@ public class NormalAgent extends Agent {
 
 	public double getAskedInterest() {
 		return interest + 0.01; // TODO: make the agent ask for more or not?
+	}
+
+	public void invest(ACLMessage message) {
+		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(
+			getEnvironmentAgents(),
+			new Action(ActionType.BUY_STOCK, null) // TODO: introduce stock here
+		)));
 	}
 }

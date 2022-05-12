@@ -33,7 +33,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
 
     public void sendNewDayMessage(int newDay) {
         ACLMessage message = Utils.createNewDayMessage(agent.getAgents(), newDay);
-        agent.send(message);
+        agent.addBehaviour(new SendMessageBehaviour(agent, message));
     }
 
     public void sendOracleTipMessage(int newDay) {
@@ -64,6 +64,6 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         }
 
         ACLMessage message = Utils.createOracleTipMessage(receivers, Utils.gson.toJson(tips));
-        agent.send(message);
+        agent.addBehaviour(new SendMessageBehaviour(agent, message));
     }
 }

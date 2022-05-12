@@ -33,14 +33,6 @@ public class OracleTipListener implements MessageListener {
         }
     }
 
-    public Map<String, Double> getTipsForTheDay(int day) {
-        String dayString = String.valueOf(day);
-        if (tips.containsKey(dayString)) {
-            return tips.get(dayString);
-        }
-        return new HashMap<>();
-    }
-
     public void removeDayFromTips(int day) {
         tips.remove(String.valueOf(day));
     }

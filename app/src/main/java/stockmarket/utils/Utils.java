@@ -20,6 +20,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import stockmarket.agents.NormalAgent;
 
 public class Utils {
     // Message Related Utilitaries
@@ -95,10 +96,10 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, double interest) {
+    public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, NormalAgent agent) {
         return createMessage(
             null, ACLMessage.INFORM,
-            ActionType.ASK_PERMISSION, String.valueOf(interest),
+            ActionType.ASK_PERMISSION, String.valueOf(agent.getBestInterest()),
             receivers, null
         );
     }

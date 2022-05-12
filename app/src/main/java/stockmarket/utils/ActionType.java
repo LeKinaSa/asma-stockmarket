@@ -9,7 +9,6 @@ public enum ActionType {
     CHECK_STOCK_PRICES, // Check the Current Stock Prices
     BUY_STOCK         , // Buy Stock from a Company
     SELL_STOCK        , // Sell All Owned Stocks
-    MANAGE_MONEY      , // Place / Remove Money from an Agent's Account (must be Stock Market)
     DAY_OVER          , // The Agent has concluded its Actions for the Day
     NEW_DAY           , // New Day has Started
     ORACLE_TIP        , // Oracle Gives a Tip to an Agent

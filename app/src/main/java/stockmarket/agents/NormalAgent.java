@@ -1,6 +1,10 @@
 package stockmarket.agents;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -15,14 +19,17 @@ import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.AgentType;
+import stockmarket.utils.Loan;
+import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class NormalAgent extends Agent {
 	private final Set<String> environmentAgents = new HashSet<>();
 	private final Set<String>      normalAgents = new HashSet<>();
+	private final List<MoneyTransfer>     loans = Collections.synchronizedList(new ArrayList<>());
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
 	private final ContractResponder           loanListener = new ContractResponder(this);
-	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener, loanListener);
+	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this);
 	private double bankBalance;
 	private String companyToInvest;
 	private double interest;
@@ -68,6 +75,30 @@ public class NormalAgent extends Agent {
 		return newDayListener.getDay();
 	}
 
+	public void addLoan(ACLMessage message) {
+		String agent = message.getSender().getLocalName();
+		Loan loan = Utils.getLoanFromJson(message.getContent());
+		if (loan == null) {
+			Utils.log(this, "Error when Adding a Loan");
+			return;
+		}
+		double amount = loan.getAmount() * loan.getProfit();
+		MoneyTransfer transfer = new MoneyTransfer(agent, amount);
+		loans.add(transfer);
+	}
+
+	public List<MoneyTransfer> getLoans() {
+		return loans;
+	}
+
+	public Map<String, Map<String, Double>> getTips() {
+		return oracleTipListener.getTips();
+	}
+
+	public void removePreviousDayTips() {
+		oracleTipListener.removeDayFromTips(getDay() - 1);
+	}
+
 	public void setBankBalance(double bankBalance) {
 		this.bankBalance = bankBalance;
 	}
@@ -91,16 +122,5 @@ public class NormalAgent extends Agent {
 
 	public double getAskedInterest() {
 		return interest + 0.01; // TODO: make the agent ask for more or not?
-	}
-
-	public void invest(ACLMessage message) {
-		// TODO: check how many money the agent has
-		// TODO: check how much the stock costs
-		// TODO: buy stocks
-		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(
-			getEnvironmentAgents(),
-			new Action(ActionType.BUY_STOCK, null), // TODO: introduce stock here
-			message
-		)));
 	}
 }

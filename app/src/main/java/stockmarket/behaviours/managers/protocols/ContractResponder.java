@@ -1,15 +1,16 @@
 package stockmarket.behaviours.managers.protocols;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
+import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
+import stockmarket.behaviours.SendMessageBehaviour;
 import stockmarket.behaviours.managers.Listener;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.utils.Action;
@@ -22,7 +23,6 @@ public class ContractResponder implements Listener {
 	private final static MessageTemplate template = Utils.getMessageTemplate(
 		FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP, null
 	);
-	private final Map<String, List<MoneyTransfer>> loans = new HashMap<>();
 	private final NormalAgent agent;
 
 	public ContractResponder(NormalAgent agent) {
@@ -41,37 +41,46 @@ public class ContractResponder implements Listener {
 		}
 
 		String sender = message.getSender().getLocalName();
-		Set<String> receivers = new HashSet<>();
-		receivers.add(sender);
-		ACLMessage over = Utils.createFinishedMessage(receivers);
+		Queue<Behaviour> queuedBehaviours = new LinkedList<>();
 
 		if (loan.getAmount() > 0) {
-			// Loan Accepted
+			// Loan Accepted -> Transfer the Money
 			MoneyTransfer transfer = new MoneyTransfer(sender, loan.getAmount());
-			agent.addBehaviour(new RequestInitiatorBehaviour(
-				agent,
-				new Initiator(
-					agent.getEnvironmentAgents(),
-					new Action(ActionType.TRANSFER_MONEY, transfer.toString()),
-					over
+			queuedBehaviours.add(
+				new RequestInitiatorBehaviour(
+					agent,
+					new Initiator(
+						agent.getEnvironmentAgents(),
+						new Action(ActionType.TRANSFER_MONEY, transfer.toString()),
+						queuedBehaviours
+					)
 				)
-			));
+			);
 		}
 		else {
-			// Loan Denied
-			agent.invest(over);
+			// Loan Denied -> Buy Stocks
+			queuedBehaviours.add(
+				new RequestInitiatorBehaviour(
+					agent,
+					new Initiator(
+						agent.getEnvironmentAgents(),
+						new Action(ActionType.BUY_STOCK, agent.getInvestmentCompany()),
+						queuedBehaviours
+					)
+				)
+			);
 		}
+
+		// Send Finished Message
+		Set<String> receivers = new HashSet<>(Arrays.asList(sender));
+		queuedBehaviours.add(
+			new SendMessageBehaviour(
+				agent,
+				Utils.createFinishedMessage(receivers)
+			)
+		);
+
+		// Start the Behaviours
+		agent.addBehaviour(queuedBehaviours.remove());
 	}
-
-    public List<MoneyTransfer> getLoansForTheDay(int day) {
-        String dayString = String.valueOf(day);
-        if (loans.containsKey(dayString)) {
-            return loans.get(dayString);
-        }
-        return new ArrayList<>();
-    }
-
-    public void removeDayFromLoans(int day) {
-        loans.remove(String.valueOf(day));
-    }
 }

@@ -1,7 +1,9 @@
 package stockmarket.behaviours.managers.protocols;
 
 import java.util.Date;
+import java.util.Queue;
 import java.util.Set;
+import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.utils.Action;
 import stockmarket.utils.Utils;
@@ -9,12 +11,12 @@ import stockmarket.utils.Utils;
 public class Initiator {
     private final Set<String> receivers;
 	private final Action action;
-	private final ACLMessage overMessage;
+	private final Queue<Behaviour> after;
 
-	public Initiator(Set<String> receivers, Action action, ACLMessage overMessage) {
-		this.receivers   = receivers;
-		this.action      = action;
-		this.overMessage = overMessage;
+	public Initiator(Set<String> receivers, Action action, Queue<Behaviour> after) {
+		this.receivers = receivers;
+		this.action    = action;
+		this.after     = after;
 	}
 
 	public ACLMessage getMessage(String protocol, int performative) {
@@ -30,7 +32,10 @@ public class Initiator {
 		return receivers.size();
 	}
 
-	public ACLMessage getOverMessage() {
-		return this.overMessage;
+	public Behaviour getAfter() {
+		if (after == null || after.isEmpty()) {
+			return null;
+		}
+		return after.remove();
 	}
 }

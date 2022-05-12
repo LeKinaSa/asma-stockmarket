@@ -33,7 +33,7 @@ public class LoanContractNetResponderBehaviour extends ContractNetResponder {
     @Override
     protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
         responder.performAction(accept);
-        return Utils.createReply(accept, ACLMessage.INFORM, null);
+        return Utils.createReply(accept, ACLMessage.INFORM, accept.getContent());
     }
 
     @Override

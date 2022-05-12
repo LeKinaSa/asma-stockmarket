@@ -25,10 +25,11 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
 
     @Override
     protected void handleInform(ACLMessage inform) {
+        agent.addLoan(inform);
         -- nResponders;
         if (nResponders == 0) {
             Utils.log(inform.getSender(), "Successfully performed the requested action");
-            agent.invest(initiator.getOverMessage());
+            agent.addBehaviour(initiator.getAfter());
         }
     }
 

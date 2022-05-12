@@ -22,10 +22,7 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
 
     @Override
     protected void handleInform(ACLMessage inform) {
-        ACLMessage over = initiator.getOverMessage();
-        if (over != null) {
-            myAgent.send(over);
-        }
+        myAgent.addBehaviour(initiator.getAfter());
         Utils.log(inform.getSender(), "Successfully performed the requested action");
     }
 

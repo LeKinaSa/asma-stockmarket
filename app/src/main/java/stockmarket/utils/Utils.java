@@ -219,7 +219,7 @@ public class Utils {
         return stocks;
     }
 
-    public static Map<String, Map<String, Double>> getDoubleMapFromJson(String json) {
+    public static Map<String, Map<String, Double>> getMapFromJson(String json) {
         interface StockPrices extends Map<String, Map<String, Double>> {};
         StockPrices map = null;
         try {
@@ -229,8 +229,7 @@ public class Utils {
         return map;
     }
 
-    public static Map<String, Integer> getSingleMapFromJson(String json) {
-        interface StockEntry extends Map<String, Integer> {};
+    public static StockEntry getStockEntryFromJson(String json) {
         StockEntry entry = null;
         try {
             entry = Utils.gson.fromJson(json, StockEntry.class);

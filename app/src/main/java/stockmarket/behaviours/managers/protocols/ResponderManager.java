@@ -11,7 +11,7 @@ import stockmarket.utils.StockEntry;
 import stockmarket.utils.Utils;
 
 public class ResponderManager extends RequestResponder {
-    private final Map<String, Map<String, Double >> stockPrices;
+    private final Map<String, Map<String, Double>> stockPrices;
     private final Map<String, StockEntry> stockMarketEntries = new HashMap<>();
     private final Map<String, Double> bankAccount = new HashMap<>();
     private final EnvironmentAgent agent;
@@ -75,15 +75,9 @@ public class ResponderManager extends RequestResponder {
                 return transfer.getAmount() + " transfered. Balance is now at " + balance + ".";
             }
             case START_STOCK: {
-                Map<String, Integer> entry = Utils.getSingleMapFromJson(action.getInformation());
+                StockEntry entry = Utils.getStockEntryFromJson(action.getInformation());
                 if (entry == null) {
-                    entry = new HashMap<>();
-                }
-
-                for (String stock : entry.keySet()) {
-                    if (entry.get(stock) < 0) {
-                        entry.put(stock, 0);
-                    }
+                    return  "Start Empty Stock Market Entry";
                 }
 
                 synchronized (stockMarketEntries) {
@@ -94,11 +88,11 @@ public class ResponderManager extends RequestResponder {
                 }
             }
             case CHECK_OWNED_STOCK: {
-                Map<String, Integer> entry;
+                StockEntry entry;
                 synchronized (stockMarketEntries) {
                     entry = stockMarketEntries.get(agentName);
                 }
-                return "Owned Stocks: " + Utils.gson.toJson(entry) + ".";
+                return "Owned Stocks: " + entry.toString() + ".";
             }
             case CHECK_STOCK_PRICES: {
                 return "Current Stock Prices (day " + agent.getDay() + "): " + Utils.gson.toJson(getDailyStocks()) + ".";
@@ -107,9 +101,6 @@ public class ResponderManager extends RequestResponder {
                 // Buy Max Possible Stocks
                 String company = request.getContent();
                 Double price = getDailyPrice(company);
-                if (price == null) {
-                    return Utils.invalidAction("Invalid Company");
-                }
                 if (price <= 0) {
                     return Utils.invalidAction("Invalid Stock Price");
                 }
@@ -147,9 +138,6 @@ public class ResponderManager extends RequestResponder {
                 }
 
                 Double price = getDailyPrice(stockEntry.getCompany());
-                if (price == null) {
-                    return Utils.invalidAction("Invalid Company");
-                }
                 if (price <= 0) {
                     return Utils.invalidAction("Invalid Stock Price");
                 }

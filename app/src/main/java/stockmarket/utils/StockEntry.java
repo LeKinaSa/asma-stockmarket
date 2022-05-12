@@ -16,4 +16,9 @@ public class StockEntry {
     public int getStocks() {
         return stocks;
     }
+
+    @Override
+    public String toString() {
+        return Utils.gson.toJson(this);
+    }
 }

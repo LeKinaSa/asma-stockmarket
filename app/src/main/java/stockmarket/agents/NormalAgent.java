@@ -39,8 +39,8 @@ public class NormalAgent extends Agent {
 		// Initialize Agent, Bank Account and Owned Stocks
 		Action startBankAccount = new Action(ActionType.START_BANK,  "0");
 		Action startOwnStocks   = new Action(ActionType.START_STOCK, "{}");
-		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startBankAccount)));
-		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startOwnStocks  )));
+		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startBankAccount, null)));
+		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startOwnStocks  , null)));
 
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour         (this, newDayListener));
@@ -100,9 +100,14 @@ public class NormalAgent extends Agent {
 	}
 
 	public void invest(ACLMessage message) {
+		if (message == null) {
+			message = Utils.createDayOverMessage(getEnvironmentAgents(), getDay());
+		}
+
 		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(
 			getEnvironmentAgents(),
-			new Action(ActionType.BUY_STOCK, null) // TODO: introduce stock here
+			new Action(ActionType.BUY_STOCK, null), // TODO: introduce stock here
+			message
 		)));
 	}
 }

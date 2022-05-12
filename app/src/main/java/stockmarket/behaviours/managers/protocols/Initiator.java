@@ -9,10 +9,12 @@ import stockmarket.utils.Utils;
 public class Initiator {
     private final Set<String> receivers;
 	private final Action action;
+	private final ACLMessage overMessage;
 
-	public Initiator(Set<String> receivers, Action action) {
-		this.receivers = receivers;
-		this.action = action;
+	public Initiator(Set<String> receivers, Action action, ACLMessage overMessage) {
+		this.receivers   = receivers;
+		this.action      = action;
+		this.overMessage = overMessage;
 	}
 
 	public ACLMessage getMessage(String protocol, int performative) {
@@ -26,5 +28,9 @@ public class Initiator {
 
 	public int getNResponders() {
 		return receivers.size();
+	}
+
+	public ACLMessage getOverMessage() {
+		return this.overMessage;
 	}
 }

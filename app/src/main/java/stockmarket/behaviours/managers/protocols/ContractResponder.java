@@ -2,8 +2,10 @@ package stockmarket.behaviours.managers.protocols;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -38,22 +40,26 @@ public class ContractResponder implements Listener {
 			return;
 		}
 
+		String sender = message.getSender().getLocalName();
+		Set<String> receivers = new HashSet<>();
+		receivers.add(sender);
+		ACLMessage over = Utils.createFinishedMessage(receivers);
+
 		if (loan.getAmount() > 0) {
 			// Loan Accepted
-			String sender = message.getSender().getLocalName();
 			MoneyTransfer transfer = new MoneyTransfer(sender, loan.getAmount());
 			agent.addBehaviour(new RequestInitiatorBehaviour(
 				agent,
 				new Initiator(
 					agent.getEnvironmentAgents(),
-					new Action(ActionType.TRANSFER_MONEY, transfer.toString())
+					new Action(ActionType.TRANSFER_MONEY, transfer.toString()),
+					over
 				)
-			)); // TODO: send message after
+			));
 		}
 		else {
 			// Loan Denied
-			agent.invest(null);
-			// TODO: send message after
+			agent.invest(over);
 		}
 	}
 

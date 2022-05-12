@@ -11,6 +11,7 @@ import stockmarket.utils.Utils;
 
 public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
     private final NormalAgent agent;
+    private final Initiator initiator;
     private int nResponders;
 
     public LoanContractNetInitiatorBehaviour(NormalAgent agent, Initiator initiator) {
@@ -18,6 +19,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
             FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP
         ));
         this.agent = agent;
+        this.initiator = initiator;
         this.nResponders = initiator.getNResponders();
     }
 
@@ -26,7 +28,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
         -- nResponders;
         if (nResponders == 0) {
             Utils.log(inform.getSender(), "Successfully performed the requested action");
-            agent.invest(null); // TODO: add message
+            agent.invest(initiator.getOverMessage());
         }
     }
 

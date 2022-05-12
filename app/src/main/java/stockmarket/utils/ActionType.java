@@ -15,4 +15,5 @@ public enum ActionType {
     ASK_PERMISSION    , // Ask for Permission to Get Loans from the Other Agents
     GIVE_PERMISSION   , // Give Permission to 1 Agent to Ask for Loans
     LOAN_MONEY        , // Agent Asks for a Loan to another Agent
+    FINISHED          , // Agent has Finished Operations after the Loan Contract has Ended
 }

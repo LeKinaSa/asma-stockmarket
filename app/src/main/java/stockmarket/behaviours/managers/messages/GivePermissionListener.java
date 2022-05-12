@@ -28,6 +28,7 @@ public class GivePermissionListener implements MessageListener {
         if (!agent.getLocalName().equals(sender)) {
             ACLMessage reply = Utils.createDayOverMessage(agent.getEnvironmentAgents(), agent.getDay());
             agent.send(reply);
+            return;
         }
 
         // Agent has Permission to Get Loans from Other Agents
@@ -35,7 +36,8 @@ public class GivePermissionListener implements MessageListener {
             agent,
             new Initiator(
                 agent.getNormalAgents(),
-                new Action(ActionType.LOAN_MONEY, "")
+                new Action(ActionType.LOAN_MONEY, ""),
+                Utils.createDayOverMessage(agent.getEnvironmentAgents(), agent.getDay())
             )
         ));
     }

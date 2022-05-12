@@ -9,17 +9,23 @@ import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class RequestInitiatorBehaviour extends AchieveREInitiator {
+    private final Initiator initiator;
     private int nResponders;
 
     public RequestInitiatorBehaviour(Agent agent, Initiator initiator) {
         super(agent, initiator.getMessage(
             FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST
         ));
+        this.initiator = initiator;
         this.nResponders = initiator.getNResponders();
     }
 
     @Override
     protected void handleInform(ACLMessage inform) {
+        ACLMessage over = initiator.getOverMessage();
+        if (over != null) {
+            myAgent.send(over);
+        }
         Utils.log(inform.getSender(), "Successfully performed the requested action");
     }
 

@@ -87,6 +87,14 @@ public class Utils {
         );
     }
 
+    public static ACLMessage createFinishedMessage(Set<String> receivers) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.FINISHED, null,
+            receivers, null
+        );
+    }
+
     public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, double interest) {
         return createMessage(
             null, ACLMessage.INFORM,

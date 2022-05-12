@@ -21,14 +21,10 @@ public class ContractResponder implements Listener {
 		return template;
 	}
 
-	public int evaluateAction() {
+	public void performAction(ACLMessage message) {
 		// TODO
-		return 3;
-	}
-
-	public boolean performAction() {
-		// TODO
-		return true;
+		// 	Loan was accepted -> Transfer money to the other agent
+		// 	Loan was not accepted -> Invest in own stocks (function)
 	}
 
     public List<MoneyTransfer> getLoansForTheDay(int day) {

@@ -22,6 +22,7 @@ public class NormalAgent extends Agent {
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
 	private final ContractResponder           loanListener = new ContractResponder();
 	private final NormalAgentNewDayListener newDayListener = new NormalAgentNewDayListener(this, oracleTipListener, loanListener);
+	private double bankBalance;
 	private String companyToInvest;
 	private double interest;
 	private int    returnInvestmentDay;
@@ -67,13 +68,33 @@ public class NormalAgent extends Agent {
 		return newDayListener.getDay();
 	}
 
+	public void setBankBalance(double bankBalance) {
+		this.bankBalance = bankBalance;
+	}
+
+	public double getCurrentBankBalance() {
+		return bankBalance;
+	}
+
 	public void setInvestments(String companyToInvest, double interest, int returnInvestmentDay) {
 		this.companyToInvest = companyToInvest;
 		this.interest = interest;
 		this.returnInvestmentDay = returnInvestmentDay;
-	} // TODO: use gets too
+	}
+
+	public String getInvestmentCompany() {
+		return companyToInvest;
+	}
 
 	public double getBestInterest() {
 		return interest;
+	}
+
+	public int getInvestmentOverDay() {
+		return returnInvestmentDay;
+	}
+
+	public double getAskedInterest() {
+		return interest + 0.01; // TODO: make the agent ask for more or not?
 	}
 }

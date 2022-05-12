@@ -207,10 +207,11 @@ public class Utils {
     public static final Gson gson = new Gson();
 
     public static Map<String, Map<String, Double>> loadStockPrices(Agent agent) {
+        interface StockPrices extends Map<String, Map<String, Double>> {};
         final File file = new File("data/formatted_stock_prices.json");
-        Map<String, Map<String, Double>> stocks = null;
+        StockPrices stocks = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-            stocks = gson.fromJson(reader, Map.class);
+            stocks = gson.fromJson(reader, StockPrices.class);
         }
         catch (JsonSyntaxException | IOException exception) {
             Utils.log(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
@@ -219,18 +220,20 @@ public class Utils {
     }
 
     public static Map<String, Map<String, Double>> getDoubleMapFromJson(String json) {
-        Map<String, Map<String, Double>> map = null;
+        interface StockPrices extends Map<String, Map<String, Double>> {};
+        StockPrices map = null;
         try {
-            map = Utils.gson.fromJson(json, Map.class);
+            map = Utils.gson.fromJson(json, StockPrices.class);
         }
         catch (JsonSyntaxException ignored) {}
         return map;
     }
 
     public static Map<String, Integer> getSingleMapFromJson(String json) {
-        Map<String, Integer> entry = null;
+        interface StockEntry extends Map<String, Integer> {};
+        StockEntry entry = null;
         try {
-            entry = Utils.gson.fromJson(json, Map.class);
+            entry = Utils.gson.fromJson(json, StockEntry.class);
         }
         catch (JsonSyntaxException ignored) {}
         return entry;

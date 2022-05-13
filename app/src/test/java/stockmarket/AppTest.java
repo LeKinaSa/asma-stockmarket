@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.managers.messages.DayOverListener;
 import stockmarket.behaviours.managers.messages.MessageListener;
-import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.behaviours.managers.messages.NormalAgentNewDayListener;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
@@ -60,7 +60,7 @@ class AppTest {
     }
 
     @Test void newDayMessageTest() {
-        MessageListener listener = new NewDayListener();
+        MessageListener listener = new NormalAgentNewDayListener(null);
         ACLMessage message = Utils.createNewDayMessage(null, 1);
         System.out.println(message.getOntology());
         assertTrue(listener.getTemplate().match(message));

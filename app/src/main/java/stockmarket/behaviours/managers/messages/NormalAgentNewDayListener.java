@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.DecideInvestmentBehaviour;
 import stockmarket.behaviours.SendMessageBehaviour;
@@ -14,16 +15,30 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
-public class NormalAgentNewDayListener extends NewDayListener {
-	private final NormalAgent agent;
+public class NormalAgentNewDayListener implements MessageListener {
+	private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
+    private final NormalAgent agent;
+    private int day;
+
+    @Override
+    public MessageTemplate getTemplate() {
+        return template;
+    }
 
     public NormalAgentNewDayListener(NormalAgent agent) {
         this.agent = agent;
     }
 
+    public int getDay() {
+        return day;
+    }
+
     @Override
     public void actionOnReceive(ACLMessage message) {
-        super.actionOnReceive(message);
+        try {
+            day = Integer.parseInt(message.getContent());
+        }
+        catch (NumberFormatException ignored) {}
 
         agent.removeDayTips();
         agent.setInvestments(null, 0);

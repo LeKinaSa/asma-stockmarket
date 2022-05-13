@@ -31,28 +31,51 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         if (agent.getDayListener().canPassToNextDay(agent.getNAgents())) {
             int nextDay = agent.getDayListener().nextDay();
             Utils.log(agent, "Starting Day " + nextDay);
+            if (agent.simulationIsOver(nextDay)) {
+                endSimulation();
+            }
             startDay(nextDay);
         }
     }
 
     public void startDay(int nextDay) {
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+        Initiator initiator = new Initiator(queuedBehaviours);
+
         queuedBehaviours.add(
             new SendMessageBehaviour(
                 agent,
                 getOracleTipMessage(nextDay),
-                new Initiator(queuedBehaviours)
+                initiator
             )
         );
         queuedBehaviours.add(
             new SendMessageBehaviour(
                 agent,
                 getNewDayMessage(nextDay),
-                new Initiator(queuedBehaviours)
+                initiator
             )
         );
 
+        initiator.activateNextBehaviour(agent);
+    }
+
+    public void endSimulation() {
+        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
+
+        queuedBehaviours.add(
+            new SendMessageBehaviour(
+                agent,
+                Utils.createEndSimulationMessage(agent.getAgents()),
+                initiator
+            )
+        );
+
+        queuedBehaviours.add(
+            new TakeDownBehaviour(agent)
+        );
+
         initiator.activateNextBehaviour(agent);
     }
 
@@ -78,6 +101,11 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         Map<String, Double> dailyTips;
         String company;
         for (int dayOfTheTip = newDay + 1; dayOfTheTip < newDay + TIP_DAYS; ++ dayOfTheTip) {
+            if (agent.getStockPrices().get(String.valueOf(dayOfTheTip)) == null) {
+                // Simulation is Ending -> There are no more tips to show
+                break;
+            }
+
             dailyTips = new HashMap<>();
             while (dailyTips.size() < NUMBER_OF_TIPS) {
                 randomIndex = random.nextInt(allCompanies.size());

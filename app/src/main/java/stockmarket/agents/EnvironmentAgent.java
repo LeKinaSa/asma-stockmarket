@@ -70,4 +70,8 @@ public class EnvironmentAgent extends Agent {
     public Map<String, Map<String, Double>> getStockPrices() {
         return manager.getStockPrices();
     }
+
+    public boolean simulationIsOver(int day) {
+        return manager.getDailyStocks() == null;
+    }
 }

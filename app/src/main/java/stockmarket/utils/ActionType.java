@@ -5,7 +5,6 @@ public enum ActionType {
     CHECK_BALANCE     , // Check the Balance for the Agent's Bank Account
     TRANSFER_MONEY    , // Transfer Money to Another Agent's Account
     START_STOCK       , // Start an Entry at the Stock Market
-    CHECK_OWNED_STOCK , // Check the Agent's Owned Stock
     CHECK_STOCK_PRICES, // Check the Current Stock Prices
     BUY_STOCK         , // Buy Stock from a Company
     SELL_STOCK        , // Sell All Owned Stocks
@@ -16,4 +15,5 @@ public enum ActionType {
     GIVE_PERMISSION   , // Give Permission to 1 Agent to Ask for Loans
     LOAN_MONEY        , // Agent Asks for a Loan to another Agent
     FINISHED          , // Agent has Finished Operations after the Loan Contract has Ended
+    END_SIMULATION    , // End the Simulation
 }

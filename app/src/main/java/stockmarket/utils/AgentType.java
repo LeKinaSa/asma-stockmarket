@@ -15,7 +15,6 @@ public enum AgentType {
                     ActionType.CHECK_BALANCE.toString(),
                     ActionType.TRANSFER_MONEY.toString(),
                     ActionType.START_STOCK.toString(),
-                    ActionType.CHECK_OWNED_STOCK.toString(),
                     ActionType.CHECK_STOCK_PRICES.toString(),
                     ActionType.BUY_STOCK.toString(),
                     ActionType.SELL_STOCK.toString(),
@@ -28,7 +27,8 @@ public enum AgentType {
                     ActionType.ORACLE_TIP.toString(),
                     ActionType.GIVE_PERMISSION.toString(),
                     ActionType.LOAN_MONEY.toString(),
-                    ActionType.FINISHED.toString()
+                    ActionType.FINISHED.toString(),
+                    ActionType.END_SIMULATION.toString()
                 );
             default:
                 return Arrays.asList();

@@ -7,7 +7,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.DecideInvestmentBehaviour;
-import stockmarket.behaviours.SendMessageBehaviour;
 import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.utils.Action;

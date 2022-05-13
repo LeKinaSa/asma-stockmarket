@@ -93,19 +93,18 @@ public class ResponderManager extends RequestResponder {
                 }
                 return entry.toString();
             }
-            case CHECK_OWNED_STOCK: {
-                StockEntry entry;
-                synchronized (stockMarketEntries) {
-                    entry = stockMarketEntries.get(agentName);
-                }
-                return entry.toString();
-            }
             case CHECK_STOCK_PRICES: {
                 return Utils.gson.toJson(getDailyStocks());
             }
             case BUY_STOCK: {
                 // Buy Max Possible Stocks
                 String company = request.getContent();
+                // If we have a profitable company
+                if (company == null) {
+                    System.out.println("Unprofitable " + agent.getDay());
+                    return "";
+                }
+
                 Double price = getDailyPrice(company);
                 if (price <= 0) {
                     return Utils.invalidAction("Invalid Stock Price");

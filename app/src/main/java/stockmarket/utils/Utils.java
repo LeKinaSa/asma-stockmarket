@@ -20,7 +20,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import stockmarket.agents.NormalAgent;
 
 public class Utils {
     // Message Related Utilitaries
@@ -108,6 +107,14 @@ public class Utils {
         return createMessage(
             null, ACLMessage.INFORM,
             ActionType.GIVE_PERMISSION, chosenAgent,
+            receivers, null
+        );
+    }
+
+    public static ACLMessage createEndSimulationMessage(Set<String> receivers) {
+        return createMessage(
+            null, ACLMessage.INFORM,
+            ActionType.END_SIMULATION, null,
             receivers, null
         );
     }
@@ -274,7 +281,7 @@ public class Utils {
 
     // Logs
     public static void log(Agent agent, String message) {
-        System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        //System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
 
     public static void log(AID agent, String message) {

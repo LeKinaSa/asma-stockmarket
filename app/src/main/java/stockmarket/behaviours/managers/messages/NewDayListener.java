@@ -102,5 +102,8 @@ public class NewDayListener implements MessageListener {
                 new Initiator(queuedBehaviours)
             )
         );
+
+        Initiator initiator = new Initiator(queuedBehaviours);
+        initiator.activateNextBehaviour(agent);
     }
 }

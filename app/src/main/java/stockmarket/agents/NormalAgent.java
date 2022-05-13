@@ -83,7 +83,7 @@ public class NormalAgent extends Agent {
 			Utils.log(this, "Error when Adding a Loan");
 			return;
 		}
-		double amount = loan.getAmount() * loan.getProfit();
+		double amount = loan.getAmount() * (100 + loan.getProfit()) / 100;
 		MoneyTransfer transfer = new MoneyTransfer(agent, amount);
 		loans.add(transfer);
 	}

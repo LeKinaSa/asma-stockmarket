@@ -4,6 +4,7 @@ import java.util.Map;
 import jade.core.behaviours.OneShotBehaviour;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.utils.Utils;
 
 public class DecideInvestmentBehaviour extends OneShotBehaviour {
     private final NormalAgent agent;
@@ -21,18 +22,29 @@ public class DecideInvestmentBehaviour extends OneShotBehaviour {
 
         double currentPrice, futurePrice;
         double profit, bestProfit = 0;
-        String bestCompany = "";
-        for (String company : currentStocks.keySet()) {
-            currentPrice = currentStocks.get(company);
-            for (String dayString : tips.keySet()) {
+        String bestCompany = null;
+        int day, daysToInvest;
+        for (String dayString : tips.keySet()) {
+            try {
+                day = Integer.parseInt(dayString);
+            }
+            catch (NumberFormatException exception) {
+                Utils.log(agent, "Invalid Tip Day when Deciding Investment");
+                continue;
+            }
+            daysToInvest = day - agent.getDay();
+            for (String company : tips.get(dayString).keySet()) {
+                currentPrice = currentStocks.get(company);
                 futurePrice = tips.get(dayString).get(company);
-                profit = futurePrice / currentPrice;
+
+                profit = ((futurePrice / currentPrice * 100) - 100) / daysToInvest;
                 if (profit > bestProfit) {
                     bestProfit = profit;
                     bestCompany = company;
                 }
             }
         }
+
         agent.setInvestments(bestCompany, bestProfit);
 
         initiator.activateNextBehaviour(agent);

@@ -101,7 +101,6 @@ public class ResponderManager extends RequestResponder {
                 String company = request.getContent();
                 // If we have a profitable company
                 if (company == null) {
-                    System.out.println("Unprofitable " + agent.getDay());
                     return "";
                 }
 

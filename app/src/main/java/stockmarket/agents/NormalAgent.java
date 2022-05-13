@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.MessageListenerBehaviour;
 import stockmarket.behaviours.managers.messages.GivePermissionListener;
@@ -24,7 +23,7 @@ import stockmarket.utils.Loan;
 import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
-public class NormalAgent extends Agent {
+public class NormalAgent extends MyAgent {
 	private final Set<String> environmentAgents = new HashSet<>();
 	private final Set<String>      normalAgents = new HashSet<>();
 	private final List<MoneyTransfer>     loans = Collections.synchronizedList(new ArrayList<>());

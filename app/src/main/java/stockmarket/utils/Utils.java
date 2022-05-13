@@ -281,7 +281,7 @@ public class Utils {
 
     // Logs
     public static void log(Agent agent, String message) {
-        //System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
 
     public static void log(AID agent, String message) {

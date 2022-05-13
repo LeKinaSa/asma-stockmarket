@@ -3,7 +3,6 @@ package stockmarket.agents;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import jade.core.Agent;
 import stockmarket.behaviours.EnvironmentBehaviour;
 import stockmarket.behaviours.LoanPermissionBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
@@ -15,7 +14,7 @@ import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
-public class EnvironmentAgent extends Agent {
+public class EnvironmentAgent extends MyAgent {
     private final Set<String> agents = new HashSet<>();
     private final ResponderManager           manager = new ResponderManager(this);
     private final DayOverListener        dayListener = new DayOverListener();

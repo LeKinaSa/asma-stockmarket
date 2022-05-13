@@ -15,7 +15,7 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class GivePermissionListener implements MessageListener {
-    private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ASK_PERMISSION);
+    private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.GIVE_PERMISSION);
     private final NormalAgent agent;
 
     public GivePermissionListener(NormalAgent agent) {

@@ -41,16 +41,19 @@ public class ResponderManager extends RequestResponder {
                 synchronized (bankAccount) {
                     if (!bankAccount.containsKey(agentName)) {
                         bankAccount.put(agentName, value);
-                        return "Started Bank Account with " + value + ".";
+                    }
+                    else {
+                        value = bankAccount.get(agentName);
                     }
                 }
+                return String.valueOf(value);
             }
             case CHECK_BALANCE: {
                 double balance;
                 synchronized (bankAccount) {
                     balance = bankAccount.get(agentName);
                 }
-                return "Balance is at " + balance + ".";
+                return String.valueOf(balance);
             }
             case TRANSFER_MONEY: {
                 MoneyTransfer transfer = Utils.getTransferFromJson(action.getInformation());
@@ -72,30 +75,33 @@ public class ResponderManager extends RequestResponder {
                     balance = bankAccount.get(agentName);
                 }
 
-                return transfer.getAmount() + " transfered. Balance is now at " + balance + ".";
+                return String.valueOf(balance);
             }
             case START_STOCK: {
                 StockEntry entry = Utils.getStockEntryFromJson(action.getInformation());
                 if (entry == null) {
-                    return  "Start Empty Stock Market Entry";
+                    return  "{}";
                 }
 
                 synchronized (stockMarketEntries) {
                     if (!stockMarketEntries.containsKey(agentName)) {
                         stockMarketEntries.put(agentName, entry);
-                        return "Started Stock Market Entry with " + entry + ".";
+                    }
+                    else {
+                        entry = stockMarketEntries.get(agentName);
                     }
                 }
+                return entry.toString();
             }
             case CHECK_OWNED_STOCK: {
                 StockEntry entry;
                 synchronized (stockMarketEntries) {
                     entry = stockMarketEntries.get(agentName);
                 }
-                return "Owned Stocks: " + entry.toString() + ".";
+                return entry.toString();
             }
             case CHECK_STOCK_PRICES: {
-                return "Current Stock Prices (day " + agent.getDay() + "): " + Utils.gson.toJson(getDailyStocks()) + ".";
+                return Utils.gson.toJson(getDailyStocks());
             }
             case BUY_STOCK: {
                 // Buy Max Possible Stocks
@@ -125,7 +131,7 @@ public class ResponderManager extends RequestResponder {
                     stockMarketEntries.put(agentName, stockEntry);
                 }
 
-                return "Buy Stocks Completed with Success.";
+                return "";
             }
             case SELL_STOCK: {
                 // Sell Owned Stocks
@@ -153,7 +159,7 @@ public class ResponderManager extends RequestResponder {
                     bankAccount.put(agentName, balance + total);
                 }
 
-                return "Sell Stocks Completed with Success.";
+                return "";
             }
             default: {
                 return Utils.invalidAction("Action Not Supported");

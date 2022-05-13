@@ -2,7 +2,9 @@ package stockmarket;
 
 import org.junit.jupiter.api.Test;
 
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import stockmarket.behaviours.managers.messages.DayOverListener;
 import stockmarket.behaviours.managers.messages.MessageListener;
 import stockmarket.behaviours.managers.messages.NewDayListener;
@@ -64,5 +66,20 @@ class AppTest {
         ACLMessage message = Utils.createNewDayMessage(null, 1);
         System.out.println(message.getOntology());
         assertTrue(listener.getTemplate().match(message));
+    }
+
+    @Test void checkStockPricesTest() {
+        MessageTemplate checkStockPricesTemplate = Utils.getMessageTemplate(
+            FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.INFORM, ActionType.CHECK_STOCK_PRICES
+        );
+
+        ACLMessage request = Utils.createMessage(
+            FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.REQUEST,
+            ActionType.CHECK_STOCK_PRICES, null, null, null
+        );
+
+        ACLMessage inform = Utils.createReply(request, ACLMessage.INFORM, "CURRENT_STOCK_PRICES_JSON");
+
+        assertTrue(checkStockPricesTemplate.match(inform));
     }
 }

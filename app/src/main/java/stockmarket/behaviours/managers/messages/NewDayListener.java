@@ -15,7 +15,7 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
-public class NormalAgentNewDayListener implements MessageListener {
+public class NewDayListener implements MessageListener {
 	private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     private final NormalAgent agent;
     private int day;
@@ -25,7 +25,7 @@ public class NormalAgentNewDayListener implements MessageListener {
         return template;
     }
 
-    public NormalAgentNewDayListener(NormalAgent agent) {
+    public NewDayListener(NormalAgent agent) {
         this.agent = agent;
     }
 

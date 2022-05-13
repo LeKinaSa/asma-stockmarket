@@ -12,5 +12,4 @@ start:
 	java -cp "app/lib/gson.jar:app/lib/jade.jar:bin" jade.Boot -agents \
 	"environment:stockmarket.agents.EnvironmentAgent; \
 	a1:stockmarket.agents.NormalAgent; \
-	a2:stockmarket.agents.NormalAgent" \
-	-gui
+	a2:stockmarket.agents.NormalAgent"

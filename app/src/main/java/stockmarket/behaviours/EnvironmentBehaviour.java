@@ -14,6 +14,9 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
 import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.utils.Action;
+import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class EnvironmentBehaviour extends CyclicBehaviour {
@@ -33,6 +36,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
             Utils.log(agent, "Starting Day " + nextDay);
             if (agent.simulationIsOver(nextDay)) {
                 endSimulation();
+                return;
             }
             startDay(nextDay);
         }
@@ -65,10 +69,13 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         Initiator initiator = new Initiator(queuedBehaviours);
 
         queuedBehaviours.add(
-            new SendMessageBehaviour(
+            new RequestInitiatorBehaviour(
                 agent,
-                Utils.createEndSimulationMessage(agent.getAgents()),
-                initiator
+                new Initiator(
+                    agent.getAgents(),
+                    new Action(ActionType.END_SIMULATION),
+                    queuedBehaviours
+                )
             )
         );
 

@@ -42,7 +42,7 @@ public class EnvironmentAgent extends Agent {
         Utils.log(this, "Ready");
     }
 
-    public void takedown() {
+    public void takeDown() {
 		// Unregister
         Utils.unregisterFromYellowPages(this);
     }

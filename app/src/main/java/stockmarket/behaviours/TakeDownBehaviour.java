@@ -2,6 +2,7 @@ package stockmarket.behaviours;
 
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
+import stockmarket.utils.Utils;
 
 public class TakeDownBehaviour extends OneShotBehaviour {
     private Agent agent;
@@ -12,6 +13,7 @@ public class TakeDownBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        // TODO: takedown agent
+        Utils.sleep(1);
+        // agent.takedown(); // TODO: takedown agent
     }
 }

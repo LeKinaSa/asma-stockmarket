@@ -96,10 +96,10 @@ public class Utils {
         );
     }
 
-    public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, NormalAgent agent) {
+    public static ACLMessage createAskForLoanPermissionMessage(Set<String> receivers, double bestInterest) {
         return createMessage(
             null, ACLMessage.INFORM,
-            ActionType.ASK_PERMISSION, String.valueOf(agent.getBestInterest()),
+            ActionType.ASK_PERMISSION, String.valueOf(bestInterest),
             receivers, null
         );
     }

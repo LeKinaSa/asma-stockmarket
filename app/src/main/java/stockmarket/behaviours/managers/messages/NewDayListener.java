@@ -44,6 +44,7 @@ public class NewDayListener implements MessageListener {
         agent.setInvestments(null, 0);
 
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+        Initiator initiator = new Initiator(queuedBehaviours);
 
         // Sell Stocks
         queuedBehaviours.add(
@@ -83,27 +84,14 @@ public class NewDayListener implements MessageListener {
             )
         );
 
-        // Decide Next Investment
+        // Decide Next Investment and Ask for Permission to Loan
         queuedBehaviours.add(
             new DecideInvestmentBehaviour(
                 agent,
-                new Initiator(queuedBehaviours)
+                initiator
             )
         );
 
-        // Ask for Permission to Loan
-        queuedBehaviours.add(
-            new SendMessageBehaviour(
-                agent,
-                Utils.createAskForLoanPermissionMessage(
-                    agent.getEnvironmentAgents(),
-                    agent
-                ),
-                new Initiator(queuedBehaviours)
-            )
-        );
-
-        Initiator initiator = new Initiator(queuedBehaviours);
         initiator.activateNextBehaviour(agent);
     }
 }

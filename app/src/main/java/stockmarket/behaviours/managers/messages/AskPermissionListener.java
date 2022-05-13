@@ -2,6 +2,7 @@ package stockmarket.behaviours.managers.messages;
 
 import java.util.HashMap;
 import java.util.Map;
+import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.utils.ActionType;
@@ -9,7 +10,12 @@ import stockmarket.utils.Utils;
 
 public class AskPermissionListener implements MessageListener {
     private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ASK_PERMISSION);
-    private Map<String, Double> receivedOffers = new HashMap<>();
+    private final Agent agent;
+    private final Map<String, Double> receivedOffers = new HashMap<>();
+
+    public AskPermissionListener(Agent agent) {
+        this.agent = agent;
+    }
 
     @Override
     public MessageTemplate getTemplate() {
@@ -18,16 +24,16 @@ public class AskPermissionListener implements MessageListener {
 
     @Override
     public void actionOnReceive(ACLMessage message) {
-        String agent = message.getSender().getLocalName();
-        double interest;
+        String sender = message.getSender().getLocalName();
+        double interest = 0;
         try {
             interest = Double.parseDouble(message.getContent());
         }
         catch (NumberFormatException exception) {
-            return;
+            Utils.log(agent, Utils.invalidAction("Invalid Interest"));
         }
 
-        receivedOffers.put(agent, interest);
+        receivedOffers.put(sender, interest);
     }
 
     public boolean allReceived(int numberOfAgents) {
@@ -44,7 +50,7 @@ public class AskPermissionListener implements MessageListener {
                 highestOfferSender = sender;
             }
         }
-        receivedOffers = new HashMap<>(); // Prepare for next round
+        receivedOffers.clear(); // Prepare for next round
         return highestOfferSender;
     }
 }

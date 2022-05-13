@@ -52,4 +52,10 @@ public class Initiator {
 			agent.addBehaviour(behaviour);
 		}
 	}
+
+	public void addBehaviour(Behaviour behaviour) {
+		if (after != null && behaviour != null) {
+			after.add(behaviour);
+		}
+	}
 }

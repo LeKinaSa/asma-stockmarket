@@ -19,7 +19,7 @@ public class EnvironmentAgent extends Agent {
     private final Set<String> agents = new HashSet<>();
     private final ResponderManager           manager = new ResponderManager(this);
     private final DayOverListener        dayListener = new DayOverListener();
-    private final AskPermissionListener loanListener = new AskPermissionListener();
+    private final AskPermissionListener loanListener = new AskPermissionListener(this);
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
 

@@ -9,6 +9,7 @@ import java.util.Set;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.MessageListenerBehaviour;
+import stockmarket.behaviours.managers.messages.GivePermissionListener;
 import stockmarket.behaviours.managers.messages.NewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
@@ -28,8 +29,7 @@ public class NormalAgent extends Agent {
 	private final Set<String>      normalAgents = new HashSet<>();
 	private final List<MoneyTransfer>     loans = Collections.synchronizedList(new ArrayList<>());
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
-	private final ContractResponder           loanListener = new ContractResponder(this);
-	private final NewDayListener newDayListener = new NewDayListener(this);
+	private final NewDayListener            newDayListener = new NewDayListener(this);
 	private Map<String, Double> stockPrices = null;
 	private double bankBalance;
 	private String companyToInvest;
@@ -52,7 +52,8 @@ public class NormalAgent extends Agent {
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour         (this, newDayListener));
 		addBehaviour(new MessageListenerBehaviour         (this, oracleTipListener));
-		addBehaviour(new LoanContractNetResponderBehaviour(this, loanListener));
+		addBehaviour(new MessageListenerBehaviour         (this, new GivePermissionListener(this)));
+		addBehaviour(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
 
 		Utils.log(this, "Ready");
 	}

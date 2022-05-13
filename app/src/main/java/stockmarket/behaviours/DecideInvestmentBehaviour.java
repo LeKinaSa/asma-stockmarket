@@ -46,6 +46,14 @@ public class DecideInvestmentBehaviour extends OneShotBehaviour {
         }
 
         agent.setInvestments(bestCompany, bestProfit);
+        initiator.addBehaviour(new SendMessageBehaviour(
+            agent,
+            Utils.createAskForLoanPermissionMessage(
+                agent.getEnvironmentAgents(),
+                agent.getBestInterest()
+            ),
+            initiator
+        ));
 
         initiator.activateNextBehaviour(agent);
     }

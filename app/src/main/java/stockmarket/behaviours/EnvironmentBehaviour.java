@@ -13,8 +13,8 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
-import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
@@ -24,6 +24,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
     private static final int TIP_DAYS       = 3;
     private static final int NUMBER_OF_TIPS = 10;
     private final EnvironmentAgent agent;
+    private int delay;
 
     public EnvironmentBehaviour(EnvironmentAgent agent) {
         this.agent = agent;
@@ -32,6 +33,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         if (agent.getDayListener().canPassToNextDay(agent.getNAgents())) {
+            Utils.sleep(delay);
             int nextDay = agent.getDayListener().nextDay();
             Utils.log(agent, "Starting Day " + nextDay);
             if (agent.simulationIsOver(nextDay)) {
@@ -40,6 +42,10 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
             }
             startDay(nextDay);
         }
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     public void startDay(int nextDay) {
@@ -80,7 +86,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         );
 
         queuedBehaviours.add(
-            new TakeDownBehaviour(agent)
+            new EndSimulationBehaviour(agent)
         );
 
         initiator.activateNextBehaviour(agent);

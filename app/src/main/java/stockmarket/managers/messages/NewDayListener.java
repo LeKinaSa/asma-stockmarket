@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.messages;
+package stockmarket.managers.messages;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,8 +7,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.DecideInvestmentBehaviour;
-import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
@@ -44,6 +44,24 @@ public class NewDayListener implements MessageListener {
 
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
+
+        if (day == 0) {
+            Utils.log(agent, "Start Bank");
+
+            queuedBehaviours.add(
+                new RequestInitiatorBehaviour(
+                    agent,
+                    new Initiator(
+                        agent.getEnvironmentAgents(),
+                        new Action(
+                            ActionType.START_BANK,
+                            String.valueOf(agent.getInitialMoney())
+                        ),
+                        queuedBehaviours
+                    )
+                )
+            );
+        }
 
         // Sell Stocks
         queuedBehaviours.add(

@@ -3,7 +3,7 @@ package stockmarket.behaviours;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.managers.protocols.Initiator;
 
 public class SendMessageBehaviour extends OneShotBehaviour {
     private final Agent      agent;

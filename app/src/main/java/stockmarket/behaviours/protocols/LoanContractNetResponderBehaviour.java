@@ -6,7 +6,7 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetResponder;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.managers.protocols.ContractResponder;
+import stockmarket.managers.protocols.ContractResponder;
 import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 

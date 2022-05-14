@@ -1,7 +1,7 @@
-package stockmarket.behaviours.managers.messages;
+package stockmarket.managers.messages;
 
 import jade.lang.acl.ACLMessage;
-import stockmarket.behaviours.managers.Listener;
+import stockmarket.managers.Listener;
 
 public interface MessageListener extends Listener {
     default void actionOnReceive(ACLMessage message) {}

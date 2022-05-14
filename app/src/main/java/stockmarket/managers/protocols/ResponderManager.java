@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols;
+package stockmarket.managers.protocols;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,6 @@ public class ResponderManager extends RequestResponder {
         ActionType actionType = action.getType();
         switch (actionType) {
             case START_BANK: {
-                System.out.println("Start Bank");
                 double value = 0D;
                 try {
                     value = Double.parseDouble(action.getInformation());

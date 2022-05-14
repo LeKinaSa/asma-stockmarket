@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols;
+package stockmarket.managers.protocols;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,8 +11,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.SendMessageBehaviour;
-import stockmarket.behaviours.managers.Listener;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.managers.Listener;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Loan;

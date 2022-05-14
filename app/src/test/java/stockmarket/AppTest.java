@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import stockmarket.behaviours.managers.messages.DayOverListener;
-import stockmarket.behaviours.managers.messages.MessageListener;
-import stockmarket.behaviours.managers.messages.NewDayListener;
+import stockmarket.managers.messages.DayOverListener;
+import stockmarket.managers.messages.MessageListener;
+import stockmarket.managers.messages.NewDayListener;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.MoneyTransfer;
@@ -41,7 +41,7 @@ class AppTest {
 
     @Test void increaseDayTest() {
         DayOverListener listener = new DayOverListener();
-        assertEquals(1, listener.nextDay());
+        assertEquals(0, listener.nextDay());
     }
 
     @Test void actionTest() {

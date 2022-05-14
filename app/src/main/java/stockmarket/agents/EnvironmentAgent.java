@@ -1,20 +1,16 @@
 package stockmarket.agents;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
-import jade.core.behaviours.Behaviour;
 import stockmarket.behaviours.EnvironmentBehaviour;
 import stockmarket.behaviours.LoanPermissionBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
-import stockmarket.behaviours.StartAgent;
-import stockmarket.behaviours.managers.messages.DayOverListener;
-import stockmarket.behaviours.managers.protocols.ResponderManager;
-import stockmarket.behaviours.managers.messages.AskPermissionListener;
 import stockmarket.behaviours.protocols.RequestResponderBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
+import stockmarket.managers.messages.AskPermissionListener;
+import stockmarket.managers.messages.DayOverListener;
+import stockmarket.managers.protocols.ResponderManager;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
@@ -25,6 +21,7 @@ public class EnvironmentAgent extends MyAgent {
     private final AskPermissionListener loanListener = new AskPermissionListener(this);
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
+    private int delay = 20000; // TODO: set delay (milliseconds)
 
     public void setup() {
         // Register
@@ -33,18 +30,16 @@ public class EnvironmentAgent extends MyAgent {
         // Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents));
 
-        // Initialize Agent
-        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+        // Set Simulation Delay
+        newDayBehaviour.setDelay(delay);
 
 		// Repetitive Behaviours
-        queuedBehaviours.add(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
-        queuedBehaviours.add(new MessageListenerBehaviour (this, dayListener));  // Time
-        queuedBehaviours.add(new MessageListenerBehaviour (this, loanListener)); // Order
-        queuedBehaviours.add(newDayBehaviour);
-        queuedBehaviours.add(loanPermissionBehaviour);
+        addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
+        addBehaviour(new MessageListenerBehaviour (this, dayListener));  // Time
+        addBehaviour(new MessageListenerBehaviour (this, loanListener)); // Order
+        addBehaviour(newDayBehaviour);
+        addBehaviour(loanPermissionBehaviour);
 
-        // Start Agent
-        addBehaviour(new StartAgent(this, queuedBehaviours));
         Utils.log(this, "Ready");
     }
 

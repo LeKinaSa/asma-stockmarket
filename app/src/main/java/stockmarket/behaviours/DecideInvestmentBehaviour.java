@@ -3,7 +3,7 @@ package stockmarket.behaviours;
 import java.util.Map;
 import jade.core.behaviours.OneShotBehaviour;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class DecideInvestmentBehaviour extends OneShotBehaviour {

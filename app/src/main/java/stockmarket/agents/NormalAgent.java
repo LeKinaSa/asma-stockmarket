@@ -3,27 +3,19 @@ package stockmarket.agents;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
-import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.MessageListenerBehaviour;
-import stockmarket.behaviours.StartAgent;
-import stockmarket.behaviours.managers.messages.GivePermissionListener;
-import stockmarket.behaviours.managers.messages.NewDayListener;
-import stockmarket.behaviours.managers.messages.OracleTipListener;
-import stockmarket.behaviours.managers.protocols.ContractResponder;
-import stockmarket.behaviours.managers.protocols.EndSimulationResponder;
-import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.LoanContractNetResponderBehaviour;
-import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
 import stockmarket.behaviours.protocols.RequestResponderBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
-import stockmarket.utils.Action;
-import stockmarket.utils.ActionType;
+import stockmarket.managers.messages.GivePermissionListener;
+import stockmarket.managers.messages.NewDayListener;
+import stockmarket.managers.messages.OracleTipListener;
+import stockmarket.managers.protocols.ContractResponder;
+import stockmarket.managers.protocols.EndSimulationResponder;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Loan;
 import stockmarket.utils.MoneyTransfer;
@@ -32,11 +24,13 @@ import stockmarket.utils.Utils;
 public class NormalAgent extends MyAgent {
 	private final Set<String> environmentAgents = new HashSet<>();
 	private final Set<String>      normalAgents = new HashSet<>();
-	private final List<MoneyTransfer>     loans = Collections.synchronizedList(new ArrayList<>());
-	private final OracleTipListener      oracleTipListener = new OracleTipListener();
-	private final NewDayListener            newDayListener = new NewDayListener(this);
-	private final List<Double> bankBalance = new ArrayList<>();
+	private final OracleTipListener oracleTipListener = new OracleTipListener();
+	private final NewDayListener       newDayListener = new NewDayListener(this);
+	private final List<MoneyTransfer> loans = Collections.synchronizedList(new ArrayList<>());
+	private final List<Double>  bankBalance = new ArrayList<>();
 	private Map<String, Double> stockPrices = null;
+	private double initialMoney = 1000; // TODO: set initial money
+	private double extraInterestAskedInPercentage = 0.4; // TODO: set extra interest percentage
 	private String companyToInvest;
 	private double interest;
 
@@ -48,30 +42,13 @@ public class NormalAgent extends MyAgent {
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ENVIRONMENT, environmentAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL     ,      normalAgents));
 
-		// Initialize Agent
-		Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+		// Repetitive Behaviours
+		addBehaviour(new MessageListenerBehaviour         (this, newDayListener));
+		addBehaviour(new MessageListenerBehaviour         (this, oracleTipListener));
+		addBehaviour(new MessageListenerBehaviour         (this, new GivePermissionListener(this)));
+		addBehaviour(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
+		addBehaviour(new RequestResponderBehaviour        (this, new EndSimulationResponder(this)));
 
-		// Initialize Bank Account
-		queuedBehaviours.add(
-			new RequestInitiatorBehaviour(
-				this,
-				new Initiator(
-					getEnvironmentAgents(),
-					new Action(ActionType.START_BANK,  "1000"),
-					null
-				)
-			)
-		);
-
-		// Initialize Repetitive Behaviours
-		queuedBehaviours.add(new MessageListenerBehaviour         (this, newDayListener));
-		queuedBehaviours.add(new MessageListenerBehaviour         (this, oracleTipListener));
-		queuedBehaviours.add(new MessageListenerBehaviour         (this, new GivePermissionListener(this)));
-		queuedBehaviours.add(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
-		queuedBehaviours.add(new RequestResponderBehaviour        (this, new EndSimulationResponder(this)));
-
-		// Start Agent
-		addBehaviour(new StartAgent(this, queuedBehaviours));
 		Utils.log(this, "Ready");
 	}
 
@@ -79,6 +56,11 @@ public class NormalAgent extends MyAgent {
 		// Unregister
         Utils.unregisterFromYellowPages(this);
     }
+
+	public void save() {
+		// Save Bank Balance to File
+		Utils.saveBankBalance(this, bankBalance);
+	}
 
 	public Set<String> getEnvironmentAgents() {
 		return environmentAgents;
@@ -101,7 +83,7 @@ public class NormalAgent extends MyAgent {
 			Utils.log(this, "Error when Adding a Loan");
 			return;
 		}
-		double amount = loan.getAmount() * (100 + loan.getProfit()) / 100;
+		double amount = loan.getAmount() * (100 + loan.getProfitPercentage()) / 100;
 		MoneyTransfer transfer = new MoneyTransfer(agent, amount);
 		loans.add(transfer);
 	}
@@ -126,6 +108,10 @@ public class NormalAgent extends MyAgent {
 		return stockPrices;
 	}
 
+	public double getInitialMoney() {
+		return initialMoney;
+	}
+
 	public void setBankBalance(double bankBalance) {
 		this.bankBalance.add(bankBalance);
 	}
@@ -148,6 +134,6 @@ public class NormalAgent extends MyAgent {
 	}
 
 	public double getAskedInterest() {
-		return interest + 0.01; // TODO: make the agent ask for more or not?
+		return interest + extraInterestAskedInPercentage;
 	}
 }

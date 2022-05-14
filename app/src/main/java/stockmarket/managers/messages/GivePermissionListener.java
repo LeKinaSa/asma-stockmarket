@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.messages;
+package stockmarket.managers.messages;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,9 +7,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.SendMessageBehaviour;
-import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.LoanContractNetInitiatorBehaviour;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
@@ -29,7 +29,7 @@ public class GivePermissionListener implements MessageListener {
     
     @Override
     public void actionOnReceive(ACLMessage message) {
-        String sender = message.getSender().getLocalName();
+        String authorizedAgent = message.getContent();
         
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
@@ -46,7 +46,7 @@ public class GivePermissionListener implements MessageListener {
             )
         );
 
-        if (!agent.getLocalName().equals(sender)) {
+        if (!agent.getLocalName().equals(authorizedAgent)) {
             // Agent doesn't have Permission to Get Loans
             queuedBehaviours.add(
                 new SendMessageBehaviour(

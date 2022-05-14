@@ -1,13 +1,17 @@
 package stockmarket.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import com.google.gson.Gson;
@@ -274,10 +278,21 @@ public class Utils {
         return loan;
     }
 
-    // Sleep
-    public static void sleep(int seconds) {
+    public static void saveBankBalance(Agent agent, List<Double> bankBalance) {
+        File file = new File("data/balance_" + agent.getLocalName() + ".json");
         try {
-            Thread.sleep(seconds * 1000);
+            file.createNewFile();
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+                writer.write(gson.toJson(bankBalance));
+            }
+        }
+        catch (IOException ignored) {}
+    }
+
+    // Sleep
+    public static void sleep(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
         }
         catch (InterruptedException ignored) {}
     }

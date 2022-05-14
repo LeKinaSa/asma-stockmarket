@@ -5,7 +5,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 
@@ -36,7 +36,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
     @Override
     protected void handlePropose(ACLMessage propose, Vector v) {
         String sender = propose.getSender().getLocalName();
-        Utils.log(myAgent, "Agent " + sender + "proposed " + propose.getContent());
+        Utils.log(myAgent, "Agent " + sender + " proposed " + propose.getContent());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
                     loan = new Loan();
                 }
 
-                proposal = loan.getProfit();
+                proposal = loan.getProfitPercentage();
                 if (proposal <= bestInterest) {
                     loan.deny();
                 }

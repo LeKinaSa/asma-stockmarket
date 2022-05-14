@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.messages;
+package stockmarket.managers.messages;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -8,7 +8,7 @@ import stockmarket.utils.Utils;
 public class DayOverListener implements MessageListener {
     private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.DAY_OVER);
     private int receivedMessages = 0;
-    private int day = 0;
+    private int day = -1;
 
     @Override
     public MessageTemplate getTemplate() {
@@ -31,7 +31,7 @@ public class DayOverListener implements MessageListener {
     }
 
     public boolean canPassToNextDay(int numberOfAgents) {
-        return numberOfAgents > 0 && (numberOfAgents == receivedMessages || day == 0);
+        return numberOfAgents > 0 && (numberOfAgents == receivedMessages || day == -1);
     }
 
     public int nextDay() {

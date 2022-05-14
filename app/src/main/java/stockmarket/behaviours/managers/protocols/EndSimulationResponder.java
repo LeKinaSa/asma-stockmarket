@@ -3,6 +3,7 @@ package stockmarket.behaviours.managers.protocols;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.MyAgent;
 import stockmarket.behaviours.TakeDownBehaviour;
+import stockmarket.utils.ActionType;
 
 public class EndSimulationResponder extends RequestResponder {
     private final MyAgent agent;
@@ -16,6 +17,6 @@ public class EndSimulationResponder extends RequestResponder {
         agent.addBehaviour(
             new TakeDownBehaviour(agent)
         );
-        return null;
+        return ActionType.END_SIMULATION.toString();
     }
 }

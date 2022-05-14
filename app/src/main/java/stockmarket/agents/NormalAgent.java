@@ -12,9 +12,11 @@ import stockmarket.behaviours.managers.messages.GivePermissionListener;
 import stockmarket.behaviours.managers.messages.NewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
 import stockmarket.behaviours.managers.protocols.ContractResponder;
+import stockmarket.behaviours.managers.protocols.EndSimulationResponder;
 import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.LoanContractNetResponderBehaviour;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.behaviours.protocols.RequestResponderBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
@@ -53,6 +55,7 @@ public class NormalAgent extends MyAgent {
 		addBehaviour(new MessageListenerBehaviour         (this, oracleTipListener));
 		addBehaviour(new MessageListenerBehaviour         (this, new GivePermissionListener(this)));
 		addBehaviour(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
+		addBehaviour(new RequestResponderBehaviour        (this, new EndSimulationResponder(this)));
 
 		Utils.log(this, "Ready");
 	}

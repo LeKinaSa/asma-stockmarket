@@ -61,18 +61,19 @@ public class ResponderManager extends RequestResponder {
                     return Utils.invalidAction("Invalid Transfer");
                 }
 
+                String from = agentName, to = transfer.getTo();
                 double balance;
                 synchronized (bankAccount) {
-                    if (!bankAccount.containsKey(transfer.getTo())) {
+                    if (!bankAccount.containsKey(to)) {
                         return Utils.invalidAction("Unknown Transfer Destination Agent");
                     }
-                    if (bankAccount.get(agentName) < transfer.getAmount()) {
+                    if (bankAccount.get(from) < transfer.getAmount()) {
                         return Utils.invalidAction("Not Enough Money for Transfer");
                     }
-                    bankAccount.put(agentName, bankAccount.get(agentName)       - transfer.getAmount());
-                    bankAccount.put(agentName, bankAccount.get(transfer.getTo()) + transfer.getAmount());
+                    bankAccount.put(from, bankAccount.get(from) - transfer.getAmount());
+                    bankAccount.put(to  , bankAccount.get(to  ) + transfer.getAmount());
 
-                    balance = bankAccount.get(agentName);
+                    balance = bankAccount.get(from);
                 }
 
                 return String.valueOf(balance);
@@ -122,7 +123,7 @@ public class ResponderManager extends RequestResponder {
                     stockEntry = stockMarketEntries.remove(agentName);
                 }
                 if (stockEntry == null) {
-                    return "No Stocks to Sell.";
+                    return "No Stocks to Sell";
                 }
 
                 Double price = getDailyPrice(stockEntry.getCompany());

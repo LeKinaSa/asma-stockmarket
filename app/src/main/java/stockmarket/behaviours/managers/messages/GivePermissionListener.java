@@ -30,16 +30,41 @@ public class GivePermissionListener implements MessageListener {
     @Override
     public void actionOnReceive(ACLMessage message) {
         String sender = message.getSender().getLocalName();
+        
+        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+        Initiator initiator = new Initiator(queuedBehaviours);
+
+        // Check Balance
+        queuedBehaviours.add(
+            new RequestInitiatorBehaviour(
+                agent,
+                new Initiator(
+                    agent.getEnvironmentAgents(),
+                    new Action(ActionType.CHECK_BALANCE),
+                    queuedBehaviours
+                )
+            )
+        );
+
         if (!agent.getLocalName().equals(sender)) {
-            ACLMessage reply = Utils.createDayOverMessage(agent.getEnvironmentAgents(), agent.getDay());
-            agent.addBehaviour(new SendMessageBehaviour(agent, reply, new Initiator(null)));
+            // Agent doesn't have Permission to Get Loans
+            queuedBehaviours.add(
+                new SendMessageBehaviour(
+                    agent,
+                    Utils.createDayOverMessage(
+                        agent.getEnvironmentAgents(),
+                        agent.getDay()
+                    ),
+                    initiator
+                )
+            );
+
+            // Start the Behaviours
+            initiator.activateNextBehaviour(agent);
             return;
         }
 
         // Agent has Permission to Get Loans from Other Agents
-
-        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
-
         // Loan Contract
         queuedBehaviours.add(
             new LoanContractNetInitiatorBehaviour(
@@ -72,12 +97,11 @@ public class GivePermissionListener implements MessageListener {
                     agent.getEnvironmentAgents(),
                     agent.getDay()
                 ),
-                new Initiator(queuedBehaviours)
+                initiator
             )
         );
 
         // Start the Behaviours
-        Initiator initiator = new Initiator(queuedBehaviours);
         initiator.activateNextBehaviour(agent);
     }
 }

@@ -189,6 +189,7 @@ public class Utils {
         ServiceDescription service;
         AID provider;
         Iterator it;
+        services.clear();
         if (results.length > 0) {
             Utils.log(agent, "Found Agents from Type " + type);
             for (int i = 0; i < results.length; ++ i) {

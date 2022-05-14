@@ -33,7 +33,7 @@ public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
         Utils.log(myAgent, "Notification received from DF");
 
         try {
-            DFAgentDescription[] results = DFService.decodeNotification(inform.getContent());
+            DFAgentDescription[] results = DFService.search(myAgent, Utils.getRegisterTemplate(type), new SearchConstraints());
 
             Utils.searchInYellowPageResults(myAgent, type, services, results);
         }

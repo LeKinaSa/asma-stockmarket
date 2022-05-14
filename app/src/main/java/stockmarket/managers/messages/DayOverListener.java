@@ -7,6 +7,7 @@ import stockmarket.utils.Utils;
 
 public class DayOverListener implements MessageListener {
     private static final MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.DAY_OVER);
+    private int numberOfAgents = 0;
     private int receivedMessages = 0;
     private int day = -1;
 
@@ -30,8 +31,12 @@ public class DayOverListener implements MessageListener {
         }
     }
 
-    public boolean canPassToNextDay(int numberOfAgents) {
-        return numberOfAgents > 0 && (numberOfAgents == receivedMessages || day == -1);
+    public void setNumberOfAgents(int numberOfAgents) {
+        this.numberOfAgents = numberOfAgents;
+    }
+
+    public boolean canPassToNextDay() {
+        return numberOfAgents > 0 && numberOfAgents == receivedMessages;
     }
 
     public int nextDay() {

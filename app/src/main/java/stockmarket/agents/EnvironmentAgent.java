@@ -21,6 +21,7 @@ public class EnvironmentAgent extends MyAgent {
     private final AskPermissionListener loanListener = new AskPermissionListener(this);
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
+    private int numberOfNormalAgents = 0;
     private int delay = 20000;
 
     public void setup() {
@@ -28,7 +29,18 @@ public class EnvironmentAgent extends MyAgent {
         boolean set = false;
         if (args != null && args.length > 0) {
             try {
-                delay = Integer.parseInt((String) args[0]);
+                numberOfNormalAgents = Integer.parseInt((String) args[0]);
+                set = true;
+            }
+            catch (NumberFormatException ignored) {}
+        }
+        if (!set) {
+            Utils.info(this, "Using Default Number of Normal Agents : " + numberOfNormalAgents);
+        }
+        set = false;
+        if (args != null && args.length > 1) {
+            try {
+                delay = Integer.parseInt((String) args[1]);
                 set = true;
             }
             catch (NumberFormatException ignored) {}
@@ -43,8 +55,9 @@ public class EnvironmentAgent extends MyAgent {
         // Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents));
 
-        // Set Simulation Delay
+        // Set Simulation Delay and Number Of Agents
         newDayBehaviour.setDelay(delay);
+        dayListener.setNumberOfAgents(numberOfNormalAgents);
 
 		// Repetitive Behaviours
         addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market

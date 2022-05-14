@@ -10,7 +10,7 @@ clean:
 
 start:
 	java -cp "app/lib/gson.jar:app/lib/jade.jar:bin" jade.Boot -agents \
-	"environment:stockmarket.agents.EnvironmentAgent(0); \
+	"environment:stockmarket.agents.EnvironmentAgent(4, 0); \
 	a1:stockmarket.agents.NormalAgent(0.5, 100); \
 	a2:stockmarket.agents.NormalAgent(1.0, 100); \
 	a3:stockmarket.agents.NormalAgent(1.5, 100); \

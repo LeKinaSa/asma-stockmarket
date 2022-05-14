@@ -22,7 +22,7 @@ public class EnvironmentAgent extends MyAgent {
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
     private int numberOfNormalAgents = 0;
-    private int delay = 20000;
+    private int delay = 0;
 
     public void setup() {
         Object[] args = getArguments();

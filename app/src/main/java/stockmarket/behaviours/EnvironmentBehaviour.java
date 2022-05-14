@@ -32,7 +32,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
 
     @Override
     public void action() {
-        if (agent.getDayListener().canPassToNextDay()) {
+        if (agent.getNAgents() > 0 && agent.getDayListener().canPassToNextDay()) {
             Utils.sleep(delay);
             int nextDay = agent.getDayListener().nextDay();
             Utils.info(agent, "Starting Day " + nextDay);

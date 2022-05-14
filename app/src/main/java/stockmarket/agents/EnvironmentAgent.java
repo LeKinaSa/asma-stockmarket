@@ -21,7 +21,7 @@ public class EnvironmentAgent extends MyAgent {
     private final AskPermissionListener loanListener = new AskPermissionListener(this);
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
-    private int delay = 20000; // TODO: set delay (milliseconds)
+    private int delay = 20000;  // TODO: set delay (milliseconds)
 
     public void setup() {
         // Register

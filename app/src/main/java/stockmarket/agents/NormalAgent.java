@@ -29,8 +29,8 @@ public class NormalAgent extends MyAgent {
 	private final List<MoneyTransfer> loans = Collections.synchronizedList(new ArrayList<>());
 	private final List<Double>  bankBalance = new ArrayList<>();
 	private Map<String, Double> stockPrices = null;
-	private final double initialMoney = 1000; // TODO
-	private final double extraInterestAskedInPercentage = 1; // TODO
+	private double initialMoney = 1000; // TODO: set initial money
+	private double extraInterestAskedInPercentage = 0.4; // TODO: set extra interest percentage
 	private String companyToInvest;
 	private double interest;
 

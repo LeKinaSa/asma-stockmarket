@@ -290,9 +290,9 @@ public class Utils {
     }
 
     // Sleep
-    public static void sleep(int seconds) {
+    public static void sleep(int milliseconds) {
         try {
-            Thread.sleep(seconds * 1000);
+            Thread.sleep(milliseconds);
         }
         catch (InterruptedException ignored) {}
     }

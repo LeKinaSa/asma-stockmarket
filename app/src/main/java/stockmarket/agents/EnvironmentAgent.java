@@ -21,6 +21,7 @@ public class EnvironmentAgent extends MyAgent {
     private final AskPermissionListener loanListener = new AskPermissionListener(this);
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
+    private int delay = 20000; // TODO: set delay (milliseconds)
 
     public void setup() {
         // Register
@@ -29,7 +30,8 @@ public class EnvironmentAgent extends MyAgent {
         // Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents));
 
-        Utils.sleep(1);
+        // Set Simulation Delay
+        newDayBehaviour.setDelay(delay);
 
 		// Repetitive Behaviours
         addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market

@@ -10,15 +10,6 @@ public class DayOverListener implements MessageListener {
     private int receivedMessages = 0;
     private int day = 0;
 
-    public boolean canPassToNextDay(int numberOfAgents) {
-        return numberOfAgents > 0 && numberOfAgents == receivedMessages;
-    }
-
-    public int nextDay() {
-        receivedMessages = 0;
-        return ++ day;
-    }
-
     @Override
     public MessageTemplate getTemplate() {
         return template;
@@ -37,5 +28,18 @@ public class DayOverListener implements MessageListener {
         if (day == messageDay) {
             ++ receivedMessages;
         }
+    }
+
+    public boolean canPassToNextDay(int numberOfAgents) {
+        return numberOfAgents > 0 && (numberOfAgents == receivedMessages || day == 0);
+    }
+
+    public int nextDay() {
+        receivedMessages = 0;
+        return ++ day;
+    }
+
+    public int getDay() {
+        return day;
     }
 }

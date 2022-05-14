@@ -1,4 +1,4 @@
-package stockmarket.behaviours;
+package stockmarket.behaviours.protocols;
 
 import java.util.Set;
 import jade.core.Agent;

@@ -1,26 +1,36 @@
-package stockmarket.behaviours;
+package stockmarket.behaviours.protocols;
 
 import java.util.Vector;
-import jade.core.AID;
-import jade.core.Agent;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
-import stockmarket.behaviours.managers.protocols.ContractInitiator;
+import stockmarket.agents.NormalAgent;
+import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 
-public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
-    private final ContractInitiator initiator;
+public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
+    private final NormalAgent agent;
+    private final Initiator initiator;
     private int nResponders;
 
-    public ContractNetInitiatorBehaviour(Agent agent, ContractInitiator initiator, ACLMessage message, int nResponders) {
-        super(agent, message);
+    public LoanContractNetInitiatorBehaviour(NormalAgent agent, Initiator initiator) {
+        super(agent, initiator.getMessage(
+            FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP
+        ));
+        this.agent = agent;
         this.initiator = initiator;
-        this.nResponders = nResponders;
+        this.nResponders = initiator.getNResponders();
     }
 
     @Override
     protected void handleInform(ACLMessage inform) {
-        Utils.log(inform.getSender(), "Successfully performed the requested action");
+        agent.addLoan(inform);
+        -- nResponders;
+        if (nResponders == 0) {
+            Utils.log(inform.getSender(), "Successfully performed the requested action");
+            initiator.activateNextBehaviour(agent);
+        }
     }
 
     @Override
@@ -57,32 +67,24 @@ public class ContractNetInitiatorBehaviour extends ContractNetInitiator {
 
         Utils.log(myAgent, "All proposals received");
 
-        // Evaluate proposals.
-        int bestProposal = -1, proposal;
-        AID bestProposer = null;
-        ACLMessage accept = null;
+        ACLMessage message, reply;
+        double proposal, bestInterest = agent.getBestInterest();
         for (Object object : responses) {
-            ACLMessage message = (ACLMessage) object;
+            message = (ACLMessage) object;
             if (message.getPerformative() == ACLMessage.PROPOSE) {
-                ACLMessage reply = Utils.createReply(message, ACLMessage.REJECT_PROPOSAL, null);
-                acceptances.addElement(reply);
-                proposal = -1;
-                try {
-                    proposal = Integer.parseInt(message.getContent());
+                Loan loan = Utils.getLoanFromJson(message.getContent());
+                if (loan == null) {
+                    loan = new Loan();
                 }
-                catch (NumberFormatException ignored) {}
-                if (proposal > bestProposal) {
-                    bestProposal = proposal;
-                    bestProposer = message.getSender();
-                    accept = reply;
-                }
-            }
-        }
 
-        // Accept the proposal of the best proposer
-        if (accept != null) {
-            Utils.log(myAgent, "Accepting proposal " + bestProposal + "from responder " + bestProposer.getLocalName());
-            accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                proposal = loan.getProfit();
+                if (proposal <= bestInterest) {
+                    loan.deny();
+                }
+
+                reply = Utils.createReply(message, ACLMessage.ACCEPT_PROPOSAL, loan.toString());
+                acceptances.addElement(reply);
+            }
         }
     }
 }

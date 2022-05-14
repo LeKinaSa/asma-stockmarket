@@ -3,6 +3,7 @@ package stockmarket.behaviours.managers.protocols;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import stockmarket.utils.Action;
 import stockmarket.utils.Utils;
 
 public abstract class RequestResponder {
@@ -14,7 +15,10 @@ public abstract class RequestResponder {
         return template;
     }
 
-    public abstract boolean checkAction(ACLMessage request);
+    public boolean checkAction(ACLMessage request) {
+        Action action = Action.toAction(request.getOntology(), request.getContent());
+        return action != null;
+    }
 
     public abstract String performAction(ACLMessage request);
 }

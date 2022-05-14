@@ -187,25 +187,27 @@ public class Utils {
             Set<String> services, DFAgentDescription[] results) {
         DFAgentDescription register;
         ServiceDescription service;
-        AID provider;
+        String provider;
         Iterator it;
-        services.clear();
         if (results.length > 0) {
-            Utils.log(agent, "Found Agents from Type " + type);
             for (int i = 0; i < results.length; ++ i) {
                 register = results[i];
-                provider = register.getName();
+                provider = register.getName().getLocalName();
 
                 // Select the Service we are looking for
                 it = register.getAllServices();
+                if (!it.hasNext()) {
+                    services.remove(provider);
+                }
                 while (it.hasNext()) {
                     service = (ServiceDescription) it.next();
                     if (service.getType().equals(type.toString())) {
-                        services.add(provider.getLocalName());
+                        services.add(provider);
                         Utils.logProvided(service, provider);
                     }
                 }
             }
+            Utils.log(agent, "Found " + services.size() + " Agents from Type " + type);
         }
         else {
             Utils.log(agent, "No Agent from Type " + type + " Found");
@@ -289,7 +291,7 @@ public class Utils {
         // System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
 
-    public static void logProvided(ServiceDescription service, AID provider) {
-        // System.out.println("Service " + service.getName() + " provided by agent " + provider.getLocalName());
+    public static void logProvided(ServiceDescription service, String provider) {
+        System.out.println("Service " + service.getName() + " provided by agent " + provider);
     }
 }

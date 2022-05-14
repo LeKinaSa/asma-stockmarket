@@ -4,7 +4,6 @@ public enum ActionType {
     START_BANK        , // Start a Bank Account
     CHECK_BALANCE     , // Check the Balance for the Agent's Bank Account
     TRANSFER_MONEY    , // Transfer Money to Another Agent's Account
-    START_STOCK       , // Start an Entry at the Stock Market
     CHECK_STOCK_PRICES, // Check the Current Stock Prices
     BUY_STOCK         , // Buy Stock from a Company
     SELL_STOCK        , // Sell All Owned Stocks

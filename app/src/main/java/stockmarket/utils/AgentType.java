@@ -14,7 +14,6 @@ public enum AgentType {
                     ActionType.START_BANK.toString(),
                     ActionType.CHECK_BALANCE.toString(),
                     ActionType.TRANSFER_MONEY.toString(),
-                    ActionType.START_STOCK.toString(),
                     ActionType.CHECK_STOCK_PRICES.toString(),
                     ActionType.BUY_STOCK.toString(),
                     ActionType.SELL_STOCK.toString(),

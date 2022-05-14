@@ -32,6 +32,7 @@ public class ResponderManager extends RequestResponder {
         ActionType actionType = action.getType();
         switch (actionType) {
             case START_BANK: {
+                System.out.println("Start Bank");
                 double value = 0D;
                 try {
                     value = Double.parseDouble(action.getInformation());
@@ -77,22 +78,6 @@ public class ResponderManager extends RequestResponder {
 
                 return String.valueOf(balance);
             }
-            case START_STOCK: {
-                StockEntry entry = Utils.getStockEntryFromJson(action.getInformation());
-                if (entry == null) {
-                    return  "{}";
-                }
-
-                synchronized (stockMarketEntries) {
-                    if (!stockMarketEntries.containsKey(agentName)) {
-                        stockMarketEntries.put(agentName, entry);
-                    }
-                    else {
-                        entry = stockMarketEntries.get(agentName);
-                    }
-                }
-                return entry.toString();
-            }
             case CHECK_STOCK_PRICES: {
                 return Utils.gson.toJson(getDailyStocks());
             }
@@ -135,8 +120,7 @@ public class ResponderManager extends RequestResponder {
                 // Sell Owned Stocks
                 StockEntry stockEntry;
                 synchronized (stockMarketEntries) {
-                    stockEntry = stockMarketEntries.get(agentName);
-                    stockMarketEntries.remove(agentName);
+                    stockEntry = stockMarketEntries.remove(agentName);
                 }
                 if (stockEntry == null) {
                     return "No Stocks to Sell.";

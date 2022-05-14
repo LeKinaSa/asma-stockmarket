@@ -80,7 +80,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         );
 
         queuedBehaviours.add(
-            new TakeDownBehaviour(agent)
+            new EndSimulationBehaviour(agent)
         );
 
         initiator.activateNextBehaviour(agent);

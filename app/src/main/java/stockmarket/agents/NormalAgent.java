@@ -57,6 +57,11 @@ public class NormalAgent extends MyAgent {
         Utils.unregisterFromYellowPages(this);
     }
 
+	public void save() {
+		// Save Bank Balance to File
+		Utils.saveBankBalance(this, bankBalance);
+	}
+
 	public Set<String> getEnvironmentAgents() {
 		return environmentAgents;
 	}

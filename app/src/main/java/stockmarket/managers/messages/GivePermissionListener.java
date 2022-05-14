@@ -29,7 +29,7 @@ public class GivePermissionListener implements MessageListener {
     
     @Override
     public void actionOnReceive(ACLMessage message) {
-        String sender = message.getSender().getLocalName();
+        String authorizedAgent = message.getContent();
         
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
@@ -46,7 +46,7 @@ public class GivePermissionListener implements MessageListener {
             )
         );
 
-        if (!agent.getLocalName().equals(sender)) {
+        if (!agent.getLocalName().equals(authorizedAgent)) {
             // Agent doesn't have Permission to Get Loans
             queuedBehaviours.add(
                 new SendMessageBehaviour(

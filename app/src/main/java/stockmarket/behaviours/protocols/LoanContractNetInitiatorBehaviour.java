@@ -36,7 +36,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
     @Override
     protected void handlePropose(ACLMessage propose, Vector v) {
         String sender = propose.getSender().getLocalName();
-        Utils.log(myAgent, "Agent " + sender + "proposed " + propose.getContent());
+        Utils.log(myAgent, "Agent " + sender + " proposed " + propose.getContent());
     }
 
     @Override

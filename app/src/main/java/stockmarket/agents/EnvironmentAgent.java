@@ -1,11 +1,15 @@
 package stockmarket.agents;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import jade.core.behaviours.Behaviour;
 import stockmarket.behaviours.EnvironmentBehaviour;
 import stockmarket.behaviours.LoanPermissionBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
+import stockmarket.behaviours.StartAgent;
 import stockmarket.behaviours.managers.messages.DayOverListener;
 import stockmarket.behaviours.managers.protocols.ResponderManager;
 import stockmarket.behaviours.managers.messages.AskPermissionListener;
@@ -29,15 +33,18 @@ public class EnvironmentAgent extends MyAgent {
         // Subscriptions
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents));
 
-        Utils.sleep(1);
+        // Initialize Agent
+        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
 
 		// Repetitive Behaviours
-        addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
-        addBehaviour(new MessageListenerBehaviour (this, dayListener));  // Time
-        addBehaviour(new MessageListenerBehaviour (this, loanListener)); // Order
-        addBehaviour(newDayBehaviour);
-        addBehaviour(loanPermissionBehaviour);
+        queuedBehaviours.add(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
+        queuedBehaviours.add(new MessageListenerBehaviour (this, dayListener));  // Time
+        queuedBehaviours.add(new MessageListenerBehaviour (this, loanListener)); // Order
+        queuedBehaviours.add(newDayBehaviour);
+        queuedBehaviours.add(loanPermissionBehaviour);
 
+        // Start Agent
+        addBehaviour(new StartAgent(this, queuedBehaviours));
         Utils.log(this, "Ready");
     }
 

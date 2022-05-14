@@ -45,6 +45,24 @@ public class NewDayListener implements MessageListener {
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
 
+        if (day == 0) {
+            Utils.log(agent, "Start Bank");
+
+            queuedBehaviours.add(
+                new RequestInitiatorBehaviour(
+                    agent,
+                    new Initiator(
+                        agent.getEnvironmentAgents(),
+                        new Action(
+                            ActionType.START_BANK,
+                            String.valueOf(agent.getInitialMoney())
+                        ),
+                        queuedBehaviours
+                    )
+                )
+            );
+        }
+
         // Sell Stocks
         queuedBehaviours.add(
             new RequestInitiatorBehaviour(

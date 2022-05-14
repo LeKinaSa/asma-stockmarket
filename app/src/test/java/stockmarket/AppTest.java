@@ -41,7 +41,7 @@ class AppTest {
 
     @Test void increaseDayTest() {
         DayOverListener listener = new DayOverListener();
-        assertEquals(1, listener.nextDay());
+        assertEquals(0, listener.nextDay());
     }
 
     @Test void actionTest() {

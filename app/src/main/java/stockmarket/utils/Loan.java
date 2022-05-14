@@ -14,7 +14,7 @@ public class Loan {
         this.amount = 0;
     }
 
-    public double getProfit() {
+    public double getProfitPercentage() {
         return profit;
     }
 

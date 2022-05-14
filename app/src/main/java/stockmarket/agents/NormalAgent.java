@@ -107,6 +107,9 @@ public class NormalAgent extends MyAgent {
 			Utils.log(this, "Error when Adding a Loan");
 			return;
 		}
+		if (loan.getAmount() == 0) {
+			return;
+		}
 		double amount = loan.getAmount() * (100 + loan.getProfitPercentage()) / 100;
 		MoneyTransfer transfer = new MoneyTransfer(agent, amount);
 		loans.add(transfer);

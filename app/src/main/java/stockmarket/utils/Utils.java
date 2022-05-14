@@ -313,14 +313,6 @@ public class Utils {
         System.out.println("Agent " + agentColor + agent.getLocalName() + RESET_COLOR + ": " + message + RESET_COLOR);
     }
 
-    public static void log(Agent agent, String message) {
-        System.out.println("Agent " + agent.getLocalName() + ": " + message);
-    }
-
-    public static void log(AID agent, String message) {
-        System.out.println("Agent " + agent.getLocalName() + ": " + message);
-    }
-
     public static void error(Agent agent, String message) {
         System.out.println("Agent " + agent.getLocalName() + ": " + ERROR_COLOR + message + RESET_COLOR);
     }
@@ -329,7 +321,15 @@ public class Utils {
         System.out.println("Agent " + agent.getLocalName() + ": " + ERROR_COLOR + message + RESET_COLOR);
     }
 
+    public static void log(Agent agent, String message) {
+        // System.out.println("Agent " + agent.getLocalName() + ": " + message);
+    }
+
+    public static void log(AID agent, String message) {
+        // System.out.println("Agent " + agent.getLocalName() + ": " + message);
+    }
+
     public static void logProvided(ServiceDescription service, String provider) {
-        System.out.println("Service " + service.getName() + " provided by agent " + provider);
+        // System.out.println("Service " + service.getName() + " provided by agent " + provider);
     }
 }

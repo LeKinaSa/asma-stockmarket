@@ -29,12 +29,36 @@ public class NormalAgent extends MyAgent {
 	private final List<MoneyTransfer> loans = Collections.synchronizedList(new ArrayList<>());
 	private final List<Double>  bankBalance = new ArrayList<>();
 	private Map<String, Double> stockPrices = null;
-	private double initialMoney = 1000; // TODO: set initial money
-	private double extraInterestAskedInPercentage = 0.4; // TODO: set extra interest percentage
+	private double initialMoney = 100;
+	private double extraInterestAskedInPercentage = 0.5;
 	private String companyToInvest;
 	private double interest;
 
 	public void setup() {
+		Object[] args = getArguments();
+        boolean set = false;
+        if (args != null && args.length > 0) {
+            try {
+                extraInterestAskedInPercentage = Double.parseDouble((String) args[0]);
+                set = true;
+            }
+            catch (NumberFormatException ignored) {}
+        }
+        if (!set) {
+            Utils.log(this, "Using Default Extra Interest: " + extraInterestAskedInPercentage);
+        }
+		set = false;
+		if (args != null && args.length > 1) {
+            try {
+                initialMoney = Double.parseDouble((String) args[1]);
+                set = true;
+            }
+            catch (NumberFormatException ignored) {}
+        }
+        if (!set) {
+            Utils.log(this, "Using Default Initial Money: " + initialMoney);
+        }
+
 		// Register
 		Utils.registerInYellowPages(this, AgentType.NORMAL);
 

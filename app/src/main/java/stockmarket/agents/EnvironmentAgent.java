@@ -21,9 +21,22 @@ public class EnvironmentAgent extends MyAgent {
     private final AskPermissionListener loanListener = new AskPermissionListener(this);
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
-    private int delay = 20000; // TODO: set delay (milliseconds)
+    private int delay = 20000;
 
     public void setup() {
+        Object[] args = getArguments();
+        boolean set = false;
+        if (args != null && args.length > 0) {
+            try {
+                delay = Integer.parseInt((String) args[0]);
+                set = true;
+            }
+            catch (NumberFormatException ignored) {}
+        }
+        if (!set) {
+            Utils.log(this, "Using Default Delay : " + delay);
+        }
+
         // Register
         Utils.registerInYellowPages(this, AgentType.ENVIRONMENT);
 

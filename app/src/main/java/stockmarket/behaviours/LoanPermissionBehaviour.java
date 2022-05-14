@@ -3,7 +3,7 @@ package stockmarket.behaviours;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.EnvironmentAgent;
-import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Utils;
 
 public class LoanPermissionBehaviour extends CyclicBehaviour {

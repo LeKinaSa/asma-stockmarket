@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.messages;
+package stockmarket.managers.messages;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,9 +7,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.NormalAgent;
 import stockmarket.behaviours.SendMessageBehaviour;
-import stockmarket.behaviours.managers.protocols.Initiator;
 import stockmarket.behaviours.protocols.LoanContractNetInitiatorBehaviour;
 import stockmarket.behaviours.protocols.RequestInitiatorBehaviour;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Action;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;

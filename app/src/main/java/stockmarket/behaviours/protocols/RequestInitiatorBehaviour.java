@@ -8,7 +8,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREInitiator;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 

@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.messages;
+package stockmarket.managers.messages;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

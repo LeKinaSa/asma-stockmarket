@@ -5,7 +5,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 import stockmarket.agents.NormalAgent;
-import stockmarket.behaviours.managers.protocols.Initiator;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.Loan;
 import stockmarket.utils.Utils;
 

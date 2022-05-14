@@ -6,11 +6,11 @@ import java.util.Set;
 import stockmarket.behaviours.EnvironmentBehaviour;
 import stockmarket.behaviours.LoanPermissionBehaviour;
 import stockmarket.behaviours.MessageListenerBehaviour;
-import stockmarket.behaviours.managers.messages.DayOverListener;
-import stockmarket.behaviours.managers.protocols.ResponderManager;
-import stockmarket.behaviours.managers.messages.AskPermissionListener;
 import stockmarket.behaviours.protocols.RequestResponderBehaviour;
 import stockmarket.behaviours.protocols.SubscriptionInitiatorBehaviour;
+import stockmarket.managers.messages.AskPermissionListener;
+import stockmarket.managers.messages.DayOverListener;
+import stockmarket.managers.protocols.ResponderManager;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 

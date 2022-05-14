@@ -1,4 +1,4 @@
-package stockmarket.behaviours.managers.protocols;
+package stockmarket.managers.protocols;
 
 import jade.lang.acl.ACLMessage;
 import stockmarket.agents.MyAgent;

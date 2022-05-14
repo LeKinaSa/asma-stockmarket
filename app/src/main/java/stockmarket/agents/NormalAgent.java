@@ -31,8 +31,8 @@ public class NormalAgent extends MyAgent {
 	private final List<MoneyTransfer>     loans = Collections.synchronizedList(new ArrayList<>());
 	private final OracleTipListener      oracleTipListener = new OracleTipListener();
 	private final NewDayListener            newDayListener = new NewDayListener(this);
+	private final List<Double> bankBalance = new ArrayList<>();
 	private Map<String, Double> stockPrices = null;
-	private double bankBalance;
 	private String companyToInvest;
 	private double interest;
 
@@ -112,11 +112,11 @@ public class NormalAgent extends MyAgent {
 	}
 
 	public void setBankBalance(double bankBalance) {
-		this.bankBalance = bankBalance;
+		this.bankBalance.add(bankBalance);
 	}
 
 	public double getCurrentBankBalance() {
-		return bankBalance;
+		return bankBalance.get(bankBalance.size() - 1);
 	}
 
 	public void setInvestments(String companyToInvest, double interest) {

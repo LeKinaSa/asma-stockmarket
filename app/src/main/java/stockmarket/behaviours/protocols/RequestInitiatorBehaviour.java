@@ -16,6 +16,9 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
     private MessageTemplate checkStockPricesTemplate = Utils.getMessageTemplate(
         FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.INFORM, ActionType.CHECK_STOCK_PRICES
     );
+    private MessageTemplate checkBankBalanceTemplate = Utils.getMessageTemplate(
+        FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.INFORM, ActionType.CHECK_BALANCE
+    );
     private final Initiator initiator;
     private int nResponders;
 
@@ -34,6 +37,16 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
             if (checkStockPricesTemplate.match(inform)) {
                 Map<String, Double> stockPrices = Utils.getSingleMapFromJson(inform.getContent());
                 normalAgent.setStockPrices(stockPrices);
+            }
+            if (checkBankBalanceTemplate.match(inform)) {
+                double balance = 0;
+                try {
+                    balance = Double.parseDouble(inform.getContent());
+                }
+                catch (NumberFormatException exception) {
+                    Utils.log(myAgent, "Invalid Balance");
+                }
+                normalAgent.setBankBalance(balance);
             }
         }
         

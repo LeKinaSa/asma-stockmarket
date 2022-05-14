@@ -8,14 +8,17 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SubscriptionInitiator;
+import stockmarket.behaviours.SendMessageBehaviour;
+import stockmarket.managers.protocols.Initiator;
 import stockmarket.utils.AgentType;
 import stockmarket.utils.Utils;
 
 public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
     private final AgentType type;
     private final Set<String> services;
+    private boolean sendDayOver;
 
-    public SubscriptionInitiatorBehaviour(Agent agent, AgentType type, Set<String> services) {
+    public SubscriptionInitiatorBehaviour(Agent agent, AgentType type, Set<String> services, boolean sendDayOver) {
         super(
             agent,
             DFService.createSubscriptionMessage(
@@ -26,6 +29,7 @@ public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
         );
         this.type = type;
         this.services = services;
+        this.sendDayOver = sendDayOver;
     }
 
     @Override
@@ -39,6 +43,17 @@ public class SubscriptionInitiatorBehaviour extends SubscriptionInitiator {
         }
         catch (FIPAException fe) {
             fe.printStackTrace();
+        }
+
+        if (sendDayOver) {
+            myAgent.addBehaviour(
+                new SendMessageBehaviour(
+                    myAgent,
+                    Utils.createDayOverMessage(services, -1),
+                    new Initiator(null)
+                )
+            );
+            sendDayOver = false;
         }
     }
 }

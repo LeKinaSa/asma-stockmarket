@@ -63,8 +63,8 @@ public class NormalAgent extends MyAgent {
 		Utils.registerInYellowPages(this, AgentType.NORMAL);
 
 		// Subscriptions
-		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ENVIRONMENT, environmentAgents));
-		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL     ,      normalAgents));
+		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ENVIRONMENT, environmentAgents,  true));
+		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL     ,      normalAgents, false));
 
 		// Repetitive Behaviours
 		addBehaviour(new MessageListenerBehaviour         (this, newDayListener));

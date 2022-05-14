@@ -3,11 +3,15 @@ package stockmarket.agents;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import stockmarket.behaviours.MessageListenerBehaviour;
+import stockmarket.behaviours.StartAgent;
 import stockmarket.behaviours.managers.messages.GivePermissionListener;
 import stockmarket.behaviours.managers.messages.NewDayListener;
 import stockmarket.behaviours.managers.messages.OracleTipListener;
@@ -44,19 +48,30 @@ public class NormalAgent extends MyAgent {
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.ENVIRONMENT, environmentAgents));
 		addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL     ,      normalAgents));
 
-		// Initialize Agent, Bank Account and Owned Stocks
-		Action startBankAccount = new Action(ActionType.START_BANK,  "0");
-		Action startOwnStocks   = new Action(ActionType.START_STOCK, "{}");
-		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startBankAccount, null)));
-		addBehaviour(new RequestInitiatorBehaviour(this, new Initiator(getEnvironmentAgents(), startOwnStocks  , null)));
+		// Initialize Agent
+		Queue<Behaviour> queuedBehaviours = new LinkedList<>();
 
-		// Repetitive Behaviours
-		addBehaviour(new MessageListenerBehaviour         (this, newDayListener));
-		addBehaviour(new MessageListenerBehaviour         (this, oracleTipListener));
-		addBehaviour(new MessageListenerBehaviour         (this, new GivePermissionListener(this)));
-		addBehaviour(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
-		addBehaviour(new RequestResponderBehaviour        (this, new EndSimulationResponder(this)));
+		// Initialize Bank Account
+		queuedBehaviours.add(
+			new RequestInitiatorBehaviour(
+				this,
+				new Initiator(
+					getEnvironmentAgents(),
+					new Action(ActionType.START_BANK,  "1000"),
+					null
+				)
+			)
+		);
 
+		// Initialize Repetitive Behaviours
+		queuedBehaviours.add(new MessageListenerBehaviour         (this, newDayListener));
+		queuedBehaviours.add(new MessageListenerBehaviour         (this, oracleTipListener));
+		queuedBehaviours.add(new MessageListenerBehaviour         (this, new GivePermissionListener(this)));
+		queuedBehaviours.add(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
+		queuedBehaviours.add(new RequestResponderBehaviour        (this, new EndSimulationResponder(this)));
+
+		// Start Agent
+		addBehaviour(new StartAgent(this, queuedBehaviours));
 		Utils.log(this, "Ready");
 	}
 

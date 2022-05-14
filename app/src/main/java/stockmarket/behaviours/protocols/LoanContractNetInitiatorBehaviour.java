@@ -78,7 +78,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
                 }
 
                 proposal = loan.getProfitPercentage();
-                if (proposal <= bestInterest) {
+                if (proposal >= bestInterest) {
                     loan.deny();
                 }
 

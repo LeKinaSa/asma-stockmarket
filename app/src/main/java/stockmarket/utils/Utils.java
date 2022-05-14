@@ -24,6 +24,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import stockmarket.agents.EnvironmentAgent;
 
 public class Utils {
     // Message Related Utilitaries
@@ -228,7 +229,7 @@ public class Utils {
             stocks = gson.fromJson(reader, Map.class);
         }
         catch (JsonSyntaxException | IOException exception) {
-            Utils.log(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
+            Utils.error(agent, "Error when loading the stockmarket prices history -> " + exception.getMessage());
         }
         return stocks;
     }
@@ -298,12 +299,34 @@ public class Utils {
     }
 
     // Logs
+    private static String  RESET_COLOR = "\033[0m";
+    private static String  ERROR_COLOR = "\033[0;31m";
+    private static String    ENV_COLOR = "\033[1;34m";
+    private static String NORMAL_COLOR = "\033[1;33m";
+
+    public static void info(Agent agent, String message) {
+        String agentColor = NORMAL_COLOR;
+        if (agent instanceof EnvironmentAgent) {
+            agentColor = ENV_COLOR;
+        }
+
+        System.out.println("Agent " + agentColor + agent.getLocalName() + RESET_COLOR + ": " + message + RESET_COLOR);
+    }
+
     public static void log(Agent agent, String message) {
         System.out.println("Agent " + agent.getLocalName() + ": " + message);
     }
 
     public static void log(AID agent, String message) {
-        // System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        System.out.println("Agent " + agent.getLocalName() + ": " + message);
+    }
+
+    public static void error(Agent agent, String message) {
+        System.out.println("Agent " + agent.getLocalName() + ": " + ERROR_COLOR + message + RESET_COLOR);
+    }
+
+    public static void error(AID agent, String message) {
+        System.out.println("Agent " + agent.getLocalName() + ": " + ERROR_COLOR + message + RESET_COLOR);
     }
 
     public static void logProvided(ServiceDescription service, String provider) {

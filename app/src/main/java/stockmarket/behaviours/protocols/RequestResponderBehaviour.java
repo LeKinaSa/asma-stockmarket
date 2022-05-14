@@ -22,7 +22,7 @@ public class RequestResponderBehaviour extends AchieveREResponder {
         String sender = request.getSender().getLocalName();
         Utils.log(myAgent, "REQUEST received from " + sender + ". Action is " + request.getOntology() + " " + request.getContent());
         if (!responder.checkAction(request)) {
-            Utils.log(myAgent, "Refused (" + sender + ")");
+            Utils.error(myAgent, "Refused (" + sender + ")");
             throw new RefuseException("check-failed");
         }
         Utils.log(myAgent, "Agree (" + sender + ")");
@@ -34,7 +34,7 @@ public class RequestResponderBehaviour extends AchieveREResponder {
         String sender = request.getSender().getLocalName();
         String actionResult = responder.performAction(request);
         if (actionResult == null) {
-            Utils.log(myAgent, "Action Failed (" + sender + ")");
+            Utils.error(myAgent, "Action Failed (" + sender + ")");
             throw new FailureException("unexpected-error");
         }
         Utils.log(myAgent, "Action successfully performed (" + sender + ")");

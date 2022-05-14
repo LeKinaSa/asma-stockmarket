@@ -6,7 +6,7 @@ import stockmarket.utils.Utils;
 public class MyAgent extends Agent {
     public void finish() {
         this.save();
-        Utils.log(this, "Goodbye");
+        Utils.info(this, "Goodbye");
     }
 
     public void save() {}

@@ -38,6 +38,6 @@ public class LoanContractNetResponderBehaviour extends ContractNetResponder {
 
     @Override
     protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
-        Utils.log(myAgent, "Proposal rejected");
+        Utils.error(myAgent, "Proposal rejected");
     }
 }

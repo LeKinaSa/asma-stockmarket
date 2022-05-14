@@ -34,7 +34,7 @@ public class EnvironmentAgent extends MyAgent {
             catch (NumberFormatException ignored) {}
         }
         if (!set) {
-            Utils.log(this, "Using Default Delay : " + delay);
+            Utils.info(this, "Using Default Delay : " + delay);
         }
 
         // Register
@@ -53,7 +53,7 @@ public class EnvironmentAgent extends MyAgent {
         addBehaviour(newDayBehaviour);
         addBehaviour(loanPermissionBehaviour);
 
-        Utils.log(this, "Ready");
+        Utils.info(this, "Ready");
     }
 
     public void takeDown() {

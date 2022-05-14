@@ -36,7 +36,7 @@ public class ContractResponder implements Listener {
 	public void performAction(ACLMessage message) {
 		Loan loan = Utils.getLoanFromJson(message.getContent());
 		if (loan == null) {
-			Utils.log(agent, Utils.invalidAction("Invalid Loan"));
+			Utils.error(agent, Utils.invalidAction("Invalid Loan"));
 			return;
 		}
 
@@ -44,6 +44,7 @@ public class ContractResponder implements Listener {
 		Queue<Behaviour> queuedBehaviours = new LinkedList<>();
 
 		if (loan.getAmount() > 0) {
+			Utils.info(agent, "Loan was accepted " + loan.toString());
 			// Loan Accepted -> Transfer the Money
 			MoneyTransfer transfer = new MoneyTransfer(sender, loan.getAmount());
 			queuedBehaviours.add(
@@ -59,6 +60,8 @@ public class ContractResponder implements Listener {
 		}
 		else {
 			// Loan Denied -> Buy Stocks
+			double interest = Math.round(agent.getBestInterest() * 100) / 100;
+			Utils.info(agent, "Loan was denied " + loan.toString() + "; Investing at " + interest + "%");
 			queuedBehaviours.add(
 				new RequestInitiatorBehaviour(
 					agent,

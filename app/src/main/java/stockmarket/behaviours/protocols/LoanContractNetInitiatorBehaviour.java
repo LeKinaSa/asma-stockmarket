@@ -29,6 +29,8 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
         -- nResponders;
         if (nResponders == 0) {
             Utils.log(inform.getSender(), "Successfully performed the requested action");
+            double interest = Math.round(agent.getBestInterest() * 100) / 100;
+            Utils.info(agent, "Investing at " + interest + "%");
             initiator.activateNextBehaviour(agent);
         }
     }
@@ -42,16 +44,16 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
     @Override
     protected void handleRefuse(ACLMessage refuse) {
         String sender = refuse.getSender().getLocalName();
-        Utils.log(myAgent, "Agent " + sender + " refused");
+        Utils.error(myAgent, "Agent " + sender + " refused");
     }
 
     @Override
     protected void handleFailure(ACLMessage failure) {
         if (failure.getSender().equals(myAgent.getAMS())) {
-            Utils.log(failure.getSender(), "Responder does not exist");
+            Utils.error(failure.getSender(), "Responder does not exist");
         }
         else {
-            Utils.log(failure.getSender(), "Failed to perform the requested action");
+            Utils.error(failure.getSender(), "Failed to perform the requested action");
         }
 
         -- nResponders;
@@ -62,7 +64,7 @@ public class LoanContractNetInitiatorBehaviour extends ContractNetInitiator {
         if (responses.size() < nResponders) {
             // Some responder didn't reply within the specified timeout
             int missingResponses = nResponders - responses.size();
-            Utils.log(myAgent, "Timeout expired, missing " + missingResponses + " responses");
+            Utils.error(myAgent, "Timeout expired, missing " + missingResponses + " responses");
         }
 
         Utils.log(myAgent, "All proposals received");

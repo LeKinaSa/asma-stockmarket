@@ -30,7 +30,7 @@ public class AskPermissionListener implements MessageListener {
             interest = Double.parseDouble(message.getContent());
         }
         catch (NumberFormatException exception) {
-            Utils.log(agent, Utils.invalidAction("Invalid Interest"));
+            Utils.error(agent, Utils.invalidAction("Invalid Interest"));
         }
 
         receivedOffers.put(sender, interest);

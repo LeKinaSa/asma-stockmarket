@@ -29,7 +29,7 @@ public class DecideInvestmentBehaviour extends OneShotBehaviour {
                 day = Integer.parseInt(dayString);
             }
             catch (NumberFormatException exception) {
-                Utils.log(agent, "Invalid Tip Day when Deciding Investment");
+                Utils.error(agent, "Invalid Tip Day when Deciding Investment");
                 continue;
             }
             daysToInvest = day - agent.getDay();

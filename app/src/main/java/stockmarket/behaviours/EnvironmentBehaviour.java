@@ -35,7 +35,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         if (agent.getDayListener().canPassToNextDay(agent.getNAgents())) {
             Utils.sleep(delay);
             int nextDay = agent.getDayListener().nextDay();
-            Utils.log(agent, "Starting Day " + nextDay);
+            Utils.info(agent, "Starting Day " + nextDay);
             if (agent.simulationIsOver(nextDay)) {
                 endSimulation();
                 return;
@@ -71,6 +71,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
     }
 
     public void endSimulation() {
+        Utils.info(agent, "Ending the Simulation");
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
 

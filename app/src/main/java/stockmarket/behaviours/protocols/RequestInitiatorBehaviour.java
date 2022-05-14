@@ -44,7 +44,7 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
                     balance = Double.parseDouble(inform.getContent());
                 }
                 catch (NumberFormatException exception) {
-                    Utils.log(myAgent, "Invalid Balance");
+                    Utils.error(myAgent, "Invalid Balance");
                 }
                 normalAgent.setBankBalance(balance);
             }
@@ -56,17 +56,17 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
 
     @Override
     protected void handleRefuse(ACLMessage refuse) {
-        Utils.log(refuse.getSender(), "Refused to perform the requested action");
+        Utils.error(refuse.getSender(), "Refused to perform the requested action");
         -- nResponders;
     }
 
     @Override
     protected void handleFailure(ACLMessage failure) {
         if (failure.getSender().equals(myAgent.getAMS())) {
-            Utils.log(failure.getSender(), "Responder does not exist");
+            Utils.error(failure.getSender(), "Responder does not exist");
         }
         else {
-            Utils.log(failure.getSender(), "Failed to perform the requested action");
+            Utils.error(failure.getSender(), "Failed to perform the requested action");
         }
         -- nResponders;
     }
@@ -76,7 +76,7 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
         if (notifications.size() < nResponders) {
             // Some responder didn't reply within the specified timeout
             int missingResponses = nResponders - notifications.size();
-            Utils.log(myAgent, "Timeout expired, missing " + missingResponses + " responses");
+            Utils.error(myAgent, "Timeout expired, missing " + missingResponses + " responses");
         }
 
         Utils.log(myAgent, "All results received");

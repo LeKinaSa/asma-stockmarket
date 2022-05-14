@@ -45,7 +45,7 @@ public class NormalAgent extends MyAgent {
             catch (NumberFormatException ignored) {}
         }
         if (!set) {
-            Utils.log(this, "Using Default Extra Interest: " + extraInterestAskedInPercentage);
+            Utils.info(this, "Using Default Extra Interest: " + extraInterestAskedInPercentage);
         }
 		set = false;
 		if (args != null && args.length > 1) {
@@ -56,7 +56,7 @@ public class NormalAgent extends MyAgent {
             catch (NumberFormatException ignored) {}
         }
         if (!set) {
-            Utils.log(this, "Using Default Initial Money: " + initialMoney);
+            Utils.info(this, "Using Default Initial Money: " + initialMoney);
         }
 
 		// Register
@@ -73,7 +73,7 @@ public class NormalAgent extends MyAgent {
 		addBehaviour(new LoanContractNetResponderBehaviour(this, new ContractResponder(this)));
 		addBehaviour(new RequestResponderBehaviour        (this, new EndSimulationResponder(this)));
 
-		Utils.log(this, "Ready");
+		Utils.info(this, "Ready");
 	}
 
     public void takeDown() {
@@ -104,7 +104,7 @@ public class NormalAgent extends MyAgent {
 		String agent = message.getSender().getLocalName();
 		Loan loan = Utils.getLoanFromJson(message.getContent());
 		if (loan == null) {
-			Utils.log(this, "Error when Adding a Loan");
+			Utils.error(this, "Error when Adding a Loan");
 			return;
 		}
 		if (loan.getAmount() == 0) {

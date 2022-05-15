@@ -22,31 +22,20 @@ public class EnvironmentAgent extends MyAgent {
     private final EnvironmentBehaviour            newDayBehaviour = new EnvironmentBehaviour(this);
     private final LoanPermissionBehaviour loanPermissionBehaviour = new LoanPermissionBehaviour(this);
     private int numberOfNormalAgents = 0;
-    private int delay = 0;
+    private int simulationDays       = 1260;
+    private int agentsToTip          = 1;
+    private int tipDays              = 2;
+    private int numberOfTipsPerDay   = 10;
+    private int delay                = 0;
 
     public void setup() {
         Object[] args = getArguments();
-        boolean set = false;
-        if (args != null && args.length > 0) {
-            try {
-                numberOfNormalAgents = Integer.parseInt((String) args[0]);
-                set = true;
-            }
-            catch (NumberFormatException ignored) {}
+        if (args == null || args.length != 6) {
+            Utils.info(this, "use: <n_normal_agents> [<simulation_days> [<n_agents_to_tip> [<n_days_to_tip> [<n_tips_per_day> [<delay>]]]]]");
         }
-        if (!set) {
-            Utils.info(this, "Using Default Number of Normal Agents : " + numberOfNormalAgents);
-        }
-        set = false;
-        if (args != null && args.length > 1) {
-            try {
-                delay = Integer.parseInt((String) args[1]);
-                set = true;
-            }
-            catch (NumberFormatException ignored) {}
-        }
-        if (!set) {
-            Utils.info(this, "Using Default Delay : " + delay);
+        setVariablesFromArguments(getArguments());
+        if (numberOfNormalAgents < 2) {
+            Utils.error(this, "Number of Agents must be at least 2");
         }
 
         // Register
@@ -57,6 +46,9 @@ public class EnvironmentAgent extends MyAgent {
 
         // Set Simulation Delay and Number Of Agents
         newDayBehaviour.setDelay(delay);
+        newDayBehaviour.setAgentsToTip(agentsToTip);
+        newDayBehaviour.setTipDays(tipDays);
+        newDayBehaviour.setNumberOfTipsPerDay(numberOfTipsPerDay);
         dayListener.setNumberOfAgents(numberOfNormalAgents);
 
         // Repetitive Behaviours
@@ -74,6 +66,15 @@ public class EnvironmentAgent extends MyAgent {
         Utils.unregisterFromYellowPages(this);
     }
 
+    public void setVariablesFromArguments(Object[] args) {
+        numberOfNormalAgents = setIntegerVarFromArgument(args, 0, numberOfNormalAgents, "Number of Normal Agents");
+        simulationDays       = setIntegerVarFromArgument(args, 1, simulationDays      , "Number of Days in Simulation");
+        agentsToTip          = setIntegerVarFromArgument(args, 2, agentsToTip         , "Number of Agents to Tip");
+        tipDays              = setIntegerVarFromArgument(args, 3, tipDays             , "Number of Days to Tip");
+        numberOfTipsPerDay   = setIntegerVarFromArgument(args, 4, numberOfTipsPerDay  , "Number of Tips per Day");
+        delay                = setIntegerVarFromArgument(args, 5, delay               , "Delay");
+    }
+
     public Set<String> getAgents() {
         return agents;
     }
@@ -88,6 +89,10 @@ public class EnvironmentAgent extends MyAgent {
 
     public int getDay() {
         return dayListener.getDay();
+    }
+
+    public int getSimulationDays() {
+        return simulationDays;
     }
 
     public AskPermissionListener getLoanListener() {

@@ -20,11 +20,11 @@ import stockmarket.utils.ActionType;
 import stockmarket.utils.Utils;
 
 public class EnvironmentBehaviour extends CyclicBehaviour {
-    private static final int AGENTS_TO_TIP  = 1;
-    private static final int TIP_DAYS       = 3;
-    private static final int NUMBER_OF_TIPS = 10;
     private final EnvironmentAgent agent;
     private int delay;
+    private int agentsToTip;
+    private int tipDays;
+    private int numberOfTipsPerDay;
 
     public EnvironmentBehaviour(EnvironmentAgent agent) {
         this.agent = agent;
@@ -36,7 +36,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
             Utils.sleep(delay);
             int nextDay = agent.getDayListener().nextDay();
             Utils.info(agent, "Starting Day " + nextDay);
-            if (agent.simulationIsOver(nextDay)) {
+            if (nextDay > agent.getSimulationDays() || agent.simulationIsOver(nextDay)) {
                 endSimulation();
                 return;
             }
@@ -46,6 +46,18 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
 
     public void setDelay(int delay) {
         this.delay = delay;
+    }
+
+    public void setAgentsToTip(int agentsToTip) {
+        this.agentsToTip = agentsToTip;
+    }
+
+    public void setTipDays(int tipDays) {
+        this.tipDays = tipDays;
+    }
+
+    public void setNumberOfTipsPerDay(int numberOfTipsPerDay) {
+        this.numberOfTipsPerDay = numberOfTipsPerDay;
     }
 
     public void startDay(int nextDay) {
@@ -104,7 +116,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         List<String> agents = new ArrayList<>(agent.getAgents());
         Set<String> receivers = new HashSet<>();
         String agentToTip;
-        while (receivers.size() < AGENTS_TO_TIP) {
+        while (receivers.size() < agentsToTip) {
             randomIndex = random.nextInt(agents.size());
             agentToTip = agents.get(randomIndex);
             receivers.add(agentToTip);
@@ -114,14 +126,14 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         Map<String, Map<String, Double>> tips = new HashMap<>();
         Map<String, Double> dailyTips;
         String company;
-        for (int dayOfTheTip = newDay + 1; dayOfTheTip < newDay + TIP_DAYS; ++ dayOfTheTip) {
+        for (int dayOfTheTip = newDay + 1; dayOfTheTip < newDay + tipDays + 1; ++ dayOfTheTip) {
             if (agent.getStockPrices().get(String.valueOf(dayOfTheTip)) == null) {
                 // Simulation is Ending -> There are no more tips to show
                 break;
             }
 
             dailyTips = new HashMap<>();
-            while (dailyTips.size() < NUMBER_OF_TIPS) {
+            while (dailyTips.size() < numberOfTipsPerDay) {
                 randomIndex = random.nextInt(allCompanies.size());
                 company = allCompanies.get(randomIndex);
                 dailyTips.put(company, agent.getStockPrices().get(String.valueOf(dayOfTheTip)).get(company));

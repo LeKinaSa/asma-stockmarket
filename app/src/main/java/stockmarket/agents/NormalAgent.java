@@ -36,28 +36,10 @@ public class NormalAgent extends MyAgent {
 
     public void setup() {
         Object[] args = getArguments();
-        boolean set = false;
-        if (args != null && args.length > 0) {
-            try {
-                extraInterestAskedInPercentage = Double.parseDouble((String) args[0]);
-                set = true;
-            }
-            catch (NumberFormatException ignored) {}
+        if (args == null || args.length < 2) {
+            Utils.info(this, "use: [<extra_interest> [<initial_money>]]");
         }
-        if (!set) {
-            Utils.info(this, "Using Default Extra Interest: " + extraInterestAskedInPercentage);
-        }
-        set = false;
-        if (args != null && args.length > 1) {
-            try {
-                initialMoney = Double.parseDouble((String) args[1]);
-                set = true;
-            }
-            catch (NumberFormatException ignored) {}
-        }
-        if (!set) {
-            Utils.info(this, "Using Default Initial Money: " + initialMoney);
-        }
+        setVariablesFromArguments(args);
 
         // Register
         Utils.registerInYellowPages(this, AgentType.NORMAL);
@@ -84,6 +66,11 @@ public class NormalAgent extends MyAgent {
     public void save() {
         // Save Bank Balance to File
         Utils.saveBankBalance(this, bankBalance);
+    }
+
+    public void setVariablesFromArguments(Object[] args) {
+        extraInterestAskedInPercentage = setDoubleVarFromArgument(args, 0, extraInterestAskedInPercentage , "Extra Interest Asked on Loans");
+        initialMoney                   = setDoubleVarFromArgument(args, 1, initialMoney                   , "Initial Bank Balance");
     }
 
     public Set<String> getEnvironmentAgents() {

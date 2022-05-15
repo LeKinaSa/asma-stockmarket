@@ -15,17 +15,17 @@ import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class NewDayListener implements MessageListener {
-	private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
+    private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.NEW_DAY);
     private final NormalAgent agent;
     private int day;
+
+    public NewDayListener(NormalAgent agent) {
+        this.agent = agent;
+    }
 
     @Override
     public MessageTemplate getTemplate() {
         return template;
-    }
-
-    public NewDayListener(NormalAgent agent) {
-        this.agent = agent;
     }
 
     public int getDay() {

@@ -26,11 +26,11 @@ public class GivePermissionListener implements MessageListener {
     public MessageTemplate getTemplate() {
         return template;
     }
-    
+
     @Override
     public void actionOnReceive(ACLMessage message) {
         String authorizedAgent = message.getContent();
-        
+
         Queue<Behaviour> queuedBehaviours = new LinkedList<>();
         Initiator initiator = new Initiator(queuedBehaviours);
 

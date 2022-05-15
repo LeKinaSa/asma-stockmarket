@@ -8,7 +8,7 @@ import stockmarket.utils.Utils;
 
 public class DecideInvestmentBehaviour extends OneShotBehaviour {
     private final NormalAgent agent;
-	private final Initiator initiator;
+    private final Initiator initiator;
 
     public DecideInvestmentBehaviour(NormalAgent agent, Initiator initiator) {
         this.agent = agent;

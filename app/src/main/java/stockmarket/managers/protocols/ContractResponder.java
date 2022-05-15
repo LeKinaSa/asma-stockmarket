@@ -20,72 +20,72 @@ import stockmarket.utils.MoneyTransfer;
 import stockmarket.utils.Utils;
 
 public class ContractResponder implements Listener {
-	private final static MessageTemplate template = Utils.getMessageTemplate(
-		FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP, null
-	);
-	private final NormalAgent agent;
+    private final static MessageTemplate template = Utils.getMessageTemplate(
+        FIPANames.InteractionProtocol.FIPA_CONTRACT_NET, ACLMessage.CFP, null
+    );
+    private final NormalAgent agent;
 
-	public ContractResponder(NormalAgent agent) {
-		this.agent = agent;
-	}
+    public ContractResponder(NormalAgent agent) {
+        this.agent = agent;
+    }
 
-	public MessageTemplate getTemplate() {
-		return template;
-	}
+    public MessageTemplate getTemplate() {
+        return template;
+    }
 
-	public void performAction(ACLMessage message) {
-		Loan loan = Utils.getLoanFromJson(message.getContent());
-		if (loan == null) {
-			Utils.error(agent, Utils.invalidAction("Invalid Loan"));
-			return;
-		}
+    public void performAction(ACLMessage message) {
+        Loan loan = Utils.getLoanFromJson(message.getContent());
+        if (loan == null) {
+            Utils.error(agent, Utils.invalidAction("Invalid Loan"));
+            return;
+        }
 
-		String sender = message.getSender().getLocalName();
-		Queue<Behaviour> queuedBehaviours = new LinkedList<>();
+        String sender = message.getSender().getLocalName();
+        Queue<Behaviour> queuedBehaviours = new LinkedList<>();
 
-		if (loan.getAmount() > 0) {
-			Utils.info(agent, "Loan was accepted " + loan.toString());
-			// Loan Accepted -> Transfer the Money
-			MoneyTransfer transfer = new MoneyTransfer(sender, loan.getAmount());
-			queuedBehaviours.add(
-				new RequestInitiatorBehaviour(
-					agent,
-					new Initiator(
-						agent.getEnvironmentAgents(),
-						new Action(ActionType.TRANSFER_MONEY, transfer.toString()),
-						queuedBehaviours
-					)
-				)
-			);
-		}
-		else {
-			// Loan Denied -> Buy Stocks
-			double interest = Math.round(agent.getBestInterest() * 100) / 100;
-			Utils.info(agent, "Loan was denied " + loan.toString() + "; Investing at " + interest + "%");
-			queuedBehaviours.add(
-				new RequestInitiatorBehaviour(
-					agent,
-					new Initiator(
-						agent.getEnvironmentAgents(),
-						new Action(ActionType.BUY_STOCK, agent.getInvestmentCompany()),
-						queuedBehaviours
-					)
-				)
-			);
-		}
+        if (loan.getAmount() > 0) {
+            Utils.info(agent, "Loan was accepted " + loan.toString());
+            // Loan Accepted -> Transfer the Money
+            MoneyTransfer transfer = new MoneyTransfer(sender, loan.getAmount());
+            queuedBehaviours.add(
+                new RequestInitiatorBehaviour(
+                    agent,
+                    new Initiator(
+                        agent.getEnvironmentAgents(),
+                        new Action(ActionType.TRANSFER_MONEY, transfer.toString()),
+                        queuedBehaviours
+                    )
+                )
+            );
+        }
+        else {
+            // Loan Denied -> Buy Stocks
+            double interest = Math.round(agent.getBestInterest() * 100) / 100;
+            Utils.info(agent, "Loan was denied " + loan.toString() + "; Investing at " + interest + "%");
+            queuedBehaviours.add(
+                new RequestInitiatorBehaviour(
+                    agent,
+                    new Initiator(
+                        agent.getEnvironmentAgents(),
+                        new Action(ActionType.BUY_STOCK, agent.getInvestmentCompany()),
+                        queuedBehaviours
+                    )
+                )
+            );
+        }
 
-		// Send Finished Message
-		Set<String> receivers = new HashSet<>(Arrays.asList(sender));
-		queuedBehaviours.add(
-			new SendMessageBehaviour(
-				agent,
-				Utils.createFinishedMessage(receivers),
-				new Initiator(queuedBehaviours)
-			)
-		);
+        // Send Finished Message
+        Set<String> receivers = new HashSet<>(Arrays.asList(sender));
+        queuedBehaviours.add(
+            new SendMessageBehaviour(
+                agent,
+                Utils.createFinishedMessage(receivers),
+                new Initiator(queuedBehaviours)
+            )
+        );
 
-		// Start the Behaviours
-		Initiator initiator = new Initiator(queuedBehaviours);
-		initiator.activateNextBehaviour(agent);
-	}
+        // Start the Behaviours
+        Initiator initiator = new Initiator(queuedBehaviours);
+        initiator.activateNextBehaviour(agent);
+    }
 }

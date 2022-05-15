@@ -49,7 +49,7 @@ public class RequestInitiatorBehaviour extends AchieveREInitiator {
                 normalAgent.setBankBalance(balance);
             }
         }
-        
+
         initiator.activateNextBehaviour(myAgent);
         Utils.log(inform.getSender(), "Successfully performed the requested action");
     }

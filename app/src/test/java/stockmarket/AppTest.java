@@ -17,13 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 class AppTest {
-    @Test void dependenciesTest() {
+    @Test
+    void dependenciesTest() {
         MoneyTransfer transfer = new MoneyTransfer(null, 0);
         String transferStr = transfer.toString();
-        
+
         MoneyTransfer transferCopy = Utils.gson.fromJson(transfer.toString(), MoneyTransfer.class);
         String transferCopyStr = transferCopy.toString();
-        
+
         assertEquals(transferCopyStr, transferStr);
     }
 
@@ -32,19 +33,22 @@ class AppTest {
         list.add("Index 2");
     }
 
-    @Test void listTest() {
+    @Test
+    void listTest() {
         List<String> list = new ArrayList<>();
         list.add("Index 0");
         modifyList(list);
         assertEquals(3, list.size());
     }
 
-    @Test void increaseDayTest() {
+    @Test
+    void increaseDayTest() {
         DayOverListener listener = new DayOverListener();
         assertEquals(0, listener.nextDay());
     }
 
-    @Test void actionTest() {
+    @Test
+    void actionTest() {
         Action action;
 
         action = new Action(ActionType.DAY_OVER, "5");
@@ -61,14 +65,16 @@ class AppTest {
         assertNull(action);
     }
 
-    @Test void newDayMessageTest() {
+    @Test
+    void newDayMessageTest() {
         MessageListener listener = new NewDayListener(null);
         ACLMessage message = Utils.createNewDayMessage(null, 1);
         System.out.println(message.getOntology());
         assertTrue(listener.getTemplate().match(message));
     }
 
-    @Test void checkStockPricesTest() {
+    @Test
+    void checkStockPricesTest() {
         MessageTemplate checkStockPricesTemplate = Utils.getMessageTemplate(
             FIPANames.InteractionProtocol.FIPA_REQUEST, ACLMessage.INFORM, ActionType.CHECK_STOCK_PRICES
         );

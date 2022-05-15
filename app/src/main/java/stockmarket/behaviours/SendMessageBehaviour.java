@@ -9,7 +9,7 @@ public class SendMessageBehaviour extends OneShotBehaviour {
     private final Agent      agent;
     private final ACLMessage message;
     private final Initiator  initiator;
-    
+
     public SendMessageBehaviour(Agent agent, ACLMessage message, Initiator initiator) {
         this.agent     = agent;
         this.message   = message;

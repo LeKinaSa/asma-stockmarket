@@ -53,13 +53,13 @@ public class EnvironmentAgent extends MyAgent {
         Utils.registerInYellowPages(this, AgentType.ENVIRONMENT);
 
         // Subscriptions
-	addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents, false));
+        addBehaviour(new SubscriptionInitiatorBehaviour(this, AgentType.NORMAL, agents, false));
 
         // Set Simulation Delay and Number Of Agents
         newDayBehaviour.setDelay(delay);
         dayListener.setNumberOfAgents(numberOfNormalAgents);
 
-		// Repetitive Behaviours
+        // Repetitive Behaviours
         addBehaviour(new RequestResponderBehaviour(this, manager));      // Bank and Stock Market
         addBehaviour(new MessageListenerBehaviour (this, dayListener));  // Time
         addBehaviour(new MessageListenerBehaviour (this, loanListener)); // Order
@@ -70,7 +70,7 @@ public class EnvironmentAgent extends MyAgent {
     }
 
     public void takeDown() {
-		// Unregister
+        // Unregister
         Utils.unregisterFromYellowPages(this);
     }
 

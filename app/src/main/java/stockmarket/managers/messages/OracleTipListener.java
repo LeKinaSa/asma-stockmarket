@@ -9,7 +9,7 @@ import stockmarket.utils.Utils;
 
 public class OracleTipListener implements MessageListener {
     private final static MessageTemplate template = Utils.getMessageTemplate(null, ACLMessage.INFORM, ActionType.ORACLE_TIP);
-	private final Map<String, Map<String, Double>> tips = new HashMap<>();
+    private final Map<String, Map<String, Double>> tips = new HashMap<>();
 
     @Override
     public MessageTemplate getTemplate() {

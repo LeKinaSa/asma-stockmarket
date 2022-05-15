@@ -28,8 +28,8 @@ import stockmarket.agents.EnvironmentAgent;
 
 public class Utils {
     // Message Related Utilitaries
-    public static MessageTemplate getMessageTemplate(String protocol, int performative,
-            ActionType ontology) {
+    public static MessageTemplate getMessageTemplate(
+            String protocol, int performative, ActionType ontology) {
         MessageTemplate template = MessageTemplate.MatchPerformative(performative);
         if (protocol != null) {
             template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(protocol));
@@ -188,8 +188,8 @@ public class Utils {
         catch (FIPAException ignored) {}
     }
 
-    public static void searchInYellowPageResults(Agent agent, AgentType type,
-            Set<String> services, DFAgentDescription[] results) {
+    public static void searchInYellowPageResults(
+            Agent agent, AgentType type, Set<String> services, DFAgentDescription[] results) {
         DFAgentDescription register;
         ServiceDescription service;
         String provider;
@@ -272,10 +272,10 @@ public class Utils {
 
     public static Loan getLoanFromJson(String json) {
         Loan loan = null;
-		try {
-			loan = gson.fromJson(json, Loan.class);
-		}
-		catch (JsonSyntaxException ignored) {}
+        try {
+            loan = gson.fromJson(json, Loan.class);
+        }
+        catch (JsonSyntaxException ignored) {}
         return loan;
     }
 

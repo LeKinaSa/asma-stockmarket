@@ -37,7 +37,7 @@ public class NormalAgent extends MyAgent {
     public void setup() {
         Object[] args = getArguments();
         if (args == null || args.length < 2) {
-            Utils.info(this, "use: [<extra_interest> [<initial_money>]]");
+            Utils.info(this, "use: [<extra_interest> [<initial_money> [<log: 0(false)/1(true)>]]]");
         }
         setVariablesFromArguments(args);
 
@@ -69,8 +69,9 @@ public class NormalAgent extends MyAgent {
     }
 
     public void setVariablesFromArguments(Object[] args) {
-        extraInterestAskedInPercentage = setDoubleVarFromArgument(args, 0, extraInterestAskedInPercentage , "Extra Interest Asked on Loans");
-        initialMoney                   = setDoubleVarFromArgument(args, 1, initialMoney                   , "Initial Bank Balance");
+        extraInterestAskedInPercentage = setDoubleVarFromArgument (args, 0, extraInterestAskedInPercentage , "Extra Interest Asked on Loans");
+        initialMoney                   = setDoubleVarFromArgument (args, 1, initialMoney                   , "Initial Bank Balance");
+        log                            = setBooleanVarFromArgument(args, 2, log                            , "Logging");
     }
 
     public Set<String> getEnvironmentAgents() {

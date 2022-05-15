@@ -25,6 +25,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import stockmarket.agents.EnvironmentAgent;
+import stockmarket.agents.MyAgent;
 
 public class Utils {
     // Message Related Utilitaries
@@ -322,7 +323,9 @@ public class Utils {
     }
 
     public static void log(Agent agent, String message) {
-        // System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        if (MyAgent.isLogging()) {
+            System.out.println("Agent " + agent.getLocalName() + ": " + message);
+        }
     }
 
     public static void log(AID agent, String message) {
@@ -330,6 +333,8 @@ public class Utils {
     }
 
     public static void logProvided(ServiceDescription service, String provider) {
-        // System.out.println("Service " + service.getName() + " provided by agent " + provider);
+        if (MyAgent.isLogging()) {
+            System.out.println("Service " + service.getName() + " provided by agent " + provider);
+        }
     }
 }

@@ -30,8 +30,8 @@ public class EnvironmentAgent extends MyAgent {
 
     public void setup() {
         Object[] args = getArguments();
-        if (args == null || args.length != 6) {
-            Utils.info(this, "use: <n_normal_agents> [<simulation_days> [<n_agents_to_tip> [<n_days_to_tip> [<n_tips_per_day> [<delay>]]]]]");
+        if (args == null || args.length != 7) {
+            Utils.info(this, "use: <n_normal_agents: int> [<simulation_days: int> [<n_agents_to_tip: int> [<n_days_to_tip: int> [<n_tips_per_day: int> [<delay: int> [<log: 0(false)/1(true)>]]]]]]");
         }
         setVariablesFromArguments(getArguments());
         if (numberOfNormalAgents < 2) {
@@ -73,6 +73,7 @@ public class EnvironmentAgent extends MyAgent {
         tipDays              = setIntegerVarFromArgument(args, 3, tipDays             , "Number of Days to Tip");
         numberOfTipsPerDay   = setIntegerVarFromArgument(args, 4, numberOfTipsPerDay  , "Number of Tips per Day");
         delay                = setIntegerVarFromArgument(args, 5, delay               , "Delay");
+        log                  = setBooleanVarFromArgument(args, 6, log                 , "Logging");
     }
 
     public Set<String> getAgents() {

@@ -114,7 +114,7 @@ public class ResponderManager extends RequestResponder {
                     stockMarketEntries.put(agentName, stockEntry);
                 }
 
-                return "";
+                return stockEntry.toString();
             }
             case SELL_STOCK: {
                 // Sell Owned Stocks
@@ -141,7 +141,7 @@ public class ResponderManager extends RequestResponder {
                     bankAccount.put(agentName, balance + total);
                 }
 
-                return "";
+                return stockEntry.toString();
             }
             default: {
                 return Utils.invalidAction("Action Not Supported");

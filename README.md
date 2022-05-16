@@ -7,6 +7,7 @@
 
 ## How to run
 
+- Experience 0 : `make test0` (shown in Detailed Execution Examples in the Slides)
 - Experience 1 : `make test1`
 - Experience 2 : `make test2`
 - Experience 3 : `make test3`

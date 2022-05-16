@@ -35,6 +35,7 @@ public class EnvironmentBehaviour extends CyclicBehaviour {
         if (agent.getNAgents() > 0 && agent.getDayListener().canPassToNextDay()) {
             Utils.sleep(delay);
             int nextDay = agent.getDayListener().nextDay();
+            Utils.space();
             Utils.info(agent, "Starting Day " + nextDay);
             if (nextDay > agent.getSimulationDays() || agent.simulationIsOver(nextDay)) {
                 endSimulation();

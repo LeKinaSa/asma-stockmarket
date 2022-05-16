@@ -304,6 +304,11 @@ public class Utils {
     private static String  ERROR_COLOR = "\033[0;31m";
     private static String    ENV_COLOR = "\033[1;34m";
     private static String NORMAL_COLOR = "\033[1;33m";
+    private static String  SPACE_COLOR = "\033[0;36m";
+
+    public static void space() {
+        System.out.println(SPACE_COLOR + "---------------------------------------------" + RESET_COLOR);
+    }
 
     public static void info(Agent agent, String message) {
         String agentColor = NORMAL_COLOR;
@@ -324,7 +329,7 @@ public class Utils {
 
     public static void log(Agent agent, String message) {
         if (MyAgent.isLogging()) {
-            System.out.println("Agent " + agent.getLocalName() + ": " + message);
+            info(agent, message);
         }
     }
 

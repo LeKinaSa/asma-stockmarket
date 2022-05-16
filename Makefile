@@ -17,6 +17,12 @@ start:
 	a4:stockmarket.agents.NormalAgent(2.0, 100)" \
 	-gui
 
+test0: clean compile
+	java -cp "app/lib/gson.jar:app/lib/jade.jar:bin" jade.Boot -agents \
+	"environment:stockmarket.agents.EnvironmentAgent(2, 10, 2, 1, 3, 1000, 1); \
+	a1:stockmarket.agents.NormalAgent(0.0, 100, 1); \
+	a2:stockmarket.agents.NormalAgent(0.5, 100, 1)"
+
 test1: clean compile
 	java -cp "app/lib/gson.jar:app/lib/jade.jar:bin" jade.Boot -agents \
 	"environment:stockmarket.agents.EnvironmentAgent(2, 10, 2, 1, 50, 1000, 1); \
